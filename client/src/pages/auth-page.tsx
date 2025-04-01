@@ -78,16 +78,34 @@ export default function AuthPage() {
   
   // Submit register form
   const onRegisterSubmit = (data: RegisterFormValues) => {
-    registerMutation.mutate({
+    // Logging form data to debug
+    console.log('Form data for registration:', {
+      ...data,
+      password: '***REDACTED***',
+      confirmPassword: '***REDACTED***'
+    });
+    
+    // Ensure empty strings for optional fields rather than undefined
+    const userData = {
       email: data.email,
       password: data.password,
       name: data.name,
-      shopifyDomain: data.shopifyDomain || undefined,
-      shopifyApiKey: data.shopifyApiKey || undefined,
-      shopifyApiSecret: data.shopifyApiSecret || undefined,
+      shopifyDomain: data.shopifyDomain || '',
+      shopifyApiKey: data.shopifyApiKey || '',
+      shopifyApiSecret: data.shopifyApiSecret || '',
       isAdmin: false, // Regular users cannot register as admins
-      isActive: true
+      isActive: true,
+      confirmPassword: data.confirmPassword
+    };
+    
+    // Log the final data being sent
+    console.log('Final registration data structure:', {
+      ...userData,
+      password: '***REDACTED***',
+      confirmPassword: '***REDACTED***'
     });
+    
+    registerMutation.mutate(userData);
   };
   
   return (

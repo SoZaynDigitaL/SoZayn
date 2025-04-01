@@ -127,20 +127,33 @@ export function setupAuth(app: Express) {
         password: hashedPassword,
       };
       
-      // TypeScript safe way to remove the confirmPassword property
+      // More robust handling of userData
+      // Note: Removing confirmPassword and creating a new object
+      let cleanedUserData: any;
       if ('confirmPassword' in userData) {
         const { confirmPassword, ...rest } = userData;
+        cleanedUserData = rest;
+      } else {
+        cleanedUserData = userData;
+      }
+      
+      // Add detailed debugging
+      console.log('Attempting to create user with data:', {
+        email: cleanedUserData.email,
+        name: cleanedUserData.name,
+        isAdmin: cleanedUserData.isAdmin,
+        isActive: cleanedUserData.isActive,
+        // Don't log sensitive fields
+        password: '***REDACTED***',
+        shopifyApiKey: cleanedUserData.shopifyApiKey ? '***PRESENT***' : '***EMPTY***',
+        shopifyApiSecret: cleanedUserData.shopifyApiSecret ? '***PRESENT***' : '***EMPTY***',
+        shopifyDomain: cleanedUserData.shopifyDomain
+      });
+      
+      try {
+        const user = await storage.createUser(cleanedUserData);
         
-        // Add debugging
-        console.log('Creating user with data:', {
-          ...rest,
-          password: '***REDACTED***'
-        });
-        
-        const user = await storage.createUser(rest);
-        
-        // Add debugging
-        console.log('User created:', {
+        console.log('User created successfully:', {
           id: user.id,
           email: user.email,
           isActive: user.isActive
@@ -157,9 +170,16 @@ export function setupAuth(app: Express) {
         );
 
         req.login(user, (err: Error | null) => {
-          if (err) return next(err);
+          if (err) {
+            console.error('Login error after registration:', err);
+            return next(err);
+          }
+          console.log('User logged in after registration:', user.id);
           res.status(201).json({ user: userForClient, token });
         });
+      } catch (err) {
+        console.error('Error creating user in storage:', err);
+        return next(err);
       }
     } catch (error) {
       console.error('Error in registration:', error);
