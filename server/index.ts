@@ -75,12 +75,28 @@ app.use((req, res, next) => {
     // this serves both the API and the client.
     // It is the only port that is not firewalled.
     const port = 5000;
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    }, () => {
-      log(`serving on port ${port}`);
+    
+    // Log all available addresses
+    console.log('Available network interfaces:');
+    try {
+      import('os').then(os => {
+        const nets = os.networkInterfaces();
+        for (const name of Object.keys(nets)) {
+          for (const net of nets[name]) {
+            console.log(`Interface: ${name}, Address: ${net.address}, Family: ${net.family}`);
+          }
+        }
+      }).catch(err => {
+        console.error('Error importing os:', err);
+      });
+    } catch (err) {
+      console.error('Error getting network interfaces:', err);
+    }
+
+    // Explicitly listen on all interfaces with standard Node.js API
+    server.listen(port, '0.0.0.0', () => {
+      log(`serving on port ${port} (http://0.0.0.0:${port})`);
+      log('Server is ready to accept connections');
     });
   } catch (error) {
     logger.error('Failed to start server:', { error });

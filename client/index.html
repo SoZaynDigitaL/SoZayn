@@ -53,38 +53,118 @@
       .btn:hover {
         background-color: #4338ca;
       }
+      #loading-message {
+        text-align: center;
+        padding: 20px;
+        background-color: #fff8e8;
+        border-radius: 8px;
+        margin-top: 30px;
+      }
+      .debug-section {
+        margin-top: 40px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .debug-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .debug-btn {
+        padding: 8px 16px;
+        background-color: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>DeliverConnect</h1>
-        <p class="subtitle">Connecting Shopify to delivery services seamlessly</p>
-      </header>
-      
-      <div class="card">
-        <h2>Welcome to DeliverConnect</h2>
-        <p>The middleware service connecting Shopify stores with third-party delivery services like UberDirect and JetGo.</p>
-        <p>This simplified page is being served directly from HTML, which means our server is working correctly but we may have issues with our React application configuration.</p>
-        <p>We'll be addressing these issues to get the full application running soon.</p>
-      </div>
-      
-      <div class="card">
-        <h2>Our Services</h2>
-        <ul>
-          <li>Seamless integration with Shopify</li>
-          <li>Connection to multiple delivery services</li>
-          <li>Real-time order tracking</li>
-          <li>Automated notifications</li>
-          <li>Comprehensive analytics dashboard</li>
-        </ul>
-      </div>
-      
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="/auth" class="btn">Log In</a>
-        <a href="/auth?tab=register" class="btn" style="margin-left: 1rem;">Register</a>
+    <!-- React application root -->
+    <div id="root">
+      <!-- Fallback content while React loads or if it fails -->
+      <div class="container">
+        <header>
+          <h1>DeliverConnect</h1>
+          <p class="subtitle">Connecting Shopify to delivery services seamlessly</p>
+        </header>
+        
+        <div class="card">
+          <h2>Welcome to DeliverConnect</h2>
+          <p>The middleware service connecting Shopify stores with third-party delivery services like UberDirect and JetGo.</p>
+          <p>This simplified page is being served directly from HTML as a fallback. The React application should load shortly.</p>
+        </div>
+        
+        <div class="card">
+          <h2>Our Services</h2>
+          <ul>
+            <li>Seamless integration with Shopify</li>
+            <li>Connection to multiple delivery services</li>
+            <li>Real-time order tracking</li>
+            <li>Automated notifications</li>
+            <li>Comprehensive analytics dashboard</li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/auth" class="btn">Log In</a>
+          <a href="/auth?tab=register" class="btn" style="margin-left: 1rem;">Register</a>
+        </div>
+
+        <div id="loading-message">
+          <p><strong>Loading React application...</strong></p>
+          <p>If this message persists, please check the console for errors.</p>
+        </div>
+
+        <div class="debug-section">
+          <h3>Connection Debugging</h3>
+          <p>Check application connection and configuration:</p>
+          <div class="debug-buttons">
+            <button class="debug-btn" onclick="checkApi()">Check API Health</button>
+            <button class="debug-btn" onclick="checkEnvironment()">Environment Info</button>
+          </div>
+          <div id="debug-output" style="margin-top: 15px; font-family: monospace;"></div>
+        </div>
       </div>
     </div>
+    
+    <!-- Debug scripts -->
+    <script>
+      function checkApi() {
+        const output = document.getElementById('debug-output');
+        output.innerHTML = 'Checking API connection...';
+        
+        fetch('/api/health')
+          .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+          })
+          .then(data => {
+            output.innerHTML = `API Health Check: ✅ Connected<br>Status: ${data.status}<br>Time: ${data.timestamp}`;
+          })
+          .catch(error => {
+            output.innerHTML = `API Health Check: ❌ Failed<br>Error: ${error.message}`;
+          });
+      }
+      
+      function checkEnvironment() {
+        const output = document.getElementById('debug-output');
+        output.innerHTML = 'Getting environment information...';
+        
+        const info = {
+          userAgent: navigator.userAgent,
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+          time: new Date().toLocaleString()
+        };
+        
+        output.innerHTML = `Browser: ${info.userAgent}<br>Viewport: ${info.viewport}<br>Time: ${info.time}`;
+      }
+    </script>
+    
+    <!-- Main application script - ensure we're pointing to the correct entry point -->
+    <script type="module" src="/src/main.tsx"></script>
     
     <!-- This script injects a replit badge into the page, please feel free to remove this line -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-badge-v3.js"></script>

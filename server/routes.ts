@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
@@ -7,8 +7,68 @@ import { setupDeliveryRoutes } from "./delivery";
 import { z } from "zod";
 import { insertOrderSchema, insertUserSchema, User, Order } from "@shared/schema";
 import { logger } from "./logger";
+import os from "os";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health Check endpoint (public)
+  app.get("/api/health", (req: Request, res: Response) => {
+    res.json({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || "development",
+      memory: {
+        heapUsed: Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) + "MB",
+        heapTotal: Math.round(process.memoryUsage().heapTotal / (1024 * 1024)) + "MB",
+      }
+    });
+  });
+  
+  // Debug endpoint (public)
+  app.get("/api/debug", async (req: Request, res: Response) => {
+    try {
+      // Check database connection
+      let dbStatus = "unknown";
+      try {
+        await storage.initDb();
+        dbStatus = "connected";
+      } catch (err: any) {
+        dbStatus = `error: ${err.message}`;
+      }
+      
+      // Return system info
+      res.json({
+        server: {
+          node: process.version,
+          platform: process.platform,
+          arch: process.arch,
+          uptime: process.uptime()
+        },
+        database: {
+          status: dbStatus
+        },
+        environment: {
+          NODE_ENV: process.env.NODE_ENV || "development",
+        },
+        memory: {
+          total: Math.round(os.totalmem() / (1024 * 1024)) + "MB",
+          free: Math.round(os.freemem() / (1024 * 1024)) + "MB",
+          usage: {
+            heapUsed: Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) + "MB",
+            heapTotal: Math.round(process.memoryUsage().heapTotal / (1024 * 1024)) + "MB"
+          }
+        },
+        network: Object.entries(os.networkInterfaces()).reduce((acc: any, [key, val]) => {
+          acc[key] = val?.map(({ address, family }: any) => ({ address, family })) || [];
+          return acc;
+        }, {})
+      });
+    } catch (error) {
+      logger.error("Debug endpoint error:", { error });
+      res.status(500).json({ error: String(error) });
+    }
+  });
+  
   // Set up auth routes and middleware
   const { authenticateJWT } = setupAuth(app);
 
