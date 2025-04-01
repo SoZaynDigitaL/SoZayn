@@ -68,8 +68,8 @@ export default function Navbar() {
     if (isLoading) {
       return (
         <div className="flex justify-between w-full items-center">
-          <Link href="/">
-            <a className="text-primary font-bold text-xl">DeliverConnect</a>
+          <Link href="/" className="text-primary font-bold text-xl">
+            DeliverConnect
           </Link>
           <Loader2 className="h-5 w-5 animate-spin text-primary" />
         </div>
@@ -81,8 +81,8 @@ export default function Navbar() {
       return (
         <>
           <div className="flex items-center">
-            <Link href="/">
-              <a className="text-primary font-bold text-xl">DeliverConnect</a>
+            <Link href="/" className="text-primary font-bold text-xl">
+              DeliverConnect
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <a href="#features" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -97,8 +97,8 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center">
-            <Link href="/auth">
-              <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Log in</a>
+            <Link href="/auth" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              Log in
             </Link>
             <Link href="/auth?tab=register">
               <Button>Register</Button>
@@ -138,19 +138,18 @@ export default function Navbar() {
                   >
                     About
                   </a>
-                  <Link href="/auth">
-                    <a 
-                      className="px-4 py-2 text-sm"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Log in
-                    </a>
+                  <Link 
+                    href="/auth" 
+                    className="px-4 py-2 text-sm"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Log in
                   </Link>
-                  <Link href="/auth?tab=register">
-                    <Button 
-                      className="mx-4 mt-2"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
+                  <Link 
+                    href="/auth?tab=register" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Button className="mx-4 mt-2">
                       Register
                     </Button>
                   </Link>
@@ -166,21 +165,24 @@ export default function Navbar() {
     return (
       <>
         <div className="flex items-center">
-          <Link href={isAdmin ? "/admin" : "/dashboard"}>
-            <a className="text-primary font-bold text-xl">DeliverConnect</a>
+          <Link 
+            href={isAdmin ? "/admin" : "/dashboard"} 
+            className="text-primary font-bold text-xl"
+          >
+            DeliverConnect
           </Link>
           <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <a
-                  className={`${
-                    isActive(link.href)
-                      ? "border-primary text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
-                >
-                  {link.label}
-                </a>
+              <Link 
+                key={link.href} 
+                href={link.href}
+                className={`${
+                  isActive(link.href)
+                    ? "border-primary text-gray-900"
+                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+              >
+                {link.label}
               </Link>
             ))}
           </div>
@@ -193,55 +195,57 @@ export default function Navbar() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                <div className="flex flex-col">
-                  <span>{user.name}</span>
-                  <span className="text-xs font-normal text-gray-500">{user.email}</span>
-                </div>
-              </DropdownMenuLabel>
+              {user && (
+                <DropdownMenuLabel>
+                  <div className="flex flex-col">
+                    <span>{user.name}</span>
+                    <span className="text-xs font-normal text-gray-500">{user.email}</span>
+                  </div>
+                </DropdownMenuLabel>
+              )}
               <DropdownMenuSeparator />
               
               {isAdmin ? (
                 <>
-                  <Link href="/admin">
-                    <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin" className="flex items-center">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       <span>Dashboard</span>
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/admin/clients">
-                    <DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/clients" className="flex items-center">
                       <User className="mr-2 h-4 w-4" />
                       <span>Clients</span>
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/admin/orders">
-                    <DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/orders" className="flex items-center">
                       <Package className="mr-2 h-4 w-4" />
                       <span>Orders</span>
-                    </DropdownMenuItem>
-                  </Link>
+                    </Link>
+                  </DropdownMenuItem>
                 </>
               ) : (
                 <>
-                  <Link href="/dashboard">
-                    <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="flex items-center">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       <span>Dashboard</span>
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/orders">
-                    <DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/orders" className="flex items-center">
                       <Package className="mr-2 h-4 w-4" />
                       <span>Orders</span>
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/settings">
-                    <DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings" className="flex items-center">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
-                    </DropdownMenuItem>
-                  </Link>
+                    </Link>
+                  </DropdownMenuItem>
                 </>
               )}
               
@@ -271,27 +275,29 @@ export default function Navbar() {
             <SheetContent side="right">
               <SheetHeader>
                 <SheetTitle>
-                  <div className="flex flex-col">
-                    <span>{user.name}</span>
-                    <span className="text-xs font-normal text-gray-500">{user.email}</span>
-                  </div>
+                  {user && (
+                    <div className="flex flex-col">
+                      <span>{user.name}</span>
+                      <span className="text-xs font-normal text-gray-500">{user.email}</span>
+                    </div>
+                  )}
                 </SheetTitle>
               </SheetHeader>
               <div className="py-4 flex flex-col gap-2">
                 {navLinks.map((link) => (
-                  <Link key={link.href} href={link.href}>
-                    <a 
-                      className={`px-4 py-2 text-sm ${
-                        isActive(link.href) ? "bg-gray-100 text-primary" : ""
-                      }`}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.label}
-                    </a>
+                  <Link 
+                    key={link.href} 
+                    href={link.href}
+                    className={`px-4 py-2 text-sm ${
+                      isActive(link.href) ? "bg-gray-100 text-primary" : ""
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
                   </Link>
                 ))}
                 <div className="border-t my-2"></div>
-                <a 
+                <button 
                   className="px-4 py-2 text-sm flex items-center text-red-600"
                   onClick={() => {
                     handleLogout();
@@ -304,7 +310,7 @@ export default function Navbar() {
                     <LogOut className="mr-2 h-4 w-4" />
                   )}
                   Log out
-                </a>
+                </button>
               </div>
             </SheetContent>
           </Sheet>
