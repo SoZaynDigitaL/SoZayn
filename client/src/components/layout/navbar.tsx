@@ -69,7 +69,7 @@ export default function Navbar() {
       return (
         <div className="flex justify-between w-full items-center">
           <Link href="/" className="text-primary font-bold text-xl">
-            DeliverConnect
+            SoZayn
           </Link>
           <Loader2 className="h-5 w-5 animate-spin text-primary" />
         </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
         <>
           <div className="flex items-center">
             <Link href="/" className="text-primary font-bold text-xl">
-              DeliverConnect
+              SoZayn
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <a href="#features" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -114,7 +114,7 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="right">
                 <SheetHeader>
-                  <SheetTitle>DeliverConnect</SheetTitle>
+                  <SheetTitle>SoZayn</SheetTitle>
                 </SheetHeader>
                 <div className="py-4 flex flex-col gap-2">
                   <a 
@@ -169,7 +169,7 @@ export default function Navbar() {
             href={isAdmin ? "/admin" : "/dashboard"} 
             className="text-primary font-bold text-xl"
           >
-            DeliverConnect
+            SoZayn
           </Link>
           <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
             {navLinks.map((link) => (

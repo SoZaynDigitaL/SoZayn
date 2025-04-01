@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="rounded-2xl bg-gradient-to-r from-primary/90 to-primary/70 py-10 px-6 md:py-16 md:px-12 shadow-xl">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-              Stay updated with DeliverConnect
+              Stay updated with SoZayn
             </h2>
             <p className="text-white/80 mb-8">
               Get the latest news, updates, and delivery integration tips sent directly to your inbox.
@@ -40,7 +40,7 @@ export default function Footer() {
               <svg className="h-8 w-8 mr-2 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M5 12h14M19 12l-7 7M19 12l-7-7" />
               </svg>
-              <span className="text-white font-bold text-xl">DeliverConnect</span>
+              <span className="text-white font-bold text-xl">SoZayn</span>
             </div>
             <p className="text-gray-400 leading-relaxed">
               Simplifying delivery integration for Shopify stores since 2023. Connecting e-commerce with the best last-mile delivery solutions.
@@ -139,8 +139,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-primary mr-3" />
-                <a href="mailto:support@deliverconnect.com" className="text-gray-400 hover:text-primary transition-colors">
-                  support@deliverconnect.com
+                <a href="mailto:support@sozayn.com" className="text-gray-400 hover:text-primary transition-colors">
+                  support@sozayn.com
                 </a>
               </li>
             </ul>
@@ -150,7 +150,7 @@ export default function Footer() {
         {/* Bottom section with copyright */}
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm text-center md:text-left mb-4 md:mb-0">
-            &copy; {currentYear} DeliverConnect. All rights reserved.
+            &copy; {currentYear} SoZayn. All rights reserved.
           </p>
           
           <div className="flex space-x-6">
