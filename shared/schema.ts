@@ -1,4 +1,5 @@
 import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,11 +9,11 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   name: text("name").notNull(),
-  shopifyDomain: text("shopify_domain"),
-  shopifyApiKey: text("shopify_api_key"),
-  shopifyApiSecret: text("shopify_api_secret"),
-  isAdmin: boolean("is_admin").default(false),
-  isActive: boolean("is_active").default(true),
+  shopifyDomain: text("shopify_domain").notNull().default(''), // Use empty string as default instead of null
+  shopifyApiKey: text("shopify_api_key").notNull().default(''),
+  shopifyApiSecret: text("shopify_api_secret").notNull().default(''),
+  isAdmin: boolean("is_admin").notNull().default(false),
+  isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -45,10 +46,18 @@ export const orders = pgTable("orders", {
   deliveryService: text("delivery_service"),
   deliveryOrderId: text("delivery_order_id"),
   deliveryTrackingUrl: text("delivery_tracking_url"),
-  deliveryData: jsonb("delivery_data"),
+  deliveryData: jsonb("delivery_data").default({}),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// Define order relations
+export const ordersRelations = relations(orders, ({ one }) => ({
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+  }),
+}));
 
 export const insertOrderSchema = createInsertSchema(orders).omit({
   id: true,
@@ -65,7 +74,7 @@ export const logs = pgTable("logs", {
   id: serial("id").primaryKey(),
   level: text("level").notNull(),
   message: text("message").notNull(),
-  data: jsonb("data"),
+  data: jsonb("data").default({}),
   timestamp: timestamp("timestamp").defaultNow(),
 });
 

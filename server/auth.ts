@@ -5,24 +5,36 @@ import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
-import { User, LoginUser } from "@shared/schema";
+import { User as SchemaUser, LoginUser } from "@shared/schema";
 import jwt from "jsonwebtoken";
 
 declare global {
   namespace Express {
-    interface User extends User {}
+    // Match the interface to our schema
+    interface User {
+      id: number;
+      email: string;
+      password: string;
+      name: string;
+      shopifyDomain: string;
+      shopifyApiKey: string;
+      shopifyApiSecret: string;
+      isAdmin: boolean;
+      isActive: boolean;
+      createdAt: Date | null;
+    }
   }
 }
 
 const scryptAsync = promisify(scrypt);
 
-async function hashPassword(password: string) {
+export async function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
   const buf = (await scryptAsync(password, salt, 64)) as Buffer;
   return `${buf.toString("hex")}.${salt}`;
 }
 
-async function comparePasswords(supplied: string, stored: string) {
+export async function comparePasswords(supplied: string, stored: string) {
   const [hashed, salt] = stored.split(".");
   const hashedBuf = Buffer.from(hashed, "hex");
   const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
@@ -114,41 +126,28 @@ export function setupAuth(app: Express) {
         ...req.body,
         password: hashedPassword,
       };
-      delete userData.confirmPassword; // Remove confirmPassword before creating user
       
-      const user = await storage.createUser(userData);
-      const userForClient = { ...user };
-      delete userForClient.password; // Don't send password to client
-
-      // Create JWT token
-      const token = jwt.sign(
-        { userId: user.id, email: user.email, isAdmin: user.isAdmin },
-        JWT_SECRET,
-        { expiresIn: '24h' }
-      );
-
-      req.login(user, (err) => {
-        if (err) return next(err);
-        res.status(201).json({ user: userForClient, token });
-      });
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  // Login route
-  app.post("/api/login", (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) return next(err);
-      if (!user) {
-        return res.status(401).json({ message: info?.message || "Invalid credentials" });
-      }
-      
-      req.login(user, (err) => {
-        if (err) return next(err);
+      // TypeScript safe way to remove the confirmPassword property
+      if ('confirmPassword' in userData) {
+        const { confirmPassword, ...rest } = userData;
         
-        const userForClient = { ...user };
-        delete userForClient.password; // Don't send password to client
+        // Add debugging
+        console.log('Creating user with data:', {
+          ...rest,
+          password: '***REDACTED***'
+        });
+        
+        const user = await storage.createUser(rest);
+        
+        // Add debugging
+        console.log('User created:', {
+          id: user.id,
+          email: user.email,
+          isActive: user.isActive
+        });
+        
+        // Create a safe user object without password
+        const { password, ...userForClient } = user;
         
         // Create JWT token
         const token = jwt.sign(
@@ -156,10 +155,58 @@ export function setupAuth(app: Express) {
           JWT_SECRET,
           { expiresIn: '24h' }
         );
+
+        req.login(user, (err: Error | null) => {
+          if (err) return next(err);
+          res.status(201).json({ user: userForClient, token });
+        });
+      }
+    } catch (error) {
+      console.error('Error in registration:', error);
+      next(error);
+    }
+  });
+
+  // Login route
+  app.post("/api/login", async (req, res, next) => {
+    try {
+      // First check if the user exists and is active
+      const userFromDb = await storage.getUserByEmail(req.body.email);
+      
+      if (!userFromDb) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+      
+      if (!userFromDb.isActive) {
+        return res.status(401).json({ message: "Account is deactivated" });
+      }
+      
+      // Check password
+      const isPasswordValid = await comparePasswords(req.body.password, userFromDb.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+      
+      // Login successful
+      req.login(userFromDb, (err: Error | null) => {
+        if (err) return next(err);
+        
+        // Create a safe user object without password
+        const { password, ...userForClient } = userFromDb;
+        
+        // Create JWT token
+        const token = jwt.sign(
+          { userId: userFromDb.id, email: userFromDb.email, isAdmin: userFromDb.isAdmin },
+          JWT_SECRET,
+          { expiresIn: '24h' }
+        );
         
         res.status(200).json({ user: userForClient, token });
       });
-    })(req, res, next);
+    } catch (error) {
+      console.error('Login error:', error);
+      next(error);
+    }
   });
 
   // Logout route
@@ -174,8 +221,9 @@ export function setupAuth(app: Express) {
   app.get("/api/user", (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     
-    const userForClient = { ...req.user };
-    delete userForClient.password; // Don't send password to client
+    const user = req.user as Express.User;
+    // Create a safe user object without password
+    const { password, ...userForClient } = user;
     
     res.json(userForClient);
   });

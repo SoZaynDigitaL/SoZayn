@@ -2,8 +2,13 @@ import { users, type User, type InsertUser, orders, type Order, type InsertOrder
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { subDays } from "date-fns";
+import connectPg from "connect-pg-simple";
+import { eq, and, gte, desc, sql, count, countDistinct } from "drizzle-orm";
+import { logger } from "./logger";
+import { hashPassword } from "./auth";
+import { pool, db } from "./db";
 
-const MemoryStore = createMemoryStore(session);
+const PostgresSessionStore = connectPg(session);
 
 export interface IStorage {
   // User methods
@@ -31,202 +36,365 @@ export interface IStorage {
   createLog(log: InsertLog): Promise<Log>;
   getLogs(limit: number): Promise<Log[]>;
   
+  // Database management
+  initDb(): Promise<void>;
+  
   // Session store
   sessionStore: session.Store;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private orders: Map<number, Order>;
-  private logs: Map<number, Log>;
-  private userIdCounter: number;
-  private orderIdCounter: number;
-  private logIdCounter: number;
+export class DatabaseStorage implements IStorage {
   sessionStore: session.Store;
 
   constructor() {
-    this.users = new Map();
-    this.orders = new Map();
-    this.logs = new Map();
-    this.userIdCounter = 1;
-    this.orderIdCounter = 1;
-    this.logIdCounter = 1;
-    
-    this.sessionStore = new MemoryStore({
-      checkPeriod: 86400000 // 24 hours
+    this.sessionStore = new PostgresSessionStore({
+      pool: pool as any, // Use type assertion to avoid TypeScript error
+      createTableIfMissing: true
     });
-    
-    // Create initial admin user
-    this.createUser({
-      email: "admin@deliverconnect.com",
-      password: "$2b$10$UNDlzs8wtR80rztbrPYA3u/W.zhcm7TWTpbJYS5Zxjs1/3jqMFfUm", // plaintext: "admin123"
-      name: "Admin User",
-      isAdmin: true
-    });
+  }
+
+  // Initialize the database with tables and seed data
+  async initDb(): Promise<void> {
+    try {
+      logger.info('Initializing database...');
+      
+      // Create admin user if it doesn't exist
+      const adminUser = await this.getUserByEmail("admin@deliverconnect.com");
+      
+      if (!adminUser) {
+        logger.info('Creating admin user...');
+        await this.createUser({
+          email: "admin@deliverconnect.com",
+          password: await hashPassword("admin123"),
+          name: "Admin User",
+          isAdmin: true,
+          isActive: true
+        });
+      }
+      
+      logger.info('Database initialization complete');
+    } catch (error) {
+      logger.error('Database initialization error:', { error });
+      throw error;
+    }
   }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    try {
+      const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+      return result[0];
+    } catch (error) {
+      logger.error('Error getting user by ID:', { error, userId: id });
+      throw error;
+    }
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.email === email,
-    );
+    try {
+      const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+      return result[0];
+    } catch (error) {
+      logger.error('Error getting user by email:', { error, email });
+      throw error;
+    }
   }
 
   async createUser(userData: InsertUser): Promise<User> {
-    const id = this.userIdCounter++;
-    const now = new Date();
-    const user: User = { 
-      ...userData, 
-      id,
-      createdAt: now
-    };
-    this.users.set(id, user);
-    return user;
+    try {
+      // Ensure isActive is set to true for new users
+      const userWithDefaults = {
+        ...userData,
+        isActive: true
+      };
+      
+      console.log('In storage.createUser, inserting:', {
+        ...userWithDefaults,
+        password: '***REDACTED***'
+      });
+      
+      const [user] = await db.insert(users).values(userWithDefaults).returning();
+      
+      console.log('User inserted, returned from DB:', {
+        id: user.id,
+        email: user.email,
+        isActive: user.isActive,
+        shopifyDomain: user.shopifyDomain,
+        createdAt: user.createdAt
+      });
+      
+      return user;
+    } catch (error) {
+      console.error('Error creating user in storage:', error);
+      logger.error('Error creating user:', { error, email: userData.email });
+      throw error;
+    }
   }
 
   async updateUser(id: number, userData: Partial<User>): Promise<User> {
-    const user = await this.getUser(id);
-    if (!user) {
-      throw new Error(`User with ID ${id} not found`);
+    try {
+      const [updatedUser] = await db.update(users)
+        .set(userData)
+        .where(eq(users.id, id))
+        .returning();
+      
+      if (!updatedUser) {
+        throw new Error(`User with ID ${id} not found`);
+      }
+      
+      return updatedUser;
+    } catch (error) {
+      logger.error('Error updating user:', { error, userId: id });
+      throw error;
     }
-    
-    const updatedUser = { ...user, ...userData };
-    this.users.set(id, updatedUser);
-    return updatedUser;
   }
 
   async getAllUsers(): Promise<User[]> {
-    return Array.from(this.users.values());
+    try {
+      return await db.select().from(users);
+    } catch (error) {
+      logger.error('Error getting all users:', { error });
+      throw error;
+    }
   }
 
   async getUserCount(includeAdmins: boolean): Promise<number> {
-    if (includeAdmins) {
-      return this.users.size;
+    try {
+      let countQuery;
+      
+      if (!includeAdmins) {
+        countQuery = db
+          .select({ count: count() })
+          .from(users)
+          .where(eq(users.isAdmin, false));
+      } else {
+        countQuery = db
+          .select({ count: count() })
+          .from(users);
+      }
+      
+      const result = await countQuery;
+      return Number(result[0].count);
+    } catch (error) {
+      logger.error('Error getting user count:', { error });
+      throw error;
     }
-    return Array.from(this.users.values()).filter(user => !user.isAdmin).length;
   }
 
   // Order methods
   async getOrder(id: number): Promise<Order | undefined> {
-    return this.orders.get(id);
+    try {
+      const result = await db.select().from(orders).where(eq(orders.id, id)).limit(1);
+      return result[0];
+    } catch (error) {
+      logger.error('Error getting order by ID:', { error, orderId: id });
+      throw error;
+    }
   }
 
   async getOrderByShopifyId(shopifyOrderId: string): Promise<Order | undefined> {
-    return Array.from(this.orders.values()).find(
-      (order) => order.shopifyOrderId === shopifyOrderId,
-    );
+    try {
+      const result = await db.select().from(orders)
+        .where(eq(orders.shopifyOrderId, shopifyOrderId))
+        .limit(1);
+      return result[0];
+    } catch (error) {
+      logger.error('Error getting order by Shopify ID:', { error, shopifyOrderId });
+      throw error;
+    }
   }
 
   async createOrder(orderData: InsertOrder): Promise<Order> {
-    const id = this.orderIdCounter++;
-    const now = new Date();
-    const order: Order = {
-      ...orderData,
-      id,
-      status: "processing",
-      createdAt: now,
-      updatedAt: now,
-      deliveryData: {}
-    };
-    this.orders.set(id, order);
-    return order;
+    try {
+      const [order] = await db.insert(orders)
+        .values({
+          ...orderData,
+          status: "processing",
+          deliveryData: {}
+        })
+        .returning();
+      return order;
+    } catch (error) {
+      logger.error('Error creating order:', { error, shopifyOrderId: orderData.shopifyOrderId });
+      throw error;
+    }
   }
 
   async updateOrder(id: number, orderData: Partial<Order>): Promise<Order> {
-    const order = await this.getOrder(id);
-    if (!order) {
-      throw new Error(`Order with ID ${id} not found`);
+    try {
+      const [updatedOrder] = await db.update(orders)
+        .set({
+          ...orderData,
+          updatedAt: new Date()
+        })
+        .where(eq(orders.id, id))
+        .returning();
+      
+      if (!updatedOrder) {
+        throw new Error(`Order with ID ${id} not found`);
+      }
+      
+      return updatedOrder;
+    } catch (error) {
+      logger.error('Error updating order:', { error, orderId: id });
+      throw error;
     }
-    
-    const updatedOrder = { 
-      ...order, 
-      ...orderData,
-      updatedAt: new Date()
-    };
-    this.orders.set(id, updatedOrder);
-    return updatedOrder;
   }
 
   async getAllOrders(): Promise<Order[]> {
-    return Array.from(this.orders.values());
+    try {
+      return await db.select().from(orders);
+    } catch (error) {
+      logger.error('Error getting all orders:', { error });
+      throw error;
+    }
   }
 
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return Array.from(this.orders.values()).filter(
-      (order) => order.userId === userId
-    );
+    try {
+      return await db.select().from(orders).where(eq(orders.userId, userId));
+    } catch (error) {
+      logger.error('Error getting orders by user ID:', { error, userId });
+      throw error;
+    }
   }
 
   async getOrderCountByStatus(statuses: string[]): Promise<number> {
-    return Array.from(this.orders.values()).filter(
-      (order) => statuses.includes(order.status || "")
-    ).length;
+    try {
+      const result = await db.select({ count: count() })
+        .from(orders)
+        .where(sql`${orders.status} IN (${statuses.join(',')})`);
+      return Number(result[0].count);
+    } catch (error) {
+      logger.error('Error getting order count by status:', { error, statuses });
+      throw error;
+    }
   }
 
   async getOrderCountByStatusForUser(userId: number, statuses: string[]): Promise<number> {
-    return Array.from(this.orders.values()).filter(
-      (order) => order.userId === userId && statuses.includes(order.status || "")
-    ).length;
+    try {
+      const result = await db.select({ count: count() })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.userId, userId),
+            sql`${orders.status} IN (${statuses.join(',')})`
+          )
+        );
+      return Number(result[0].count);
+    } catch (error) {
+      logger.error('Error getting order count by status for user:', { error, userId, statuses });
+      throw error;
+    }
   }
 
   async getTodayOrderCount(userId: number): Promise<number> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    return Array.from(this.orders.values()).filter(
-      (order) => order.userId === userId && order.createdAt >= today
-    ).length;
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const result = await db.select({ count: count() })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.userId, userId),
+            gte(orders.createdAt, today)
+          )
+        );
+      return Number(result[0].count);
+    } catch (error) {
+      logger.error('Error getting today order count:', { error, userId });
+      throw error;
+    }
   }
 
   async getDeliverySuccessRate(): Promise<number> {
-    const allCompleted = Array.from(this.orders.values()).filter(
-      (order) => ["delivered", "failed"].includes(order.status || "")
-    );
-    
-    if (allCompleted.length === 0) return 100;
-    
-    const succeeded = allCompleted.filter(
-      (order) => order.status === "delivered"
-    );
-    
-    return Math.round((succeeded.length / allCompleted.length) * 100 * 10) / 10;
+    try {
+      // Count all completed deliveries (delivered or failed)
+      const completedResult = await db.select({ count: count() })
+        .from(orders)
+        .where(sql`${orders.status} IN ('delivered', 'failed')`);
+      
+      const allCompleted = Number(completedResult[0].count);
+      
+      if (allCompleted === 0) return 100;
+      
+      // Count successful deliveries
+      const successResult = await db.select({ count: count() })
+        .from(orders)
+        .where(eq(orders.status, 'delivered'));
+      
+      const succeeded = Number(successResult[0].count);
+      
+      return Math.round((succeeded / allCompleted) * 100 * 10) / 10;
+    } catch (error) {
+      logger.error('Error getting delivery success rate:', { error });
+      throw error;
+    }
   }
 
   async getDeliverySuccessRateForUser(userId: number): Promise<number> {
-    const allCompleted = Array.from(this.orders.values()).filter(
-      (order) => order.userId === userId && ["delivered", "failed"].includes(order.status || "")
-    );
-    
-    if (allCompleted.length === 0) return 100;
-    
-    const succeeded = allCompleted.filter(
-      (order) => order.status === "delivered"
-    );
-    
-    return Math.round((succeeded.length / allCompleted.length) * 100 * 10) / 10;
+    try {
+      // Count all completed deliveries for user (delivered or failed)
+      const completedResult = await db.select({ count: count() })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.userId, userId),
+            sql`${orders.status} IN ('delivered', 'failed')`
+          )
+        );
+      
+      const allCompleted = Number(completedResult[0].count);
+      
+      if (allCompleted === 0) return 100;
+      
+      // Count successful deliveries for user
+      const successResult = await db.select({ count: count() })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.userId, userId),
+            eq(orders.status, 'delivered')
+          )
+        );
+      
+      const succeeded = Number(successResult[0].count);
+      
+      return Math.round((succeeded / allCompleted) * 100 * 10) / 10;
+    } catch (error) {
+      logger.error('Error getting delivery success rate for user:', { error, userId });
+      throw error;
+    }
   }
 
   // Log methods
   async createLog(logData: InsertLog): Promise<Log> {
-    const id = this.logIdCounter++;
-    const log: Log = {
-      ...logData,
-      id,
-      timestamp: new Date()
-    };
-    this.logs.set(id, log);
-    return log;
+    try {
+      const [log] = await db.insert(logs).values(logData).returning();
+      return log;
+    } catch (error) {
+      logger.error('Error creating log:', { error });
+      // Don't throw error for logs to prevent cascading failures
+      return {
+        id: 0,
+        level: logData.level,
+        message: logData.message,
+        data: logData.data,
+        timestamp: new Date()
+      };
+    }
   }
 
   async getLogs(limit: number): Promise<Log[]> {
-    const allLogs = Array.from(this.logs.values());
-    allLogs.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
-    return allLogs.slice(0, limit);
+    try {
+      return await db.select().from(logs).orderBy(desc(logs.timestamp)).limit(limit);
+    } catch (error) {
+      logger.error('Error getting logs:', { error });
+      throw error;
+    }
   }
 }
 
-export const storage = new MemStorage();
+// Export a singleton instance
+export const storage = new DatabaseStorage();
