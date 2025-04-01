@@ -135,9 +135,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const updateSchema = z.object({
         name: z.string().optional(),
+        // Shopify integration fields
         shopifyDomain: z.string().optional(),
         shopifyApiKey: z.string().optional(),
         shopifyApiSecret: z.string().optional(),
+        // UberDirect integration fields
+        uberDirectApiKey: z.string().optional(),
+        uberDirectClientId: z.string().optional(),
+        uberDirectClientSecret: z.string().optional(),
+        // JetGo integration fields
+        jetGoApiKey: z.string().optional(),
+        jetGoAccountId: z.string().optional(),
+        // Preferred delivery service
+        preferredDeliveryService: z.string().optional(),
       });
       
       const validatedData = updateSchema.parse(req.body);

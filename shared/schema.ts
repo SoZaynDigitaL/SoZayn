@@ -12,6 +12,13 @@ export const users = pgTable("users", {
   shopifyDomain: text("shopify_domain").notNull().default(''), // Use empty string as default instead of null
   shopifyApiKey: text("shopify_api_key").notNull().default(''),
   shopifyApiSecret: text("shopify_api_secret").notNull().default(''),
+  // Delivery service integration fields
+  uberDirectApiKey: text("uber_direct_api_key").notNull().default(''),
+  uberDirectClientId: text("uber_direct_client_id").notNull().default(''),
+  uberDirectClientSecret: text("uber_direct_client_secret").notNull().default(''),
+  jetGoApiKey: text("jet_go_api_key").notNull().default(''),
+  jetGoAccountId: text("jet_go_account_id").notNull().default(''),
+  preferredDeliveryService: text("preferred_delivery_service").notNull().default(''), // 'uber_direct' or 'jet_go'
   isAdmin: boolean("is_admin").notNull().default(false),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow(),
