@@ -238,14 +238,23 @@ export function setupAuth(app: Express) {
   });
 
   // Get current user route
-  app.get("/api/user", (req, res) => {
-    if (!req.isAuthenticated()) return res.sendStatus(401);
-    
-    const user = req.user as Express.User;
-    // Create a safe user object without password
-    const { password, ...userForClient } = user;
-    
-    res.json(userForClient);
+  app.get("/api/user", authenticateJWT, async (req: any, res) => {
+    try {
+      // Get the user from the database based on the JWT token data
+      const user = await storage.getUser(req.user.userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Create a safe user object without password
+      const { password, ...userForClient } = user;
+      
+      res.json(userForClient);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      res.status(500).json({ message: "Error fetching user data" });
+    }
   });
 
   return { authenticateJWT };
