@@ -1,209 +1,257 @@
+/**
+ * SoZayn Digital Era - Enhanced Server
+ * 
+ * This enhanced server includes:
+ * - Better error handling
+ * - Support for SPA routing
+ * - Health check endpoint
+ * - Static file serving with proper MIME types
+ * - Fallback for when frontend build fails
+ */
+
 const express = require('express');
 const path = require('path');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const compression = require('compression');
 const fs = require('fs');
+const { Pool } = require('pg');
 const os = require('os');
-const app = express();
+const crypto = require('crypto');
+
+// Configuration
 const PORT = process.env.PORT || 3000;
-const API_URL = process.env.API_URL || 'https://sozayndigital-e2112b66b875.herokuapp.com';
+const DIST_DIR = path.join(__dirname, 'dist');
+const INDEX_HTML = path.join(DIST_DIR, 'index.html');
+const FALLBACK_HTML = path.join(DIST_DIR, 'fallback.html');
 
-// Add compression for better performance
-app.use(compression());
+// Create application
+const app = express();
 
-// Optional: Add database connectivity testing function
+// Database connection (if DATABASE_URL is provided)
+let pool;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+}
+
+// Function to test database connection
 async function testDatabaseConnection() {
-  if (!process.env.DATABASE_URL) {
-    return {
-      connected: false,
-      message: 'DATABASE_URL environment variable is not set'
-    };
-  }
-
+  if (!pool) return { connected: false, error: 'No DATABASE_URL provided' };
+  
   try {
-    // Dynamically import pg for database checking
-    const { Pool } = require('pg');
-    const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-    });
-
-    // Test connection
     const client = await pool.connect();
-    const result = await client.query('SELECT version()');
+    const result = await client.query('SELECT NOW()');
     client.release();
-
-    return {
-      connected: true,
-      version: result.rows[0].version,
-      message: 'Database connection successful'
+    return { 
+      connected: true, 
+      timestamp: result.rows[0].now,
+      ssl: process.env.DATABASE_URL.includes('sslmode=require') ? 'Enabled' : 'Disabled'
     };
-  } catch (error) {
-    console.error('Database connection error:', error.message);
-    return {
-      connected: false,
-      message: `Database connection failed: ${error.message}`
-    };
+  } catch (err) {
+    console.error('Database connection error:', err);
+    return { connected: false, error: err.message };
   }
 }
 
-// Enhanced health check endpoint
-app.get('/health', (req, res) => {
-  const health = {
-    uptime: process.uptime(),
-    date: new Date().toISOString(),
-    status: 'online',
-    nodeVersion: process.version,
-    memory: process.memoryUsage(),
-    hostname: os.hostname(),
-    platform: process.platform,
-    env: process.env.NODE_ENV || 'development'
-  };
-  res.status(200).json(health);
-});
-
-// Add a more detailed health check for API
-app.get('/api/health', async (req, res) => {
-  // Basic health info
-  const health = {
-    uptime: process.uptime(),
-    date: new Date().toISOString(),
-    status: 'online',
-    nodeVersion: process.version,
-    memory: process.memoryUsage(),
-    hostname: os.hostname(),
-    env: process.env.NODE_ENV || 'development'
-  };
-
-  // Check database if we can
+// Log available files in dist
+function logDistFiles() {
   try {
-    const dbStatus = await testDatabaseConnection();
-    health.database = dbStatus;
-  } catch (error) {
-    health.database = {
-      connected: false,
-      message: `Error checking database: ${error.message}`
-    };
-  }
-  
-  // Always return 200 for health check, with detailed status inside
-  res.status(200).json(health);
-});
-
-// Proxy API requests to the backend API server
-app.use('/api', createProxyMiddleware({
-  target: API_URL,
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api': '/api' // path rewrite is not needed if the paths match
-  },
-  onProxyReq: (proxyReq, req, res) => {
-    // Log proxy requests for debugging
-    console.log(`Proxying ${req.method} ${req.path} to ${API_URL}${req.path}`);
-  },
-  onError: (err, req, res) => {
-    console.error(`Proxy error: ${err.message}`);
-    res.status(500).json({ error: 'Proxy Error', message: err.message });
-  }
-}));
-
-// Serve static files from the 'dist' directory
-app.use(express.static(path.join(__dirname, 'dist')));
-
-// Redirect /login and /register to /auth for backward compatibility
-app.get(['/login', '/register', '/signin', '/signup'], (req, res) => {
-  res.redirect('/auth');
-});
-
-// Serve the frontend for all other requests (client-side routing)
-app.get('*', (req, res) => {
-  // Don't handle API requests with this catch-all
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).send('API endpoint not found');
-  }
-  
-  console.log(`Serving index.html for path: ${req.path}`);
-  
-  // Use try-catch to handle potential errors when serving index.html
-  const indexPath = path.join(__dirname, 'dist/index.html');
-  const fallbackPath = path.join(__dirname, 'dist/fallback.html');
-  
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      console.error(`ERROR: Failed to serve index.html: ${err.message}`);
+    console.log('Checking dist directory contents:');
+    const distExists = fs.existsSync(DIST_DIR);
+    console.log(`- Dist directory exists: ${distExists}`);
+    
+    if (distExists) {
+      const files = fs.readdirSync(DIST_DIR);
+      console.log(`- Files in dist: ${files.join(', ')}`);
       
-      // Check if the fallback exists and use it
-      if (require('fs').existsSync(fallbackPath)) {
-        console.log('Using fallback.html instead');
-        res.sendFile(fallbackPath);
-      } else {
-        // Last resort - send a simple error message if even the fallback is missing
-        res.status(500).send(`
-          <html>
-            <head><title>SoZayn Digital Era</title></head>
-            <body style="font-family: sans-serif; padding: 40px; text-align: center;">
-              <h1>SoZayn Digital Era</h1>
-              <p>The server is running but we're having trouble loading the application.</p>
-              <p>Please try again in a few minutes.</p>
-            </body>
-          </html>
-        `);
+      const indexExists = fs.existsSync(INDEX_HTML);
+      console.log(`- index.html exists: ${indexExists}`);
+      
+      if (indexExists) {
+        const indexStats = fs.statSync(INDEX_HTML);
+        console.log(`- index.html size: ${indexStats.size} bytes`);
       }
     }
+  } catch (err) {
+    console.error('Error checking dist directory:', err);
+  }
+}
+
+// Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
+
+// Health check endpoint
+app.get('/api/health', async (req, res) => {
+  const dbStatus = await testDatabaseConnection();
+  
+  res.json({
+    status: 'ok',
+    environment: process.env.NODE_ENV || 'development',
+    nodeVersion: process.version,
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    database: dbStatus,
+    hostname: os.hostname()
   });
 });
 
-// Add a specific route for debugging
-app.get('/api/debug', (req, res) => {
-  const staticFilesPath = path.join(__dirname, 'dist');
-  const fileExists = require('fs').existsSync(path.join(staticFilesPath, 'index.html'));
-  const cssExists = require('fs').existsSync(path.join(staticFilesPath, 'assets/css/main.css'));
+// Debug endpoint
+app.get('/api/debug', async (req, res) => {
+  logDistFiles();
   
-  // Check directory contents
-  let directoryContents;
-  try {
-    directoryContents = require('fs').readdirSync(staticFilesPath);
-  } catch (err) {
-    directoryContents = `Error reading directory: ${err.message}`;
+  // Get information about the environment
+  const envInfo = {
+    nodeEnv: process.env.NODE_ENV,
+    port: process.env.PORT,
+    dyno: process.env.DYNO,
+    databaseUrl: process.env.DATABASE_URL ? '✓ Set (value hidden)' : '✗ Not set',
+    herokuAppName: process.env.HEROKU_APP_NAME,
+    distDirExists: fs.existsSync(DIST_DIR),
+    indexHtmlExists: fs.existsSync(INDEX_HTML),
+    fallbackHtmlExists: fs.existsSync(FALLBACK_HTML),
+    cwd: process.cwd(),
+    platform: os.platform(),
+    arch: os.arch(),
+    nodeVersion: process.version,
+    uptime: process.uptime()
+  };
+  
+  // List files in dist directory if it exists
+  let distFiles = [];
+  if (envInfo.distDirExists) {
+    distFiles = fs.readdirSync(DIST_DIR);
+  }
+  
+  // List directories at the current level
+  const currentDirFiles = fs.readdirSync('.');
+  
+  // Check if we can read the index.html file
+  let indexHtmlContent = '';
+  if (envInfo.indexHtmlExists) {
+    try {
+      indexHtmlContent = fs.readFileSync(INDEX_HTML, 'utf8').substring(0, 500) + '... (truncated)';
+    } catch (err) {
+      indexHtmlContent = `Error reading file: ${err.message}`;
+    }
   }
   
   res.json({
-    serverInfo: {
-      nodeVersion: process.version,
-      platform: process.platform,
-      env: process.env.NODE_ENV || 'development',
-      port: PORT,
-      staticPath: staticFilesPath,
-      apiUrl: API_URL
-    },
-    fileSystem: {
-      indexHtmlExists: fileExists,
-      cssExists: cssExists,
-      directoryContents,
-      workingDirectory: __dirname
-    }
+    envInfo,
+    distFiles,
+    currentDirFiles,
+    indexHtmlPreview: indexHtmlContent
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Static files served from: ${path.join(__dirname, 'dist')}`);
-  console.log(`API requests proxied to: ${API_URL}`);
-  console.log(`For debugging, visit: http://localhost:${PORT}/api/debug`);
-  
-  // Check if dist directory exists
-  const distPath = path.join(__dirname, 'dist');
-  if (!require('fs').existsSync(distPath)) {
-    console.error(`WARNING: Static files directory '${distPath}' does not exist!`);
-  } else {
-    console.log(`Static directory '${distPath}' exists.`);
-    
-    // Check if index.html exists
-    const indexPath = path.join(distPath, 'index.html');
-    if (!require('fs').existsSync(indexPath)) {
-      console.error(`WARNING: Main file '${indexPath}' does not exist!`);
-    } else {
-      console.log(`Main file '${indexPath}' exists.`);
+// Serve static files from the dist directory with proper caching
+app.use(express.static(DIST_DIR, {
+  maxAge: '1h',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    if (path.extname(filePath) === '.html') {
+      // Don't cache HTML files
+      res.setHeader('Cache-Control', 'no-cache');
     }
   }
+}));
+
+// For all other requests, send either the index.html or fallback
+app.get('*', (req, res) => {
+  console.log(`Handling SPA route: ${req.url}`);
+  
+  // Check if index.html exists
+  if (fs.existsSync(INDEX_HTML)) {
+    console.log('Serving index.html');
+    res.sendFile(INDEX_HTML);
+  } else {
+    console.error('ERROR: index.html not found, serving fallback.html instead');
+    
+    // Check if fallback exists, otherwise render inline
+    if (fs.existsSync(FALLBACK_HTML)) {
+      res.sendFile(FALLBACK_HTML);
+    } else {
+      console.error('ERROR: fallback.html not found, serving inline fallback');
+      
+      // Generate a simple fallback page inline
+      const title = 'SoZayn Digital Era';
+      res.setHeader('Content-Type', 'text/html');
+      res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${title}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 650px; margin: 0 auto; padding: 20px; }
+            h1 { color: #0066cc; border-bottom: 1px solid #eaeaea; padding-bottom: 10px; }
+            .info-box { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 15px; margin: 20px 0; }
+            .server-info { background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin-top: 30px; }
+            .server-info h2 { margin-top: 0; font-size: 1.2em; }
+            .server-info dl { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
+            .server-info dt { font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <h1>${title}</h1>
+          <p>The server is running correctly, but the frontend build is not available.</p>
+          
+          <div class="info-box">
+            <strong>Server Status:</strong> Online<br>
+            <strong>Node Version:</strong> ${process.version}<br>
+            <strong>Environment:</strong> ${process.env.NODE_ENV || 'production'}<br>
+          </div>
+          
+          <p>If you're seeing this message on a production environment, please ensure the frontend application has been built properly.</p>
+          
+          <div class="server-info">
+            <h2>Debug Information</h2>
+            <dl>
+              <dt>Timestamp:</dt>
+              <dd>${new Date().toISOString()}</dd>
+              
+              <dt>Port:</dt>
+              <dd>${PORT}</dd>
+              
+              <dt>Working Directory:</dt>
+              <dd>${process.cwd()}</dd>
+              
+              <dt>Dist Directory:</dt>
+              <dd>${fs.existsSync(DIST_DIR) ? 'Exists' : 'Missing'}</dd>
+              
+              <dt>Index HTML:</dt>
+              <dd>${fs.existsSync(INDEX_HTML) ? 'Exists' : 'Missing'}</dd>
+              
+              <dt>Request URL:</dt>
+              <dd>${req.url}</dd>
+              
+              <dt>Instance ID:</dt>
+              <dd>${crypto.randomBytes(4).toString('hex')}</dd>
+            </dl>
+          </div>
+        </body>
+        </html>
+      `);
+    }
+  }
+});
+
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
+  
+  // Log environment info
+  console.log('\nEnvironment Information:');
+  console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
+  console.log(`- Working directory: ${process.cwd()}`);
+  
+  // Check for dist directory and index.html
+  logDistFiles();
 });
