@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
-import { apiRequest } from "@/lib/queryClient";
+import { queryClient, getQueryFn, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/navbar";
 import { DataTable } from "@/components/ui/data-table";
@@ -37,6 +36,7 @@ export default function AdminClients() {
   // Fetch clients
   const { data: clients, isLoading } = useQuery({
     queryKey: ['/api/users'],
+    queryFn: getQueryFn({ on401: "throw" }),
   });
   
   // Toggle user active status mutation
@@ -62,7 +62,7 @@ export default function AdminClients() {
   });
   
   // Filter clients
-  const filteredClients = clients?.filter(client => {
+  const filteredClients = (clients as any[] || []).filter((client: any) => {
     // Exclude admin users
     if (client.isAdmin) return false;
     
@@ -77,7 +77,7 @@ export default function AdminClients() {
     }
     
     return true;
-  }) || [];
+  });
   
   // Table columns
   const columns = [
@@ -102,7 +102,7 @@ export default function AdminClients() {
       header: "Status",
       accessorKey: "isActive",
       cell: ({ row }: any) => (
-        <Badge variant={row.original.isActive ? "success" : "destructive"}>
+        <Badge variant={row.original.isActive ? "default" : "destructive"}>
           {row.original.isActive ? "Active" : "Inactive"}
         </Badge>
       ),
