@@ -1,0 +1,104 @@
+syedsany@MacBookAir my-heroku-app % git push heroku main --force
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (7/7), 1009 bytes | 1009.00 KiB/s, done.
+Total 7 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Updated 606 paths from d0b995e
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.19.1
+remote:        engines.npm (package.json):    10.2.4
+remote:        
+remote:        Resolving node version 18.19.1...
+remote:        Downloading and installing node 18.19.1...
+remote:        npm 10.2.4 already installed with node
+remote:        
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:        
+remote: -----> Installing dependencies
+remote:        Prebuild detected (node_modules already exists)
+remote:        Rebuilding any native modules
+remote:        rebuilt dependencies successfully
+remote:        Installing any new modules (package.json)
+remote:        
+remote:        added 38 packages, removed 4 packages, changed 21 packages, and audited 101 packages in 2s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - npm cache
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 101 packages in 419ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.7M
+remote: -----> Launching...
+remote:        Released v40
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote:  _                    _               ___   ___    ______ ____  _
+remote: | |                  | |             |__ \ / _ \  |  ____/ __ \| |
+remote: | |__   ___ _ __ ___ | | ___   _ ______ ) | | | | | |__ | |  | | |
+remote: | '_ \ / _ \ '__/ _ \| |/ / | | |______/ /| | | | |  __|| |  | | |
+remote: | | | |  __/ | | (_) |   <| |_| |     / /_| |_| | | |___| |__| | |____
+remote: |_| |_|\___|_|  \___/|_|\_\\__,_|    |____|\___/  |______\____/|______|
+remote: 
+remote: This app is using the Heroku-20 stack, which is deprecated:
+remote: https://devcenter.heroku.com/changelog-items/2895
+remote: 
+remote: From April 30th 2025, Heroku-20 will be end-of-life, and apps using it
+remote: will no longer receive security updates, and be run at your own risk.
+remote: 
+remote: From May 1st 2025, builds will no longer be allowed for Heroku-20 apps.
+remote: 
+remote: Please upgrade to a newer stack as soon as possible:
+remote: https://devcenter.heroku.com/articles/upgrading-to-the-latest-stack
+remote: https://help.heroku.com/NPN275RK/heroku-20-end-of-life-faq
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   5625571..2dee84f  main -> main

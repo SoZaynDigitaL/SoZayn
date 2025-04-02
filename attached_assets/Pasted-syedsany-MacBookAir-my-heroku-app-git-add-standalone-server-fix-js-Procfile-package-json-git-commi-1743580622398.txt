@@ -1,0 +1,161 @@
+syedsany@MacBookAir my-heroku-app % git add standalone-server-fix.js Procfile package.json
+git commit -m "Fix Node.js version and pg import for Heroku"
+git push heroku main
+[main dbda1da] Fix Node.js version and pg import for Heroku
+ 3 files changed, 26 insertions(+), 16 deletions(-)
+ delete mode 100644 Procfile
+ delete mode 100644 package.json
+ create mode 100644 standalone-server-fix.js
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 646 bytes | 646.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Updated 604 paths from 59d0d6e
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> App not compatible with buildpack: https://buildpack-registry.s3.amazonaws.com/buildpacks/heroku/nodejs.tgz
+remote:        
+remote:  !     ERROR: Application not supported by 'heroku/nodejs' buildpack
+remote:  !     
+remote:  !     The 'heroku/nodejs' buildpack is set on this application, but was
+remote:  !     unable to detect a Node.js codebase.
+remote:  !         
+remote:  !     A Node.js app on Heroku requires a 'package.json' at the root of
+remote:  !     the directory structure.
+remote:  !     
+remote:  !     If you are trying to deploy a Node.js application, ensure that this
+remote:  !     file is present at the top level directory. This directory has the
+remote:  !     following files:
+remote:  !     
+remote:  !     app.json
+remote:  !     node_modules/
+remote:  !     package-lock.json
+remote:  !     runtime.txt
+remote:  !     standalone-server-fix.js
+remote:  !     standalone-server.js
+remote:  !         
+remote:  !     If you are trying to deploy an application written in another
+remote:  !     language, you need to change the list of buildpacks set on your
+remote:  !     Heroku app using the 'heroku buildpacks' command.
+remote:  !         
+remote:  !     For more information, refer to the following documentation:
+remote:  !     https://devcenter.heroku.com/articles/buildpacks
+remote:  !     https://devcenter.heroku.com/articles/nodejs-support#activation
+remote: 
+remote: 
+remote:        More info: https://devcenter.heroku.com/articles/buildpacks#detection-failure
+remote: 
+remote:  !     Push failed
+remote: Verifying deploy...
+remote: 
+remote: !	Push rejected to sozayndigital.
+remote: 
+To https://git.heroku.com/sozayndigital.git
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'https://git.heroku.com/sozayndigital.git'
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T07:41:38.680168+00:00 app[api]: Set NODE_VERSION config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:41:39.602769+00:00 app[api]: Stack changed from heroku-24 to heroku-20 by user nianyshoppinghub@gmail.com
+2025-04-02T07:41:39.778464+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:41:46.599755+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:41:47.171118+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:41:47.171164+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:41:47.171165+00:00 app[web.1]: ^^^^
+2025-04-02T07:41:47.171174+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:41:47.171174+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:41:47.171175+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:41:47.171178+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:41:47.171178+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:41:47.171178+00:00 app[web.1]: 
+2025-04-02T07:41:47.171180+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:41:47.231439+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:41:47.256364+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:43:46.853578+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:43:53.471230+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:43:54.075849+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:43:54.075881+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:43:54.075882+00:00 app[web.1]: ^^^^
+2025-04-02T07:43:54.075883+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:43:54.075883+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:43:54.075883+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:43:54.075884+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:43:54.075884+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:43:54.075884+00:00 app[web.1]: 
+2025-04-02T07:43:54.075885+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:43:54.134577+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:43:54.163422+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:53:18.969871+00:00 app[api]: Stack changed from heroku-20 to heroku-24 by user nianyshoppinghub@gmail.com
+2025-04-02T07:53:26.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:17.295566+00:00 app[api]: Release v36 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:17.295566+00:00 app[api]: Deploy 540311b7 by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:18.635748+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:54:20.000000+00:00 app[api]: Build succeeded
+2025-04-02T07:54:25.271176+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:54:25.812582+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:54:25.812626+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:54:25.812627+00:00 app[web.1]: ^^^^
+2025-04-02T07:54:25.812627+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:54:25.812628+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:54:25.812628+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:54:25.812628+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:54:25.812629+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:54:25.812629+00:00 app[web.1]: 
+2025-04-02T07:54:25.812630+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:54:25.876344+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:54:25.898321+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:54:31.289924+00:00 app[api]: Stack changed from heroku-24 to heroku-20 by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:39.810323+00:00 app[api]: Release v37 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:39.810323+00:00 app[api]: Set NODE_ENV config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:40.762255+00:00 app[api]: Set SESSION_SECRET config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:40.762255+00:00 app[api]: Release v38 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:40.973120+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:54:41.462524+00:00 app[api]: Release v39 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:41.462524+00:00 app[api]: Set JWT_SECRET config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:41.995652+00:00 heroku[web.1]: Restarting
+2025-04-02T07:54:47.592766+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:54:48.122860+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:54:48.122878+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:54:48.122880+00:00 app[web.1]: ^^^^
+2025-04-02T07:54:48.122882+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:54:48.122883+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:54:48.122883+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:54:48.122885+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:54:48.122886+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:54:48.122886+00:00 app[web.1]: 
+2025-04-02T07:54:48.122888+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:54:48.196868+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:54:48.865508+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:54:49.492516+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:54:49.492542+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:54:49.492543+00:00 app[web.1]: ^^^^
+2025-04-02T07:54:49.492543+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:54:49.492564+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:54:49.492565+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:54:49.492565+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:54:49.492566+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:54:49.492566+00:00 app[web.1]: 
+2025-04-02T07:54:49.492566+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:54:49.564071+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:54:49.583350+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:54:50.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T07:54:50.263628+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:54:50.400924+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:54:56.000000+00:00 app[api]: Build failed -- check your build output: https://dashboard.heroku.com/apps/8778b90d-26b9-4523-a2c0-4fa436fdcb0c/activity/builds/6b9bb560-e1c4-448f-a7c1-137bde228acd
+2025-04-02T07:54:56.907416+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:54:57.438625+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:54:57.438662+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:54:57.438662+00:00 app[web.1]: ^^^^
+2025-04-02T07:54:57.438663+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:54:57.438663+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:54:57.438664+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:54:57.438664+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:54:57.438666+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:54:57.438666+00:00 app[web.1]: 
+2025-04-02T07:54:57.438666+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:54:57.499834+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:54:57.524166+00:00 heroku[web.1]: State changed from starting to crashed

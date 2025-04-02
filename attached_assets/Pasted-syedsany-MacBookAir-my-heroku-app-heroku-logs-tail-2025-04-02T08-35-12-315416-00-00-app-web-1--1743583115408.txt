@@ -1,0 +1,101 @@
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T08:35:12.315416+00:00 app[web.1]: }
+2025-04-02T08:35:12.348651+00:00 app[web.1]: Server error: error: relation "users" does not exist
+2025-04-02T08:35:12.348653+00:00 app[web.1]: at /app/node_modules/pg-pool/index.js:45:11
+2025-04-02T08:35:12.348675+00:00 app[web.1]: at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-04-02T08:35:12.348675+00:00 app[web.1]: at async Strategy._verify (/app/standalone-server-fix.js:146:20) {
+2025-04-02T08:35:12.348676+00:00 app[web.1]: length: 104,
+2025-04-02T08:35:12.348677+00:00 app[web.1]: severity: 'ERROR',
+2025-04-02T08:35:12.348677+00:00 app[web.1]: code: '42P01',
+2025-04-02T08:35:12.348677+00:00 app[web.1]: detail: undefined,
+2025-04-02T08:35:12.348677+00:00 app[web.1]: hint: undefined,
+2025-04-02T08:35:12.348677+00:00 app[web.1]: position: '15',
+2025-04-02T08:35:12.348678+00:00 app[web.1]: internalPosition: undefined,
+2025-04-02T08:35:12.348678+00:00 app[web.1]: internalQuery: undefined,
+2025-04-02T08:35:12.348678+00:00 app[web.1]: where: undefined,
+2025-04-02T08:35:12.348679+00:00 app[web.1]: schema: undefined,
+2025-04-02T08:35:12.348679+00:00 app[web.1]: table: undefined,
+2025-04-02T08:35:12.348679+00:00 app[web.1]: column: undefined,
+2025-04-02T08:35:12.348679+00:00 app[web.1]: dataType: undefined,
+2025-04-02T08:35:12.348680+00:00 app[web.1]: constraint: undefined,
+2025-04-02T08:35:12.348680+00:00 app[web.1]: file: 'parse_relation.c',
+2025-04-02T08:35:12.348680+00:00 app[web.1]: line: '1477',
+2025-04-02T08:35:12.348680+00:00 app[web.1]: routine: 'parserOpenTable'
+2025-04-02T08:35:12.348681+00:00 app[web.1]: }
+2025-04-02T08:35:12.349322+00:00 heroku[router]: at=info method=POST path="/api/login" host=sozayndigital-e2112b66b875.herokuapp.com request_id=e9c29f63-4384-cd36-3ec2-8f51118528e4 fwd="162.84.176.78" dyno=web.1 connect=0ms service=34ms status=500 bytes=61 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:35:30.327808+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:35:30.327827+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:35:30.327828+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:35:30.327828+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:35:30.327829+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:35:30.327829+00:00 app[web.1]: originalUrl: '/',
+2025-04-02T08:35:30.327829+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:35:30.327839+00:00 app[web.1]: isSecure: true
+2025-04-02T08:35:30.327839+00:00 app[web.1]: }
+2025-04-02T08:35:30.328988+00:00 heroku[router]: at=info method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=728d29ac-68b5-8048-bf56-bd9103e1aaa8 fwd="162.84.176.78" dyno=web.1 connect=0ms service=2ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:35:30.486058+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:35:30.486060+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:35:30.486060+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:35:30.486061+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:35:30.486061+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:35:30.486062+00:00 app[web.1]: originalUrl: '/favicon.ico',
+2025-04-02T08:35:30.486062+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:35:30.486062+00:00 app[web.1]: isSecure: true
+2025-04-02T08:35:30.486063+00:00 app[web.1]: }
+2025-04-02T08:35:30.487213+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=bbbae0f6-6f89-7330-1958-9fa3ad2b6ff0 fwd="162.84.176.78" dyno=web.1 connect=0ms service=1ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:36:00.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:36:11.100742+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:36:11.100780+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:36:11.100782+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:36:11.100783+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:36:11.100783+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:36:11.100784+00:00 app[web.1]: originalUrl: '/',
+2025-04-02T08:36:11.100784+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:36:11.100784+00:00 app[web.1]: isSecure: true
+2025-04-02T08:36:11.100785+00:00 app[web.1]: }
+2025-04-02T08:36:11.102040+00:00 heroku[router]: at=info method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b1e8f7a4-8d10-318b-7c70-851eb51ff8ff fwd="162.84.176.78" dyno=web.1 connect=0ms service=2ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:36:11.234520+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:36:11.234522+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:36:11.234522+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:36:11.234523+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:36:11.234523+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:36:11.234523+00:00 app[web.1]: originalUrl: '/favicon.ico',
+2025-04-02T08:36:11.234524+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:36:11.234524+00:00 app[web.1]: isSecure: true
+2025-04-02T08:36:11.234525+00:00 app[web.1]: }
+2025-04-02T08:36:11.236361+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=e6197315-fdff-6272-245b-ed08f5d73b0a fwd="162.84.176.78" dyno=web.1 connect=0ms service=2ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:36:34.279111+00:00 app[api]: Deploy 540311b7 by user nianyshoppinghub@gmail.com
+2025-04-02T08:36:34.279111+00:00 app[api]: Release v45 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:36:35.787243+00:00 heroku[web.1]: Restarting
+2025-04-02T08:36:35.838785+00:00 heroku[web.1]: State changed from up to starting
+2025-04-02T08:36:36.484941+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2025-04-02T08:36:36.566899+00:00 heroku[web.1]: Process exited with status 143
+2025-04-02T08:36:37.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:36:40.779516+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T08:36:41.351387+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T08:36:41.351443+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T08:36:41.351446+00:00 app[web.1]: ^^^^
+2025-04-02T08:36:41.351448+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T08:36:41.351448+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T08:36:41.351449+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T08:36:41.351451+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T08:36:41.351451+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T08:36:41.351451+00:00 app[web.1]: 
+2025-04-02T08:36:41.351454+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T08:36:41.412406+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:36:41.435002+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:36:41.437758+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:36:46.457295+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T08:36:47.025877+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T08:36:47.025923+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T08:36:47.025924+00:00 app[web.1]: ^^^^
+2025-04-02T08:36:47.025932+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T08:36:47.025933+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T08:36:47.025933+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T08:36:47.025938+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T08:36:47.025939+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T08:36:47.025939+00:00 app[web.1]: 
+2025-04-02T08:36:47.025942+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T08:36:47.086628+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:36:47.115124+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:37:10.709803+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=60a9f7a9-6a65-7d85-aa4d-bbcb126117d0 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown

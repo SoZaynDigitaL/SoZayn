@@ -1,0 +1,101 @@
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T08:43:11.384102+00:00 app[web.1]: Running on Node.js v18.19.1
+2025-04-02T08:43:11.494222+00:00 app[web.1]: Trust proxy setting: true
+2025-04-02T08:43:11.495793+00:00 app[web.1]: Configuring session for environment: production
+2025-04-02T08:43:11.496878+00:00 app[web.1]: Cookie settings: {
+2025-04-02T08:43:11.496878+00:00 app[web.1]: secure: true,
+2025-04-02T08:43:11.496878+00:00 app[web.1]: httpOnly: true,
+2025-04-02T08:43:11.496879+00:00 app[web.1]: maxAge: 2592000000,
+2025-04-02T08:43:11.496879+00:00 app[web.1]: path: '/',
+2025-04-02T08:43:11.496880+00:00 app[web.1]: sameSite: 'none'
+2025-04-02T08:43:11.496880+00:00 app[web.1]: }
+2025-04-02T08:43:11.501324+00:00 app[web.1]: Server running on port 19488
+2025-04-02T08:43:11.501364+00:00 app[web.1]: Environment: production
+2025-04-02T08:43:11.501384+00:00 app[web.1]: Testing database connection...
+2025-04-02T08:43:11.551074+00:00 app[web.1]: Database connection successful: { now: 2025-04-02T08:43:11.549Z }
+2025-04-02T08:43:11.551448+00:00 app[web.1]: Database connection successful
+2025-04-02T08:43:11.975645+00:00 heroku[web.1]: State changed from starting to up
+2025-04-02T08:43:55.201361+00:00 app[api]: Starting process with command `cat > db-setup.js` by user nianyshoppinghub@gmail.com
+2025-04-02T08:43:57.431973+00:00 heroku[run.5782]: State changed from starting to up
+2025-04-02T08:44:00.521704+00:00 heroku[run.5782]: Process exited with status 0
+2025-04-02T08:44:00.542704+00:00 heroku[run.5782]: State changed from up to complete
+2025-04-02T08:44:09.797680+00:00 app[api]: Starting process with command `node db-setup.js` by user nianyshoppinghub@gmail.com
+2025-04-02T08:44:12.089439+00:00 heroku[run.9989]: State changed from starting to up
+2025-04-02T08:44:15.260190+00:00 heroku[run.9989]: Process exited with status 0
+2025-04-02T08:44:15.292062+00:00 heroku[run.9989]: State changed from up to complete
+2025-04-02T08:45:34.050899+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:45:34.050912+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:45:34.050913+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:45:34.050914+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:45:34.050915+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:45:34.050915+00:00 app[web.1]: originalUrl: '/',
+2025-04-02T08:45:34.050915+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:45:34.050916+00:00 app[web.1]: isSecure: true
+2025-04-02T08:45:34.050917+00:00 app[web.1]: }
+2025-04-02T08:45:34.060249+00:00 heroku[router]: at=info method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=8befbfdc-e3af-bd6b-3eaa-cdae24ee6f6c fwd="162.84.176.78" dyno=web.1 connect=0ms service=12ms status=200 bytes=636 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:45:34.247908+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:45:34.247910+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:45:34.247911+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:45:34.247911+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:45:34.247940+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:45:34.247940+00:00 app[web.1]: originalUrl: '/favicon.ico',
+2025-04-02T08:45:34.247940+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:45:34.247941+00:00 app[web.1]: isSecure: true
+2025-04-02T08:45:34.247941+00:00 app[web.1]: }
+2025-04-02T08:45:34.251254+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=ed293b58-803d-81af-1843-f7957aacf0f1 fwd="162.84.176.78" dyno=web.1 connect=0ms service=4ms status=200 bytes=636 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:46:10.470606+00:00 heroku[web.1]: Restarting
+2025-04-02T08:46:10.518643+00:00 heroku[web.1]: State changed from up to starting
+2025-04-02T08:46:11.016894+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2025-04-02T08:46:11.076192+00:00 heroku[web.1]: Process exited with status 143
+2025-04-02T08:46:12.327924+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:46:12.848735+00:00 app[web.1]: Running on Node.js v18.19.1
+2025-04-02T08:46:12.959094+00:00 app[web.1]: Trust proxy setting: true
+2025-04-02T08:46:12.960689+00:00 app[web.1]: Configuring session for environment: production
+2025-04-02T08:46:12.961888+00:00 app[web.1]: Cookie settings: {
+2025-04-02T08:46:12.961888+00:00 app[web.1]: secure: true,
+2025-04-02T08:46:12.961889+00:00 app[web.1]: httpOnly: true,
+2025-04-02T08:46:12.961889+00:00 app[web.1]: maxAge: 2592000000,
+2025-04-02T08:46:12.961890+00:00 app[web.1]: path: '/',
+2025-04-02T08:46:12.961890+00:00 app[web.1]: sameSite: 'none'
+2025-04-02T08:46:12.961890+00:00 app[web.1]: }
+2025-04-02T08:46:12.966447+00:00 app[web.1]: Server running on port 36305
+2025-04-02T08:46:12.966484+00:00 app[web.1]: Environment: production
+2025-04-02T08:46:12.966503+00:00 app[web.1]: Testing database connection...
+2025-04-02T08:46:13.019989+00:00 app[web.1]: Database connection successful: { now: 2025-04-02T08:46:13.018Z }
+2025-04-02T08:46:13.020354+00:00 app[web.1]: Database connection successful
+2025-04-02T08:46:13.445512+00:00 heroku[web.1]: State changed from starting to up
+2025-04-02T08:46:18.054342+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:46:18.054353+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:46:18.054361+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:46:18.054363+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:46:18.054364+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:46:18.054364+00:00 app[web.1]: originalUrl: '/',
+2025-04-02T08:46:18.054364+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:46:18.054364+00:00 app[web.1]: isSecure: true
+2025-04-02T08:46:18.054366+00:00 app[web.1]: }
+2025-04-02T08:46:18.060753+00:00 heroku[router]: at=info method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b03791f2-c153-39cb-8c81-a1a1a81f15df fwd="162.84.176.78" dyno=web.1 connect=0ms service=9ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:46:18.315167+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:46:18.315175+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:46:18.315175+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:46:18.315176+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:46:18.315176+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:46:18.315176+00:00 app[web.1]: originalUrl: '/favicon.ico',
+2025-04-02T08:46:18.315176+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:46:18.315176+00:00 app[web.1]: isSecure: true
+2025-04-02T08:46:18.315176+00:00 app[web.1]: }
+2025-04-02T08:46:18.317545+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=dd93ef11-61d1-2ae7-f223-4266c0aa2043 fwd="162.84.176.78" dyno=web.1 connect=0ms service=4ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:46:41.528995+00:00 app[web.1]: IP Address Debug: {
+2025-04-02T08:46:41.529017+00:00 app[web.1]: ip: '162.84.176.78',
+2025-04-02T08:46:41.529017+00:00 app[web.1]: ips: [ '162.84.176.78' ],
+2025-04-02T08:46:41.529040+00:00 app[web.1]: xForwardedFor: '162.84.176.78',
+2025-04-02T08:46:41.529040+00:00 app[web.1]: xForwardedProto: 'https',
+2025-04-02T08:46:41.529040+00:00 app[web.1]: originalUrl: '/api/login',
+2025-04-02T08:46:41.529041+00:00 app[web.1]: protocol: 'https',
+2025-04-02T08:46:41.529041+00:00 app[web.1]: isSecure: true
+2025-04-02T08:46:41.529041+00:00 app[web.1]: }
+2025-04-02T08:46:41.609747+00:00 app[web.1]: Server error: RangeError: Input buffers must have the same byte length
+2025-04-02T08:46:41.609750+00:00 app[web.1]: at comparePasswords (/app/standalone-server-fix.js:137:10)
+2025-04-02T08:46:41.609750+00:00 app[web.1]: at async Strategy._verify (/app/standalone-server-fix.js:149:20) {
+2025-04-02T08:46:41.609751+00:00 app[web.1]: code: 'ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH'
+2025-04-02T08:46:41.609751+00:00 app[web.1]: }
+2025-04-02T08:46:41.611866+00:00 heroku[router]: at=info method=POST path="/api/login" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b01ffe9a-135b-12c2-42a6-5f7321a42e76 fwd="162.84.176.78" dyno=web.1 connect=0ms service=84ms status=500 bytes=61 protocol=http1.1 tls=true tls_version=unknown

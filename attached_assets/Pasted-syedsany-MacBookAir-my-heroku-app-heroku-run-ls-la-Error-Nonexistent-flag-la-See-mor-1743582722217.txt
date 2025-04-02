@@ -1,0 +1,171 @@
+syedsany@MacBookAir my-heroku-app % heroku run ls -la
+ ›   Error: Nonexistent flag: -la
+ ›   See more help with --help
+syedsany@MacBookAir my-heroku-app % heroku run bash -c "ls -la"
+ ›   Error: Nonexistent flag: -c
+ ›   See more help with --help
+syedsany@MacBookAir my-heroku-app % cat > heroku-index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SoZayn Digital Era</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #0066cc;
+      margin-top: 40px;
+    }
+    .status {
+      background: #f8f9fa;
+      border-left: 4px solid #0066cc;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .logo {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #0066cc;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">SoZayn Digital Era</div>
+  <h1>Middleware Service Status</h1>
+  <div class="status">
+    <p>✅ The server is running properly</p>
+    <p>✅ Node.js version: v18.19.1</p>
+    <p>✅ Environment: Production</p>
+  </div>
+
+  <h2>API Endpoints</h2>
+  <ul>
+    <li><a href="/api/health">/api/health</a> - View application health status</li>
+    <li><a href="/api/debug">/api/debug</a> - View detailed debug information</li>
+  </ul>
+
+  <h2>Authentication</h2>
+  <ul>
+    <li>/api/login - Log in with username and password</li>
+    <li>/api/register - Register a new user</li>
+    <li>/api/user - Get current user information</li>
+  </ul>
+
+  <p>For more information, please refer to the documentation.</p>
+</body>
+</html>
+EOF
+syedsany@MacBookAir my-heroku-app % git add heroku-index.html
+git commit -m "Add fallback index.html"
+git push heroku main
+[main 78f617b] Add fallback index.html
+ 1 file changed, 58 insertions(+)
+ create mode 100644 heroku-index.html
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 1.02 KiB | 1.02 MiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Updated 607 paths from 0234014
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.19.1
+remote:        engines.npm (package.json):    10.2.4
+remote:        
+remote:        Resolving node version 18.19.1...
+remote:        Downloading and installing node 18.19.1...
+remote:        npm 10.2.4 already installed with node
+remote:        
+remote: -----> Restoring cache
+remote:        - npm cache
+remote:        
+remote: -----> Installing dependencies
+remote:        Prebuild detected (node_modules already exists)
+remote:        Rebuilding any native modules
+remote:        rebuilt dependencies successfully
+remote:        Installing any new modules (package.json)
+remote:        
+remote:        added 38 packages, removed 4 packages, changed 21 packages, and audited 101 packages in 2s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - npm cache
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 101 packages in 409ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.7M
+remote: -----> Launching...
+remote:        Released v44
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote:  _                    _               ___   ___    ______ ____  _
+remote: | |                  | |             |__ \ / _ \  |  ____/ __ \| |
+remote: | |__   ___ _ __ ___ | | ___   _ ______ ) | | | | | |__ | |  | | |
+remote: | '_ \ / _ \ '__/ _ \| |/ / | | |______/ /| | | | |  __|| |  | | |
+remote: | | | |  __/ | | (_) |   <| |_| |     / /_| |_| | | |___| |__| | |____
+remote: |_| |_|\___|_|  \___/|_|\_\\__,_|    |____|\___/  |______\____/|______|
+remote: 
+remote: This app is using the Heroku-20 stack, which is deprecated:
+remote: https://devcenter.heroku.com/changelog-items/2895
+remote: 
+remote: From April 30th 2025, Heroku-20 will be end-of-life, and apps using it
+remote: will no longer receive security updates, and be run at your own risk.
+remote: 
+remote: From May 1st 2025, builds will no longer be allowed for Heroku-20 apps.
+remote: 
+remote: Please upgrade to a newer stack as soon as possible:
+remote: https://devcenter.heroku.com/articles/upgrading-to-the-latest-stack
+remote: https://help.heroku.com/NPN275RK/heroku-20-end-of-life-faq
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   0fc5065..78f617b  main -> main
+syedsany@MacBookAir my-heroku-app % curl https://sozayndigital-e2112b66b875.herokuapp.com/api/health
+{"status":"ok","timestamp":"2025-04-02T08:31:38.996Z","environment":"production","database":"connected","nodeVersion":"v18.19.1"}%

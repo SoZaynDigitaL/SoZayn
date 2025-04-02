@@ -1,0 +1,101 @@
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T08:05:55.071098+00:00 app[web.1]: echo "web: node standalone-server-fix.js" > Procfile
+2025-04-02T08:05:55.071101+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-04-02T08:05:55.071101+00:00 app[web.1]: 
+2025-04-02T08:05:55.071103+00:00 app[web.1]: SyntaxError: Unexpected string
+2025-04-02T08:05:55.071104+00:00 app[web.1]: at internalCompileFunction (node:internal/vm:73:18)
+2025-04-02T08:05:55.071104+00:00 app[web.1]: at wrapSafe (node:internal/modules/cjs/loader:1274:20)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1320:27)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1414:10)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1197:32)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1013:12)
+2025-04-02T08:05:55.071110+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:05:55.071110+00:00 app[web.1]: at node:internal/main/run_main_module:28:49
+2025-04-02T08:05:55.071110+00:00 app[web.1]: 
+2025-04-02T08:05:55.071112+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:05:55.111276+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:05:55.134174+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:06:29.282922+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=9ee335fe-7eac-d41f-9f71-e98649c533be fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:06:33.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:06.030076+00:00 app[api]: Release v41 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:06.030076+00:00 app[api]: Deploy 540311b7 by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:10.716861+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:07:12.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:07:15.573300+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T08:07:16.086227+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T08:07:16.086297+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T08:07:16.086300+00:00 app[web.1]: ^^^^
+2025-04-02T08:07:16.086311+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T08:07:16.086311+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T08:07:16.086311+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T08:07:16.086313+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T08:07:16.086314+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T08:07:16.086314+00:00 app[web.1]: 
+2025-04-02T08:07:16.086316+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T08:07:16.148789+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:07:16.169366+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:07:36.494993+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=e8035e8e-58ad-aa8e-4820-2ccb344ebfee fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:08:19.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:07.412742+00:00 app[api]: Release v42 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:07.412742+00:00 app[api]: Deploy eff73996 by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:08.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:09:08.639336+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:09:10.612582+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:09:11.120231+00:00 app[web.1]: node:internal/modules/cjs/loader:1137
+2025-04-02T08:09:11.120295+00:00 app[web.1]: throw err;
+2025-04-02T08:09:11.120295+00:00 app[web.1]: ^
+2025-04-02T08:09:11.120296+00:00 app[web.1]: 
+2025-04-02T08:09:11.120298+00:00 app[web.1]: Error: Cannot find module '/app/standalone-server-fix.js'
+2025-04-02T08:09:11.120300+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1134:15)
+2025-04-02T08:09:11.120300+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:975:27)
+2025-04-02T08:09:11.120303+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:09:11.120303+00:00 app[web.1]: at node:internal/main/run_main_module:28:49 {
+2025-04-02T08:09:11.120305+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2025-04-02T08:09:11.120307+00:00 app[web.1]: requireStack: []
+2025-04-02T08:09:11.120308+00:00 app[web.1]: }
+2025-04-02T08:09:11.120308+00:00 app[web.1]: 
+2025-04-02T08:09:11.120308+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:09:11.173527+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:09:11.200198+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:10:58.308773+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=82535fff-5a7a-4683-287b-c4c44c8f345a fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:16:58.490461+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:17:00.500299+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:17:00.997293+00:00 app[web.1]: node:internal/modules/cjs/loader:1137
+2025-04-02T08:17:00.997308+00:00 app[web.1]: throw err;
+2025-04-02T08:17:00.997309+00:00 app[web.1]: ^
+2025-04-02T08:17:00.997309+00:00 app[web.1]: 
+2025-04-02T08:17:00.997310+00:00 app[web.1]: Error: Cannot find module '/app/standalone-server-fix.js'
+2025-04-02T08:17:00.997310+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1134:15)
+2025-04-02T08:17:00.997311+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:975:27)
+2025-04-02T08:17:00.997311+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:17:00.997311+00:00 app[web.1]: at node:internal/main/run_main_module:28:49 {
+2025-04-02T08:17:00.997312+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2025-04-02T08:17:00.997312+00:00 app[web.1]: requireStack: []
+2025-04-02T08:17:00.997313+00:00 app[web.1]: }
+2025-04-02T08:17:00.997313+00:00 app[web.1]: 
+2025-04-02T08:17:00.997313+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:17:01.044556+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:17:01.064661+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:22:21.660722+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=3910e703-db64-21c3-fac7-ec16d6bc300b fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:23:39.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:24:02.432063+00:00 app[api]: Deploy 0fc5065d by user nianyshoppinghub@gmail.com
+2025-04-02T08:24:02.432063+00:00 app[api]: Release v43 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:24:03.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:24:03.663541+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:24:05.650546+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:24:06.197236+00:00 app[web.1]: Running on Node.js v18.19.1
+2025-04-02T08:24:06.322278+00:00 app[web.1]: Trust proxy setting: true
+2025-04-02T08:24:06.324459+00:00 app[web.1]: Configuring session for environment: production
+2025-04-02T08:24:06.325561+00:00 app[web.1]: Cookie settings: {
+2025-04-02T08:24:06.325563+00:00 app[web.1]: secure: true,
+2025-04-02T08:24:06.325563+00:00 app[web.1]: httpOnly: true,
+2025-04-02T08:24:06.325563+00:00 app[web.1]: maxAge: 2592000000,
+2025-04-02T08:24:06.325563+00:00 app[web.1]: path: '/',
+2025-04-02T08:24:06.325564+00:00 app[web.1]: sameSite: 'none'
+2025-04-02T08:24:06.325564+00:00 app[web.1]: }
+2025-04-02T08:24:06.329594+00:00 app[web.1]: Server running on port 14201
+2025-04-02T08:24:06.329640+00:00 app[web.1]: Environment: production
+2025-04-02T08:24:06.329659+00:00 app[web.1]: Testing database connection...
+2025-04-02T08:24:06.385795+00:00 app[web.1]: Database connection successful: { now: 2025-04-02T08:24:06.381Z }
+2025-04-02T08:24:06.386183+00:00 app[web.1]: Database connection successful
+2025-04-02T08:24:06.773205+00:00 heroku[web.1]: State changed from starting to up

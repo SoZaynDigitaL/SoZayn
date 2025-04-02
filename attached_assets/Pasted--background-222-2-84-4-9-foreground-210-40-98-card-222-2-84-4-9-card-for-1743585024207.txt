@@ -1,0 +1,455 @@
+
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 224.3 76.3% 48%;
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+EOF
+syedsany@MacBookAir my-heroku-app % >....                            
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+}
+EOF
+syedsany@MacBookAir my-heroku-app % cat > client/postcss.config.js << 'EOF'
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+EOF
+syedsany@MacBookAir my-heroku-app % >....                            
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+EOF
+syedsany@MacBookAir my-heroku-app % >....                            
+    try {
+      res = await fetch(path, {
+        credentials: "include",
+      });
+    } catch (error) {
+      throw new Error("Network error");
+    }
+
+    if (res.status === 401) {
+      if (options.on401 === "returnNull") {
+        return null;
+      } else {
+        throw new Error("Unauthorized");
+      }
+    }
+
+    await throwIfResNotOk(res);
+
+    if (res.status === 204) {
+      return undefined;
+    }
+
+    return res.json();
+  };
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+EOF
+
+cat > client/src/lib/protected-route.tsx << 'EOF'
+import { useAuth } from "@/hooks/use-auth";
+import { Loader2 } from "lucide-react";
+import { Redirect, Route } from "wouter";
+
+export function ProtectedRoute({
+  path,
+  component: Component,
+}: {
+  path: string;
+  component: () => React.JSX.Element;
+}) {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <Route path={path}>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="h-8 w-8 animate-spin text-border" />
+        </div>
+      </Route>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Route path={path}>
+        <Redirect to="/auth" />
+      </Route>
+    );
+  }
+
+  return <Route path={path} component={Component} />;
+}
+EOF
+syedsany@MacBookAir my-heroku-app % >....                            
+    onSuccess: (data: any) => {
+      queryClient.setQueryData(['/api/user'], data.user);
+      toast({
+        title: "Registration successful",
+        description: "Your account has been created successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Registration failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      await apiRequest("POST", "/api/logout");
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(['/api/user'], null);
+      toast({
+        title: "Logged out successfully",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Logout failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user: user ?? null,
+        isLoading,
+        error,
+        loginMutation,
+        logoutMutation,
+        registerMutation,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
+EOF
+
+cat > client/src/hooks/use-toast.ts << 'EOF'
+// Placeholder for toast implementation
+export function useToast() {
+  return {
+    toast: ({ title, description, variant }: { title: string, description?: string, variant?: string }) => {
+      console.log(`Toast: ${title} - ${description} (${variant})`);
+    }
+  };
+}
+EOF
+syedsany@MacBookAir my-heroku-app % cat > client/src/components/ui/toaster.tsx << 'EOF'
+export function Toaster() {
+  return null;
+}
+EOF
+syedsany@MacBookAir my-heroku-app % >....                            
+export default function DashboardPage() {
+  const { user, logoutMutation } = useAuth();
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-xl text-blue-600">SoZayn Digital Era</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span>Welcome, {user.name || user.email}</span>
+              <Button
+                variant="outline"
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+              >
+                {logoutMutation.isPending ? "Logging out..." : "Logout"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Dashboard</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Welcome to your SoZayn Digital Era dashboard.</p>
+          </CardContent>
+        </Card>
+      </main>
+    </div>
+  );
+}
+EOF
+
+cat > client/src/pages/not-found.tsx << 'EOF'
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <h1 className="text-6xl font-bold text-blue-600 mb-4">404</h1>
+        <p className="text-2xl font-semibold mb-6">Page Not Found</p> 
+        <Link href="/">
+          <Button>
+            Go back home
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+EOF
+syedsany@MacBookAir my-heroku-app % node deploy-frontend.js
+Starting SoZayn Digital Era frontend deployment...
+Building frontend...
+Building SoZayn Digital Era frontend...
+Building React app...
+
+> sozayn-digital-era-client@0.1.0 build
+> tsc && vite build
+
+src/hooks/use-auth.tsx:57:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<User | null, Error, User | null, readonly unknown[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<...>', gave the following error.
+    Type '({ queryKey }: { queryKey: any; }) => Promise<User | null | undefined>' is not assignable to type 'QueryFunction<User | null, readonly unknown[]>'.
+      Type 'Promise<User | null | undefined>' is not assignable to type 'User | Promise<User | null> | null'.
+        Type 'Promise<User | null | undefined>' is not assignable to type 'Promise<User | null>'.
+          Type 'User | null | undefined' is not assignable to type 'User | null'.
+            Type 'undefined' is not assignable to type 'User | null'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<User | null, Error, User | null, readonly unknown[]>, queryClient?: QueryClient | undefined): UseQueryResult<...>', gave the following error.
+    Type '({ queryKey }: { queryKey: any; }) => Promise<User | null | undefined>' is not assignable to type 'unique symbol | QueryFunction<User | null, readonly unknown[], never> | undefined'.
+      Type '({ queryKey }: { queryKey: any; }) => Promise<User | null | undefined>' is not assignable to type 'QueryFunction<User | null, readonly unknown[], never>'.
+        Type 'Promise<User | null | undefined>' is not assignable to type 'User | Promise<User | null> | null'.
+          Type 'Promise<User | null | undefined>' is not assignable to type 'Promise<User | null>'.
+            Type 'User | null | undefined' is not assignable to type 'User | null'.
+              Type 'undefined' is not assignable to type 'User | null'.
+  Overload 3 of 3, '(options: UseQueryOptions<User | null, Error, User | null, readonly unknown[]>, queryClient?: QueryClient | undefined): UseQueryResult<User | null, Error>', gave the following error.
+    Type '({ queryKey }: { queryKey: any; }) => Promise<User | null | undefined>' is not assignable to type 'unique symbol | QueryFunction<User | null, readonly unknown[], never> | undefined'.
+      Type '({ queryKey }: { queryKey: any; }) => Promise<User | null | undefined>' is not assignable to type 'QueryFunction<User | null, readonly unknown[], never>'.
+        Type 'Promise<User | null | undefined>' is not assignable to type 'User | Promise<User | null> | null'.
+          Type 'Promise<User | null | undefined>' is not assignable to type 'Promise<User | null>'.
+            Type 'User | null | undefined' is not assignable to type 'User | null'.
+              Type 'undefined' is not assignable to type 'User | null'.
+
+57     queryFn: getQueryFn({ on401: "returnNull" }),
+       ~~~~~~~
+
+  node_modules/@tanstack/react-query/build/modern/queryOptions.d.ts:13:5
+    13     queryFn?: QueryFunction<TQueryFnData, TQueryKey>;
+           ~~~~~~~
+    The expected type comes from property 'queryFn' which is declared here on type 'DefinedInitialDataOptions<User | null, Error, User | null, readonly unknown[]>'
+  node_modules/@tanstack/query-core/build/modern/hydration-DY4YFVVx.d.ts:601:5
+    601     queryFn?: QueryFunction<TQueryFnData, TQueryKey, TPageParam> | SkipToken;
+            ~~~~~~~
+    The expected type comes from property 'queryFn' which is declared here on type 'UndefinedInitialDataOptions<User | null, Error, User | null, readonly unknown[]>'
+  node_modules/@tanstack/query-core/build/modern/hydration-DY4YFVVx.d.ts:601:5
+    601     queryFn?: QueryFunction<TQueryFnData, TQueryKey, TPageParam> | SkipToken;
+            ~~~~~~~
+    The expected type comes from property 'queryFn' which is declared here on type 'UseQueryOptions<User | null, Error, User | null, readonly unknown[]>'
+
+src/hooks/use-auth.tsx:124:9 - error TS2322: Type 'NonNullable<TQueryFnData> | null' is not assignable to type 'User | null'.
+  Type 'NonNullable<TQueryFnData>' is not assignable to type 'User | null'.
+    Type '{}' is missing the following properties from type 'User': id, email, name, isAdmin, and 2 more.
+
+124         user: user ?? null,
+            ~~~~
+
+
+Found 2 errors in the same file, starting at: src/hooks/use-auth.tsx:57
+
+Build failed: Command failed: cd client && npm run build
+Frontend build failed: Command failed: node build-frontend.js

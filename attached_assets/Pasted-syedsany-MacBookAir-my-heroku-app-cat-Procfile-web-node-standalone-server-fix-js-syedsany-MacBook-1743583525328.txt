@@ -1,0 +1,84 @@
+syedsany@MacBookAir my-heroku-app % cat Procfile
+web: node standalone-server-fix.js
+syedsany@MacBookAir my-heroku-app % echo "web: node standalone-server-fix.js" > Procfile
+syedsany@MacBookAir my-heroku-app % heroku config:set PROCFILE="web: node standalone-server-fix.js"
+Setting PROCFILE and restarting ⬢ sozayndigital... done, v47
+PROCFILE: web: node standalone-server-fix.js
+syedsany@MacBookAir my-heroku-app % >....                            
+        "totalAmount" DECIMAL(10,2),
+        "currency" VARCHAR(10) DEFAULT 'USD',
+        "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        "notes" TEXT
+      )
+    `);
+    console.log('Orders table created or already exists');
+
+    // Create logs table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS logs (
+        id SERIAL PRIMARY KEY,
+        level VARCHAR(20) NOT NULL,
+        message TEXT NOT NULL,
+        meta JSONB,
+        "timestamp" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    console.log('Logs table created or already exists');
+
+    // Create session table for connect-pg-simple
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS "session" (
+        "sid" varchar NOT NULL COLLATE "default",
+        "sess" json NOT NULL,
+        "expire" timestamp(6) NOT NULL,
+        CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
+      )
+    `);
+    console.log('Session table created or already exists');
+
+    // Create admin user if none exists
+    const adminResult = await client.query('SELECT COUNT(*) FROM users WHERE "isAdmin" = true');
+    if (parseInt(adminResult.rows[0].count) === 0) {
+      // Create admin user with the password you provided
+      await client.query(`
+        INSERT INTO users (name, email, password, "isAdmin", "isActive")
+        VALUES ('Admin User', 'admin@sozayn.com', $1, TRUE, TRUE)
+      `, ['$2b$10$EiuboJL8Wz4YPXvYpz6QI.DLs.GJf2ccqbLl.U.NKjR15UjYzDn8K']);
+
+      console.log('Created admin user: admin@sozayn.com');
+    } else {
+      console.log('Admin user already exists, skipping creation');
+    }
+
+    console.log('Database setup completed successfully!');
+  } catch (err) {
+    console.error('Error setting up database:', err);
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+setupDatabase()
+  .then(() => {
+    console.log('Database initialization complete');
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error('Database initialization failed:', err);
+    process.exit(1);
+  });
+EOF
+syedsany@MacBookAir my-heroku-app % heroku run --no-tty "cat > db-setup.js" < db-setup.js
+Running cat > db-setup.js on ⬢ sozayndigital... up, run.5782
+syedsany@MacBookAir my-heroku-app % heroku run node db-setup.js
+Running node db-setup.js on ⬢ sozayndigital... up, run.9989
+Connected to database, creating tables...
+Users table created or already exists
+Orders table created or already exists
+Logs table created or already exists
+Session table created or already exists
+Admin user already exists, skipping creation
+Database setup completed successfully!
+Database initialization complete

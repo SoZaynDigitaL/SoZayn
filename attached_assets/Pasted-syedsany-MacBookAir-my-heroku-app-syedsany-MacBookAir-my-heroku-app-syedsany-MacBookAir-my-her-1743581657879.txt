@@ -1,0 +1,395 @@
+syedsany@MacBookAir my-heroku-app % 
+syedsany@MacBookAir my-heroku-app % 
+syedsany@MacBookAir my-heroku-app % 
+syedsany@MacBookAir my-heroku-app % 
+syedsany@MacBookAir my-heroku-app % 
+syedsany@MacBookAir my-heroku-app % clear
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+syedsany@MacBookAir my-heroku-app % git push heroku main --force
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (7/7), 1009 bytes | 1009.00 KiB/s, done.
+Total 7 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Updated 606 paths from d0b995e
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.19.1
+remote:        engines.npm (package.json):    10.2.4
+remote:        
+remote:        Resolving node version 18.19.1...
+remote:        Downloading and installing node 18.19.1...
+remote:        npm 10.2.4 already installed with node
+remote:        
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:        
+remote: -----> Installing dependencies
+remote:        Prebuild detected (node_modules already exists)
+remote:        Rebuilding any native modules
+remote:        rebuilt dependencies successfully
+remote:        Installing any new modules (package.json)
+remote:        
+remote:        added 38 packages, removed 4 packages, changed 21 packages, and audited 101 packages in 2s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - npm cache
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 101 packages in 419ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.7M
+remote: -----> Launching...
+remote:        Released v40
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote:  _                    _               ___   ___    ______ ____  _
+remote: | |                  | |             |__ \ / _ \  |  ____/ __ \| |
+remote: | |__   ___ _ __ ___ | | ___   _ ______ ) | | | | | |__ | |  | | |
+remote: | '_ \ / _ \ '__/ _ \| |/ / | | |______/ /| | | | |  __|| |  | | |
+remote: | | | |  __/ | | (_) |   <| |_| |     / /_| |_| | | |___| |__| | |____
+remote: |_| |_|\___|_|  \___/|_|\_\\__,_|    |____|\___/  |______\____/|______|
+remote: 
+remote: This app is using the Heroku-20 stack, which is deprecated:
+remote: https://devcenter.heroku.com/changelog-items/2895
+remote: 
+remote: From April 30th 2025, Heroku-20 will be end-of-life, and apps using it
+remote: will no longer receive security updates, and be run at your own risk.
+remote: 
+remote: From May 1st 2025, builds will no longer be allowed for Heroku-20 apps.
+remote: 
+remote: Please upgrade to a newer stack as soon as possible:
+remote: https://devcenter.heroku.com/articles/upgrading-to-the-latest-stack
+remote: https://help.heroku.com/NPN275RK/heroku-20-end-of-life-faq
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   5625571..2dee84f  main -> main
+syedsany@MacBookAir my-heroku-app % Released v40
+https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+zsh: command not found: Released
+zsh: no such file or directory: https://sozayndigital-e2112b66b875.herokuapp.com/
+syedsany@MacBookAir my-heroku-app % rm standalone-server-fix.js
+syedsany@MacBookAir my-heroku-app % git add standalone-server-fix.js
+git commit -m "Fix server file with CommonJS imports"
+git push heroku main
+[main eff7399] Fix server file with CommonJS imports
+ 1 file changed, 26 deletions(-)
+ delete mode 100644 standalone-server-fix.js
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 270 bytes | 270.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Updated 605 paths from f1609ab
+remote: Compressing source files... done.
+remote: Building source:
+remote: Waiting on build...
+remote: Waiting on build... (elapsed: 19s)
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.19.1
+remote:        engines.npm (package.json):    10.2.4
+remote:        
+remote:        Resolving node version 18.19.1...
+remote:        Downloading and installing node 18.19.1...
+remote:        npm 10.2.4 already installed with node
+remote:        
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:        
+remote: -----> Installing dependencies
+remote:        Prebuild detected (node_modules already exists)
+remote:        Rebuilding any native modules
+remote:        rebuilt dependencies successfully
+remote:        Installing any new modules (package.json)
+remote:        
+remote:        added 38 packages, removed 4 packages, changed 21 packages, and audited 101 packages in 2s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - npm cache
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 101 packages in 428ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice 
+remote:        npm notice New major version of npm available! 10.2.4 -> 11.2.0
+remote:        npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.2.0>
+remote:        npm notice Run `npm install -g npm@11.2.0` to update!
+remote:        npm notice 
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.7M
+remote: -----> Launching...
+remote:        Released v42
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote:  _                    _               ___   ___    ______ ____  _
+remote: | |                  | |             |__ \ / _ \  |  ____/ __ \| |
+remote: | |__   ___ _ __ ___ | | ___   _ ______ ) | | | | | |__ | |  | | |
+remote: | '_ \ / _ \ '__/ _ \| |/ / | | |______/ /| | | | |  __|| |  | | |
+remote: | | | |  __/ | | (_) |   <| |_| |     / /_| |_| | | |___| |__| | |____
+remote: |_| |_|\___|_|  \___/|_|\_\\__,_|    |____|\___/  |______\____/|______|
+remote: 
+remote: This app is using the Heroku-20 stack, which is deprecated:
+remote: https://devcenter.heroku.com/changelog-items/2895
+remote: 
+remote: From April 30th 2025, Heroku-20 will be end-of-life, and apps using it
+remote: will no longer receive security updates, and be run at your own risk.
+remote: 
+remote: From May 1st 2025, builds will no longer be allowed for Heroku-20 apps.
+remote: 
+remote: Please upgrade to a newer stack as soon as possible:
+remote: https://devcenter.heroku.com/articles/upgrading-to-the-latest-stack
+remote: https://help.heroku.com/NPN275RK/heroku-20-end-of-life-faq
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   2dee84f..eff7399  main -> main
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T07:54:50.400924+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:54:56.000000+00:00 app[api]: Build failed -- check your build output: https://dashboard.heroku.com/apps/8778b90d-26b9-4523-a2c0-4fa436fdcb0c/activity/builds/6b9bb560-e1c4-448f-a7c1-137bde228acd
+2025-04-02T07:54:56.907416+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:54:57.438625+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:54:57.438662+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:54:57.438662+00:00 app[web.1]: ^^^^
+2025-04-02T07:54:57.438663+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:54:57.438663+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:54:57.438664+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:54:57.438664+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:54:57.438666+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:54:57.438666+00:00 app[web.1]: 
+2025-04-02T07:54:57.438666+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:54:57.499834+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:54:57.524166+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:59:40.953983+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=4be2b05f-1c9f-d09d-aa3d-f9740f8150bd fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:03:32.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:03:55.641316+00:00 app[api]: Deploy 2dee84f7 by user nianyshoppinghub@gmail.com
+2025-04-02T08:03:55.641316+00:00 app[api]: Release v40 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:03:56.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:03:56.759442+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:03:58.712514+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:03:59.191991+00:00 app[web.1]: /app/standalone-server-fix.js:1
+2025-04-02T08:03:59.192000+00:00 app[web.1]: echo "web: node standalone-server-fix.js" > Procfile
+2025-04-02T08:03:59.192000+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-04-02T08:03:59.192001+00:00 app[web.1]: 
+2025-04-02T08:03:59.192001+00:00 app[web.1]: SyntaxError: Unexpected string
+2025-04-02T08:03:59.192001+00:00 app[web.1]: at internalCompileFunction (node:internal/vm:73:18)
+2025-04-02T08:03:59.192007+00:00 app[web.1]: at wrapSafe (node:internal/modules/cjs/loader:1274:20)
+2025-04-02T08:03:59.192008+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1320:27)
+2025-04-02T08:03:59.192008+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1414:10)
+2025-04-02T08:03:59.192008+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1197:32)
+2025-04-02T08:03:59.192008+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1013:12)
+2025-04-02T08:03:59.192009+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:03:59.192009+00:00 app[web.1]: at node:internal/main/run_main_module:28:49
+2025-04-02T08:03:59.192010+00:00 app[web.1]: 
+2025-04-02T08:03:59.192010+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:03:59.229204+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:03:59.249033+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:05:52.550312+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:05:54.498503+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:05:55.071043+00:00 app[web.1]: /app/standalone-server-fix.js:1
+2025-04-02T08:05:55.071098+00:00 app[web.1]: echo "web: node standalone-server-fix.js" > Procfile
+2025-04-02T08:05:55.071101+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-04-02T08:05:55.071101+00:00 app[web.1]: 
+2025-04-02T08:05:55.071103+00:00 app[web.1]: SyntaxError: Unexpected string
+2025-04-02T08:05:55.071104+00:00 app[web.1]: at internalCompileFunction (node:internal/vm:73:18)
+2025-04-02T08:05:55.071104+00:00 app[web.1]: at wrapSafe (node:internal/modules/cjs/loader:1274:20)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1320:27)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1414:10)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1197:32)
+2025-04-02T08:05:55.071107+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1013:12)
+2025-04-02T08:05:55.071110+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:05:55.071110+00:00 app[web.1]: at node:internal/main/run_main_module:28:49
+2025-04-02T08:05:55.071110+00:00 app[web.1]: 
+2025-04-02T08:05:55.071112+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:05:55.111276+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:05:55.134174+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:06:29.282922+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=9ee335fe-7eac-d41f-9f71-e98649c533be fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:06:33.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:06.030076+00:00 app[api]: Release v41 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:06.030076+00:00 app[api]: Deploy 540311b7 by user nianyshoppinghub@gmail.com
+2025-04-02T08:07:10.716861+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:07:12.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:07:15.573300+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T08:07:16.086227+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T08:07:16.086297+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T08:07:16.086300+00:00 app[web.1]: ^^^^
+2025-04-02T08:07:16.086311+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T08:07:16.086311+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T08:07:16.086311+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T08:07:16.086313+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T08:07:16.086314+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T08:07:16.086314+00:00 app[web.1]: 
+2025-04-02T08:07:16.086316+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T08:07:16.148789+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:07:16.169366+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:07:36.494993+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=e8035e8e-58ad-aa8e-4820-2ccb344ebfee fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T08:08:19.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:07.412742+00:00 app[api]: Release v42 created by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:07.412742+00:00 app[api]: Deploy eff73996 by user nianyshoppinghub@gmail.com
+2025-04-02T08:09:08.000000+00:00 app[api]: Build succeeded
+2025-04-02T08:09:08.639336+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T08:09:10.612582+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T08:09:11.120231+00:00 app[web.1]: node:internal/modules/cjs/loader:1137
+2025-04-02T08:09:11.120295+00:00 app[web.1]: throw err;
+2025-04-02T08:09:11.120295+00:00 app[web.1]: ^
+2025-04-02T08:09:11.120296+00:00 app[web.1]: 
+2025-04-02T08:09:11.120298+00:00 app[web.1]: Error: Cannot find module '/app/standalone-server-fix.js'
+2025-04-02T08:09:11.120300+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1134:15)
+2025-04-02T08:09:11.120300+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:975:27)
+2025-04-02T08:09:11.120303+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T08:09:11.120303+00:00 app[web.1]: at node:internal/main/run_main_module:28:49 {
+2025-04-02T08:09:11.120305+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2025-04-02T08:09:11.120307+00:00 app[web.1]: requireStack: []
+2025-04-02T08:09:11.120308+00:00 app[web.1]: }
+2025-04-02T08:09:11.120308+00:00 app[web.1]: 
+2025-04-02T08:09:11.120308+00:00 app[web.1]: Node.js v18.19.1
+2025-04-02T08:09:11.173527+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T08:09:11.200198+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T08:10:58.308773+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=82535fff-5a7a-4683-287b-c4c44c8f345a fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+

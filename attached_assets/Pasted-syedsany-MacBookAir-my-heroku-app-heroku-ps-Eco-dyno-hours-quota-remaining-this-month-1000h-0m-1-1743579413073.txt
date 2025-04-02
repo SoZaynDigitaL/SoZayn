@@ -1,0 +1,149 @@
+syedsany@MacBookAir my-heroku-app % heroku ps
+Eco dyno hours quota remaining this month: 1000h 0m (100%)
+Eco dyno usage for this app: 0h 0m (0%)
+For more information on Eco dyno hours, see:
+https://devcenter.heroku.com/articles/eco-dyno-hours
+
+=== web (Eco): node --experimental-modules --enable-source-maps standalone-server.js (1)
+
+web.1: restarting 2025/04/02 03:31:35 -0400 (~ 10s ago)
+
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T07:20:28.744817+00:00 app[web.1]: 
+2025-04-02T07:20:28.744817+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:20:28.812602+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:20:28.832500+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:21:55.653376+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b0f2bc08-6da5-f463-cc73-22bbcd17598d fwd="" dyno= connect=0ms service=0ms status=503 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T07:23:11.006351+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=c5eaf2f0-e7e7-9336-0ee3-58768b2fbc4e fwd="" dyno= connect=0ms service=0ms status=503 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T07:23:53.892071+00:00 app[api]: Remove UBER_DIRECT_API_URL config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:23:53.892071+00:00 app[api]: Release v28 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:23:55.002325+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:23:56.389085+00:00 app[api]: Remove UBER_DIRECT_API_KEY config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:23:56.389085+00:00 app[api]: Release v29 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:23:57.849109+00:00 heroku[web.1]: Restarting
+2025-04-02T07:24:01.747269+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:24:02.300388+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:24:02.300425+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:24:02.300426+00:00 app[web.1]: ^^^^
+2025-04-02T07:24:02.300426+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:24:02.300427+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:24:02.300427+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:24:02.300428+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:24:02.300428+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:24:02.300428+00:00 app[web.1]: 
+2025-04-02T07:24:02.300429+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:24:02.357807+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:24:04.546194+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:24:05.055912+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:24:05.055937+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:24:05.055937+00:00 app[web.1]: ^^^^
+2025-04-02T07:24:05.055944+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:24:05.055944+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:24:05.055944+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:24:05.055947+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:24:05.055947+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:24:05.055947+00:00 app[web.1]: 
+2025-04-02T07:24:05.055950+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:24:05.118188+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:24:05.137638+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:24:06.346404+00:00 app[api]: Remove JETGO_API_KEY config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:24:06.346404+00:00 app[api]: Release v30 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:24:07.554116+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:24:09.285019+00:00 app[api]: Release v31 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:24:09.285019+00:00 app[api]: Remove JETGO_API_URL config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:24:10.462551+00:00 heroku[web.1]: Restarting
+2025-04-02T07:24:14.840409+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:24:15.494401+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:24:15.494419+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:24:15.494420+00:00 app[web.1]: ^^^^
+2025-04-02T07:24:15.494420+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:24:15.494421+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:24:15.494421+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:24:15.494421+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:24:15.494422+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:24:15.494422+00:00 app[web.1]: 
+2025-04-02T07:24:15.494422+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:24:15.557718+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:24:16.994750+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:24:17.516654+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:24:17.516684+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:24:17.516685+00:00 app[web.1]: ^^^^
+2025-04-02T07:24:17.516692+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:24:17.516692+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:24:17.516692+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:24:17.516695+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:24:17.516695+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:24:17.516695+00:00 app[web.1]: 
+2025-04-02T07:24:17.516698+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:24:17.580329+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:24:17.606449+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:25:01.306510+00:00 heroku[run.8684]: Process exited with status 0
+2025-04-02T07:25:01.334075+00:00 heroku[run.8684]: State changed from up to complete
+2025-04-02T07:25:08.928380+00:00 app[api]: Release v32 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:25:08.928380+00:00 app[api]: Set APP_URL config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:25:10.496737+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:25:17.391121+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:25:17.950376+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:25:17.950413+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:25:17.950414+00:00 app[web.1]: ^^^^
+2025-04-02T07:25:17.950414+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:25:17.950414+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:25:17.950415+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:25:17.950415+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:25:17.950415+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:25:17.950416+00:00 app[web.1]: 
+2025-04-02T07:25:17.950416+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:25:18.015059+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:25:18.034891+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:31:35.843760+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:31:47.016574+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:31:47.698634+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:31:47.698681+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:31:47.698687+00:00 app[web.1]: ^^^^
+2025-04-02T07:31:47.698690+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:31:47.698690+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:31:47.698690+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:31:47.698693+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:31:47.698693+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:31:47.698699+00:00 app[web.1]: 
+2025-04-02T07:31:47.698701+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:31:47.764785+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:31:47.786519+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:33:56.295849+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b2a66054-2258-9c19-8be5-aded4bb68f28 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T07:34:05.620637+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:34:12.325359+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:34:12.934042+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:34:12.871864+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:34:12.871876+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:34:12.871877+00:00 app[web.1]: ^^^^
+2025-04-02T07:34:12.871878+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:34:12.871878+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:34:12.871878+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:34:12.871879+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:34:12.871879+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:34:12.871879+00:00 app[web.1]: 
+2025-04-02T07:34:12.871880+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:34:12.959873+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:34:04.376083+00:00 app[api]: Release v33 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:34:04.376083+00:00 app[api]: Set APP_URL config vars by user nianyshoppinghub@gmail.com
+2025-04-02T07:35:09.146119+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=17478df2-9a7b-0201-9cb3-75feba5f5002 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T07:35:41.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T07:36:16.860989+00:00 app[api]: Deploy 540311b7 by user nianyshoppinghub@gmail.com
+2025-04-02T07:36:16.860989+00:00 app[api]: Release v34 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:36:17.996229+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T07:36:20.000000+00:00 app[api]: Build succeeded
+2025-04-02T07:36:24.720146+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T07:36:25.362245+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T07:36:25.300938+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T07:36:25.300974+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T07:36:25.300975+00:00 app[web.1]: ^^^^
+2025-04-02T07:36:25.300976+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T07:36:25.300976+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T07:36:25.300976+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T07:36:25.300977+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T07:36:25.300977+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T07:36:25.300977+00:00 app[web.1]: 
+2025-04-02T07:36:25.300978+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T07:36:25.382717+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T07:36:33.058086+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=f58cbb4e-39ab-c0a4-8b89-7312d4ae8506 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+
