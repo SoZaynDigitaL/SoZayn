@@ -1,43 +1,33 @@
 #!/bin/bash
 
-# Heroku build script
-# This script helps ensure proper module resolution in the Heroku environment
+# Log Node.js version
+echo "Node.js version: $(node -v)"
+echo "npm version: $(npm -v)"
 
-echo "Starting Heroku build process..."
+# Install dependencies
+echo "Installing dependencies..."
+npm install
 
-# Check if we're in a production environment
-if [ "$NODE_ENV" != "production" ]; then
-  echo "Not in production environment, skipping build steps"
-  exit 0
-fi
-
-# Build the frontend application
-echo "Building client application..."
+# Build frontend
+echo "Building frontend..."
 npm run build
 
-# Check if build was successful
-if [ ! -d "./dist" ]; then
-  echo "Error: Build directory not found!"
+# Check if dist directory exists
+if [ -d "dist" ]; then
+  echo "Build successful! dist directory created."
+  ls -la dist
+else
+  echo "Build failed! dist directory not found."
   exit 1
 fi
 
-echo "Build directory exists, listing contents:"
-find ./dist -type f | sort
+# Copy standalone package.json to root
+echo "Setting up standalone server..."
+cp package-standalone.json package.json
 
-# Create any necessary server-side files for production
-echo "Preparing server for production..."
+# Install standalone server dependencies
+echo "Installing standalone server dependencies..."
+npm install --production
 
-# Create production server directory if it doesn't exist
-if [ ! -d "./server-prod" ]; then
-  mkdir -p ./server-prod
-  echo "Created server-prod directory"
-fi
-
-# Print environment information for debugging
-echo "Node version: $(node -v)"
-echo "NPM version: $(npm -v)"
-echo "Current directory: $(pwd)"
-echo "Process environment: $NODE_ENV"
-
-echo "Heroku build completed successfully!"
-exit 0
+# Log completion
+echo "Build process completed successfully!"

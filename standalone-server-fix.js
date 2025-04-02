@@ -2,6 +2,12 @@
 // This file contains everything needed to run the application in production
 // using CommonJS modules for better compatibility with older Node.js versions
 
+// Check if this is a CommonJS environment
+if (typeof require === 'undefined') {
+  console.error('This script must be run in a CommonJS environment');
+  process.exit(1);
+}
+
 // Check Node.js version for compatibility warnings
 const nodeVersion = process.version;
 console.log(`Running on Node.js ${nodeVersion}`);
@@ -11,19 +17,48 @@ if (nodeVersion.startsWith('v22')) {
   console.warn('Some functionality may not work correctly on Node.js v22');
 }
 
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const { createServer } = require('http');
-const { Pool } = require('pg');
-const session = require('express-session');
-const connectPg = require('connect-pg-simple');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const { randomBytes, scrypt, timingSafeEqual } = require('crypto');
-const { promisify } = require('util');
-const cors = require('cors');
-const compression = require('compression');
+// Show environment information
+console.log('Current Working Directory:', process.cwd());
+console.log('Environment Variables:');
+Object.keys(process.env).forEach(key => {
+  if (!key.includes('SECRET') && !key.includes('KEY') && !key.includes('PASSWORD')) {
+    console.log(`  ${key}=${process.env[key]}`);
+  } else {
+    console.log(`  ${key}=[REDACTED]`);
+  }
+});
+
+// Importing required modules
+let express, path, fs, createServer, Pool, session, connectPg, passport;
+let LocalStrategy, cors, compression, randomBytes, scrypt, timingSafeEqual, promisify;
+
+// Try to require modules and show any errors
+try {
+  // Core Node.js modules
+  express = require('express');
+  path = require('path');
+  fs = require('fs');
+  createServer = require('http').createServer;
+  const crypto = require('crypto');
+  randomBytes = crypto.randomBytes;
+  scrypt = crypto.scrypt;
+  timingSafeEqual = crypto.timingSafeEqual;
+  promisify = require('util').promisify;
+
+  // Third-party modules
+  Pool = require('pg').Pool;
+  session = require('express-session');
+  connectPg = require('connect-pg-simple');
+  passport = require('passport');
+  LocalStrategy = require('passport-local').Strategy;
+  cors = require('cors');
+  compression = require('compression');
+  
+  console.log('Successfully loaded all modules');
+} catch (error) {
+  console.error('Error loading modules:', error);
+  process.exit(1);
+}
 
 // Initialize Express app
 const app = express();
