@@ -1,1 +1,1 @@
-web: node --experimental-modules --enable-source-maps standalone-server.js
+web: node standalone-server-fix.js

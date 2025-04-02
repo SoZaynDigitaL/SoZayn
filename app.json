@@ -81,5 +81,5 @@
       "url": "heroku/nodejs"
     }
   ],
-  "stack": "heroku-20"
+  "stack": "heroku-22"
 }
