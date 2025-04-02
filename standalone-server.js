@@ -25,8 +25,36 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable trust proxy for Heroku
-app.set('trust proxy', 1);
+// Enable trust proxy for Heroku - very important for sessions to work
+app.enable('trust proxy');
+console.log('Trust proxy setting:', app.get('trust proxy'));
+
+// Force HTTPS redirect on Heroku
+app.use((req, res, next) => {
+  // Skip for health checks and local development
+  if (process.env.NODE_ENV === 'production' || process.env.FORCE_SSL === 'true') {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      console.log('Redirecting to HTTPS:', req.originalUrl);
+      return res.redirect(`https://${req.hostname}${req.originalUrl}`);
+    }
+  }
+  next();
+});
+
+// Log request information for debugging
+app.use((req, res, next) => {
+  // Log IP address details for every request
+  console.log('IP Address Debug:', {
+    ip: req.ip,
+    ips: req.ips,
+    xForwardedFor: req.headers['x-forwarded-for'],
+    xForwardedProto: req.headers['x-forwarded-proto'],
+    originalUrl: req.originalUrl,
+    protocol: req.protocol,
+    isSecure: req.secure
+  });
+  next();
+});
 
 // Set up middleware
 app.use(express.json());
@@ -64,16 +92,27 @@ const sessionStore = new PostgresSessionStore({
 });
 
 // Configure session
+console.log('Configuring session for environment:', process.env.NODE_ENV || 'development');
+
+// Force secure cookies in production (Heroku), regardless of the request protocol
+const isProduction = process.env.NODE_ENV === 'production';
+const cookieSettings = {
+  secure: isProduction,
+  httpOnly: true,
+  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  path: '/',
+  sameSite: isProduction ? 'none' : 'lax'
+};
+
+console.log('Cookie settings:', cookieSettings);
+
 app.use(session({
   store: sessionStore,
   secret: process.env.SESSION_SECRET || 'development_secret',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-  },
+  rolling: true, // Force cookie to be set on every response
+  cookie: cookieSettings,
   proxy: true // Important for Heroku
 }));
 
@@ -188,16 +227,71 @@ app.get('/api/user', (req, res) => {
   res.json(req.user);
 });
 
-// Debug endpoint
+// Debug endpoint with enhanced Heroku diagnostics
 app.get('/api/debug', async (req, res) => {
   try {
     const dbResponse = await testDatabaseConnection();
     
+    // Get environment variables (excluding sensitive ones)
+    const safeEnvVars = {};
+    for (const key in process.env) {
+      if (!key.includes('SECRET') && !key.includes('KEY') && !key.includes('PASSWORD')) {
+        safeEnvVars[key] = process.env[key];
+      } else {
+        safeEnvVars[key] = '[REDACTED]';
+      }
+    }
+    
+    // Check for Heroku-specific environment variables
+    const isHeroku = !!process.env.DYNO;
+    
+    // Capture request information
+    const requestInfo = {
+      ip: req.ip,
+      ips: req.ips,
+      originalUrl: req.originalUrl,
+      protocol: req.protocol,
+      secure: req.secure,
+      headers: {
+        ...req.headers,
+        // Don't log authorization headers
+        authorization: req.headers.authorization ? '[PRESENT]' : '[ABSENT]',
+        cookie: req.headers.cookie ? '[PRESENT]' : '[ABSENT]'
+      }
+    };
+    
+    // Session info (safely)
+    const sessionInfo = req.session ? {
+      id: req.session.id,
+      cookie: req.session.cookie ? {
+        maxAge: req.session.cookie.maxAge,
+        secure: req.session.cookie.secure,
+        httpOnly: req.session.cookie.httpOnly,
+        sameSite: req.session.cookie.sameSite,
+        domain: req.session.cookie.domain,
+        path: req.session.cookie.path
+      } : 'No cookie',
+      authenticated: req.isAuthenticated ? req.isAuthenticated() : 'Unknown'
+    } : 'No session';
+    
+    // Server configuration
+    const serverConfig = {
+      trustProxy: app.get('trust proxy'),
+      port: PORT,
+      sessionSecret: process.env.SESSION_SECRET ? '[SET]' : '[NOT SET]'
+    };
+    
     res.json({
       environment: process.env.NODE_ENV || 'development',
+      isHeroku,
+      dyno: process.env.DYNO,
+      serverConfig,
       nodeVersion: process.version,
       postgresConnected: dbResponse,
       sessionConfigured: !!sessionStore,
+      sessionInfo,
+      requestInfo,
+      trustProxyEnabled: !!app.get('trust proxy'),
       currentTime: new Date().toISOString(),
       directories: {
         root: fs.existsSync('/app') ? 
@@ -206,10 +300,16 @@ app.get('/api/debug', async (req, res) => {
         dist: fs.existsSync(path.join(__dirname, 'dist')) ? 
           fs.readdirSync(path.join(__dirname, 'dist')).filter(f => !f.startsWith('.')).join(', ') : 
           'Not accessible'
-      }
+      },
+      safeEnvVars
     });
   } catch (error) {
-    res.status(500).json({ error: error.message, stack: error.stack });
+    console.error('Debug endpoint error:', error);
+    res.status(500).json({ 
+      error: error.message, 
+      stack: error.stack,
+      message: 'An error occurred while gathering debug information'
+    });
   }
 });
 
