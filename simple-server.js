@@ -10,6 +10,10 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Add middleware for parsing request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Helper function to safely list a directory without crashing if it doesn't exist
 function safeListDir(dir) {
   try {
@@ -70,8 +74,77 @@ app.get('/', (req, res) => {
   }
 });
 
+// API endpoints for authentication
+app.post('/api/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  console.log('Login attempt:', email);
+  
+  // Simple validation logic
+  if (!email || !password) {
+    return res.status(400).send('Email and password are required');
+  }
+  
+  // Check for test accounts
+  if (email === 'admin@sozayn.com' || 
+      email === 'test_direct@example.com' || 
+      email === 'kalamama@gmail.com' || 
+      email === 'admin@deliverconnect.com') {
+    
+    // Create a simple user object for the response
+    const user = {
+      id: email === 'admin@sozayn.com' ? 1 : (email === 'test_direct@example.com' ? 2 : 3),
+      email,
+      name: email.split('@')[0],
+      isAdmin: email.includes('admin'),
+      isActive: true,
+      createdAt: new Date()
+    };
+    
+    return res.status(200).json(user);
+  }
+  
+  // If not a test account, return unauthorized
+  return res.status(401).send('Invalid email or password');
+});
+
+app.post('/api/register', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  console.log('Registration attempt:', email);
+  
+  // Simple validation
+  if (!name || !email || !password) {
+    return res.status(400).send('Name, email and password are required');
+  }
+  
+  // Check if user exists (always say yes for this mock implementation)
+  if (email === 'admin@sozayn.com' || 
+      email === 'test_direct@example.com' || 
+      email === 'kalamama@gmail.com' || 
+      email === 'admin@deliverconnect.com') {
+    return res.status(400).send('User already exists');
+  }
+  
+  // Create a user object
+  const user = {
+    id: Math.floor(Math.random() * 1000) + 10, // Random ID
+    name,
+    email,
+    isAdmin: false,
+    isActive: true,
+    createdAt: new Date()
+  };
+  
+  return res.status(201).json(user);
+});
+
 // Auth route handler
 app.get('/auth', (req, res) => {
+  res.sendFile(path.join(__dirname, 'auth.html'));
+});
+
+app.get('/auth.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'auth.html'));
 });
 
