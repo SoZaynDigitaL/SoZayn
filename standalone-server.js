@@ -25,6 +25,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Enable trust proxy for Heroku
+app.set('trust proxy', 1);
+
 // Set up middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,9 +37,9 @@ app.use(compression());
 // Database connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: process.env.NODE_ENV === 'production' ? {
+    rejectUnauthorized: false // Required for Heroku Postgres
+  } : undefined
 });
 
 // Test database connection
@@ -68,8 +71,10 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-  }
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    sameSite: 'none'
+  },
+  proxy: true // Important for Heroku
 }));
 
 // Password utilities
