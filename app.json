@@ -1,0 +1,43 @@
+{
+  "name": "SoZayn Digital Era",
+  "description": "A middleware service connecting Shopify stores with third-party delivery services",
+  "keywords": [
+    "shopify",
+    "delivery",
+    "middleware",
+    "logistics"
+  ],
+  "website": "https://sozayndigital-e2112b66b875.herokuapp.com/",
+  "repository": "https://github.com/yourusername/sozayn",
+  "success_url": "/",
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment for the application",
+      "value": "production"
+    },
+    "SESSION_SECRET": {
+      "description": "A secret key for verifying the integrity of signed cookies",
+      "generator": "secret"
+    },
+    "JWT_SECRET": {
+      "description": "A secret key for JWT token generation and validation",
+      "generator": "secret"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
