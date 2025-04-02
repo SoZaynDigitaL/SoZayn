@@ -136,35 +136,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: async (credentials: LoginCredentials) => {
       console.log("Attempting login with:", credentials.email);
       
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-        credentials: 'include',
-      });
-      
-      if (!res.ok) {
-        let errorMessage = 'Login failed';
-        try {
-          const contentType = res.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const errorJson = await res.json();
-            if (errorJson.message) {
-              errorMessage = errorJson.message;
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+          credentials: 'include',
+        });
+        
+        console.log("Login response status:", res.status);
+        
+        if (!res.ok) {
+          let errorMessage = 'Login failed';
+          try {
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              const errorJson = await res.json();
+              if (errorJson.message) {
+                errorMessage = errorJson.message;
+              }
+            } else {
+              errorMessage = await res.text() || res.statusText || `Error ${res.status}`;
             }
-          } else {
-            errorMessage = await res.text() || res.statusText || `Error ${res.status}`;
+          } catch (e) {
+            console.error('Error parsing error response:', e);
           }
-        } catch (e) {
-          console.error('Error parsing error response:', e);
+          
+          throw new Error(errorMessage);
         }
         
-        throw new Error(errorMessage);
+        const data = await res.json();
+        console.log("Login response data:", {
+          hasUser: !!data.user,
+          hasToken: !!data.token,
+          user: data.user ? {
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.name,
+            isAdmin: data.user.isAdmin
+          } : null
+        });
+        
+        return data;
+      } catch (err) {
+        console.error("Error in login fetch:", err);
+        throw err;
       }
-      
-      return await res.json();
     },
     onSuccess: (data) => {
       console.log("Login successful!");
@@ -177,10 +196,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.warn("No token received in login response");
       }
       
-      // Update the user data in the query cache
+      // Update the user data
       if (data.user) {
         setUser(data.user);
-        console.log("User data updated in state");
+        console.log("User data updated in state:", data.user.email);
+        
+        // Force a reload of the application to make sure the auth state is properly recognized
+        setTimeout(() => {
+          window.location.href = data.user.isAdmin ? '/admin' : '/dashboard';
+        }, 500);
       }
       
       toast({

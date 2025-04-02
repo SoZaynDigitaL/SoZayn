@@ -75,6 +75,34 @@ export default function AuthPage() {
     console.log("Login form submitted:", { email: data.email, password: "***REDACTED***" });
     
     try {
+      // Directly call the API for login to debug
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        credentials: 'include',
+      });
+      
+      console.log("Login API direct response status:", response.status);
+      
+      const responseData = await response.json();
+      console.log("Login API direct response data:", responseData);
+      
+      if (responseData.token) {
+        localStorage.setItem("auth_token", responseData.token);
+        console.log("Auth token saved to localStorage");
+        
+        // Redirect based on user role
+        setTimeout(() => {
+          window.location.href = responseData.user?.isAdmin ? '/admin' : '/dashboard';
+        }, 500);
+        
+        return;
+      }
+      
+      // Fall back to the mutation if direct approach doesn't work
       await loginMutation.mutateAsync(data);
       console.log("Login mutation completed successfully");
     } catch (error) {
@@ -192,6 +220,13 @@ export default function AuthPage() {
               type="submit"
               disabled={loginMutation.isPending}
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => {
+                if (loginForm.formState.isValid) {
+                  console.log("Login form is valid, submitting...");
+                } else {
+                  console.log("Login form validation errors:", loginForm.formState.errors);
+                }
+              }}
             >
               {loginMutation.isPending ? (
                 <span className="flex items-center justify-center">
