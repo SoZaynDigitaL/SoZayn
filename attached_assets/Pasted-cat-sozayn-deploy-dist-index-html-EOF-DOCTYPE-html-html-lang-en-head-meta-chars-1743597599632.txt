@@ -1,0 +1,732 @@
+cat > ~/sozayn-deploy/dist/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoZayn</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <style>
+    :root {
+      --bg-dark: #0d1117;
+      --bg-card: #161b22;
+      --text-primary: #f0f6fc;
+      --text-secondary: #8b949e;
+      --accent-blue: #4361ee;
+      --accent-purple: #8957e5;
+      --accent-green: #2ea043;
+      --border-color: #30363d;
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+      --glow-blue: 0 0 70px rgba(67, 97, 238, 0.3);
+      --glow-purple: 0 0 70px rgba(137, 87, 229, 0.3);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    /* Header Styles */
+    header {
+      padding: 1.5rem 0;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    
+    .btn-outline {
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      background-color: transparent;
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--text-secondary);
+    }
+    
+    .btn-primary {
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: rgba(67, 97, 238, 0.8);
+      transform: translateY(-2px);
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .glow-effect {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+    }
+    
+    .glow-blue {
+      top: 20%;
+      right: -5%;
+      width: 350px;
+      height: 350px;
+      background: var(--accent-blue);
+      opacity: 0.2;
+      box-shadow: var(--glow-blue);
+    }
+    
+    .glow-purple {
+      bottom: 10%;
+      left: -10%;
+      width: 450px;
+      height: 450px;
+      background: var(--accent-purple);
+      opacity: 0.15;
+      box-shadow: var(--glow-purple);
+    }
+    
+    .hero-content {
+      display: flex;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+    }
+    
+    .hero-text {
+      flex: 1;
+      position: relative;
+    }
+    
+    .hero-line {
+      position: absolute;
+      top: -50px;
+      left: -15px;
+      width: 5px;
+      height: 120px;
+      background: linear-gradient(to bottom, var(--accent-blue), rgba(67, 97, 238, 0));
+      border-radius: 5px;
+    }
+    
+    .hero-heading {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -2px;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    
+    .hero-form {
+      display: flex;
+      max-width: 450px;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border-radius: 6px 0 0 6px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .hero-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+    
+    .hero-btn {
+      padding: 0.8rem 1.2rem;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      color: white;
+      font-weight: 500;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+    
+    .partners {
+      margin-top: 3rem;
+    }
+    
+    .partners-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .partners-logos {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      opacity: 0.6;
+    }
+    
+    .partners-logos img {
+      height: 25px;
+      filter: grayscale(100%) brightness(200%);
+    }
+    
+    .hero-visual {
+      flex: 1;
+      position: relative;
+    }
+    
+    .dashboard-card {
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-color);
+      max-width: 500px;
+      position: relative;
+      overflow: hidden;
+      transform: perspective(1000px) rotateY(-6deg) rotateX(2deg);
+    }
+    
+    .chart-container {
+      margin-bottom: 1.5rem;
+    }
+    
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .chart {
+      background-color: rgba(67, 97, 238, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .chart-wide {
+      grid-column: span 2;
+      height: 100px;
+    }
+    
+    .chart svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .action-btn {
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    
+    .action-indicators {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .indicator {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(67, 97, 238, 0.2);
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 8rem 0;
+      position: relative;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+      letter-spacing: -1px;
+    }
+    
+    .section-subtitle {
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 4rem;
+      font-size: 1.1rem;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--card-shadow);
+      border-color: var(--accent-blue);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    
+    /* Status Section */
+    .status {
+      padding: 6rem 0;
+      background-color: rgba(22, 27, 34, 0.7);
+      position: relative;
+    }
+    
+    .status-container {
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 2.5rem;
+      box-shadow: var(--card-shadow);
+    }
+    
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    
+    .status-icon {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+    }
+    
+    .status-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .status-item {
+      padding: 1.5rem;
+      background-color: var(--bg-dark);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .status-item h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .status-item p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 8rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-section h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+    }
+    
+    .cta-section p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .footer-logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+    
+    @media (max-width: 1024px) {
+      .hero-heading {
+        font-size: 3.5rem;
+      }
+      
+      .hero-content {
+        flex-direction: column;
+        gap: 3rem;
+      }
+      
+      .dashboard-card {
+        transform: none;
+        max-width: 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        order: 3;
+        width: 100%;
+        margin-top: 1rem;
+        justify-content: center;
+      }
+      
+      .hero-heading {
+        font-size: 2.8rem;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="/" class="logo">SoZayn</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#docs">Documentation</a>
+          <a href="#support">Support</a>
+        </div>
+        <div class="cta-buttons">
+          <a href="/auth" class="btn btn-outline">Sign in</a>
+          <a href="/auth" class="btn btn-primary">Get Started</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+  
+  <section class="hero">
+    <div class="glow-effect glow-blue"></div>
+    <div class="glow-effect glow-purple"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-line"></div>
+          <h1 class="hero-heading">Integrate Shopify with delivery services</h1>
+          <p class="hero-subtitle">Connect your Shopify store with leading delivery providers to streamline order fulfillment and optimize deliveries.</p>
+          
+          <a href="/auth" class="btn btn-primary" style="padding: 0.8rem 1.5rem; font-size: 1rem;">Start connecting now →</a>
+          
+          <div class="partners">
+            <p class="partners-text">Trusted by merchants delivering with</p>
+            <div class="partners-logos">
+              <span style="font-weight: 600; font-size: 1rem;">UberDirect</span>
+              <span style="font-weight: 600; font-size: 1rem;">JetGo</span>
+              <span style="font-weight: 600; font-size: 1rem;">Shopify</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="dashboard-card">
+            <div class="chart-container">
+              <div class="chart-grid">
+                <div class="chart">
+                  <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                    <path d="M0,25 C20,10 40,40 60,30 C80,20 100,25 120,15 C140,5 160,20 180,25 L200,25" stroke="var(--accent-blue)" fill="none" stroke-width="2" />
+                  </svg>
+                </div>
+                <div class="chart">
+                  <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                    <path d="M0,25 L20,15 L40,30 L60,20 L80,35 L100,25 L120,10 L140,30 L160,20 L180,5 L200,15" stroke="var(--accent-blue)" fill="none" stroke-width="2" />
+                  </svg>
+                </div>
+                <div class="chart chart-wide">
+                  <svg viewBox="0 0 400 50" preserveAspectRatio="none">
+                    <path d="M0,30 L20,20 L40,35 L60,25 L80,35 L100,20 L120,30 L140,15 L160,25 L180,10 L200,20 L220,30 L240,15 L260,25 L280,10 L300,20 L320,30 L340,20 L360,25 L380,15 L400,25" stroke="var(--accent-blue)" fill="none" stroke-width="2" />
+                  </svg>
+                </div>
+              </div>
+              <div class="action-row">
+                <button class="action-btn">View Dashboard</button>
+                <div class="action-indicators">
+                  <div class="indicator"></div>
+                  <div class="indicator"></div>
+                  <div class="indicator"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="section-title">Powerful delivery integration</h2>
+      <p class="section-subtitle">Streamline your order fulfillment with our delivery integration platform</p>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Seamless Shopify Integration</h3>
+          <p>Connect your Shopify store in minutes with our frictionless integration. Automatically sync orders for delivery processing without any manual steps.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🚚</div>
+          <h3>Multi-service Delivery</h3>
+          <p>Access UberDirect and JetGo from a single platform. Choose the right delivery service for each order or let our system pick the optimal option.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Analytics</h3>
+          <p>Track delivery performance with our comprehensive analytics dashboard. Monitor success rates, delivery times, and customer satisfaction in real-time.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Advanced Routing</h3>
+          <p>Optimize delivery routes automatically for maximum efficiency. Reduce delivery times and costs with intelligent routing algorithms.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Status Notifications</h3>
+          <p>Keep customers informed with automated status updates. Send notifications at every step of the delivery process to improve satisfaction.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure Platform</h3>
+          <p>Protect your data and your customers' information with our enterprise-grade security protocols and encrypted connections.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="status">
+    <div class="container">
+      <div class="status-container">
+        <div class="status-header">
+          <div class="status-icon"></div>
+          <div class="status-title">System Status</div>
+        </div>
+        
+        <div class="status-grid">
+          <div class="status-item">
+            <h4>API Services</h4>
+            <p>All systems operational</p>
+          </div>
+          
+          <div class="status-item">
+            <h4>Shopify Integration</h4>
+            <p>Connected</p>
+          </div>
+          
+          <div class="status-item">
+            <h4>UberDirect Service</h4>
+            <p>Available</p>
+          </div>
+          
+          <div class="status-item">
+            <h4>JetGo Service</h4>
+            <p>Available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to optimize your deliveries?</h2>
+      <p>Get started with SoZayn today and transform how you handle order fulfillment.</p>
+      <div class="cta-buttons">
+        <a href="/auth" class="btn btn-primary" style="padding: 0.8rem 1.8rem; font-size: 1rem;">Create account</a>
+        <a href="#contact" class="btn btn-outline" style="padding: 0.8rem 1.8rem; font-size: 1rem;">Contact sales</a>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">SoZayn</div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#docs">Documentation</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+EOF

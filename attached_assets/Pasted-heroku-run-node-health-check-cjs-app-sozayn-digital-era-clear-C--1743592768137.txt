@@ -1,0 +1,32 @@
+heroku run node health-check.cjs --app sozayn-digital-era
+clear
+^C%                                                                      syedsany@MacBookAir ~ % clear
+
+syedsany@MacBookAir ~ % heroku logs --tail --app sozayn-digital-era
+2025-04-02T07:04:39.279904+00:00 app[api]: Initial release by user nianyshoppinghub@gmail.com
+2025-04-02T07:04:39.279904+00:00 app[api]: Release v1 created by user nianyshoppinghub@gmail.com
+2025-04-02T07:04:39.484222+00:00 app[api]: Enable Logplex by user nianyshoppinghub@gmail.com
+2025-04-02T07:04:39.484222+00:00 app[api]: Release v2 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:01.396432+00:00 heroku[router]: at=error code=H81 desc="Blank app" method=GET path="/" host=sozayn-digital-era-060d2d6a775e.herokuapp.com request_id=59e36be4-ce36-2df1-6d82-c66767b692fa fwd="" dyno= connect=0ms service=0ms status=502 bytes=575 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:12:01.674187+00:00 heroku[router]: at=error code=H81 desc="Blank app" method=GET path="/favicon.ico" host=sozayn-digital-era-060d2d6a775e.herokuapp.com request_id=c10ba628-0521-b493-a019-6536e0a5ffcb fwd="" dyno= connect=0ms service=0ms status=502 bytes=575 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:12:54.799909+00:00 app[api]: Set NODE_VERSION config vars by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:54.799909+00:00 app[api]: Release v3 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:55.475485+00:00 app[api]: Set JWT_SECRET config vars by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:55.475485+00:00 app[api]: Release v4 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:56.101511+00:00 app[api]: Release v5 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:12:56.101511+00:00 app[api]: Set SESSION_SECRET config vars by user nianyshoppinghub@gmail.com
+heroku run node health-check.cjs --app sozayn-digital-era
+^C%                                                                      syedsany@MacBookAir ~ % heroku config:set JWT_SECRET=a_long_random_string_here --app sozayn-digital-era
+heroku config:set SESSION_SECRET=another_long_random_string_here --app sozayn-digital-era
+Setting JWT_SECRET and restarting ⬢ sozayn-digital-era... done, v6
+JWT_SECRET: a_long_random_string_here
+Setting SESSION_SECRET and restarting ⬢ sozayn-digital-era... done, v7
+SESSION_SECRET: another_long_random_string_here
+syedsany@MacBookAir ~ % git remote -v
+fatal: not a git repository (or any of the parent directories): .git
+syedsany@MacBookAir ~ % heroku git:remote -a sozayn-digital-era
+    Error: Command failed: git remote
+    fatal: not a git repository (or any of the parent directories): 
+    .git
+
+    Code: 128

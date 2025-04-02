@@ -1,0 +1,284 @@
+syedsany@MacBookAir sozayn-project % mkdir ~/sozayn-deploy
+syedsany@MacBookAir sozayn-project % cd ~/sozayn-deploy
+syedsany@MacBookAir sozayn-deploy % git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+Initialized empty Git repository in /Users/syedsany/sozayn-deploy/.git/
+syedsany@MacBookAir sozayn-deploy % heroku git:remote -a sozayndigital
+set git remote heroku to https://git.heroku.com/sozayndigital.git
+syedsany@MacBookAir sozayn-deploy % echo "web: node standalone-server-fix.cjs" > Procfile
+syedsany@MacBookAir sozayn-deploy % cat > package.json << 'EOF'
+{
+  "name": "sozayn-digital-era",
+  "version": "1.0.0",
+  "description": "Middleware service connecting Shopify with third-party delivery services",
+  "main": "standalone-server-fix.cjs",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "node standalone-server-fix.cjs"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "connect-pg-simple": "^8.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.11.3"
+  }
+}
+EOF
+syedsany@MacBookAir sozayn-deploy % cat > standalone-server-fix.cjs << 'EOF'
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Basic middleware
+app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    nodeVersion: process.version
+  });
+});
+
+// Simple root route
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>SoZayn Digital Era</title>
+      <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7f9; color: #333; }
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0066ff; }
+        p { line-height: 1.6; }
+        .status { padding: 10px; background: #e6f7ff; border-left: 4px solid #0066ff; margin: 20px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>SoZayn Digital Era</h1>
+        <p>The server is running correctly.</p>
+        <div class="status">
+          <p><strong>Server Status:</strong> Online</p>
+          <p><strong>Node Version:</strong> ${process.version}</p>
+          <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'development'}</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+EOF
+syedsany@MacBookAir sozayn-deploy % git add Procfile package.json standalone-server-fix.cjs
+syedsany@MacBookAir sozayn-deploy % git commit -m "Initial deployment to Heroku"
+[master (root-commit) 945fb4a] Initial deployment to Heroku
+ 3 files changed, 75 insertions(+)
+ create mode 100644 Procfile
+ create mode 100644 package.json
+ create mode 100644 standalone-server-fix.cjs
+syedsany@MacBookAir sozayn-deploy % git branch -M main
+syedsany@MacBookAir sozayn-deploy % git push heroku main --force
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 1.37 KiB | 1.37 MiB/s, done.
+Total 5 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Updated 3 paths from ab4e9ab
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-24 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.x
+remote:        engines.npm (package.json):    unspecified (use default)
+remote:        
+remote:        Resolving node version 18.x...
+remote:        Downloading and installing node 18.20.8...
+remote:        Using default npm version: 10.8.2
+remote:        
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:        
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        
+remote:        added 111 packages, and audited 112 packages in 2s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice
+remote:        npm notice New major version of npm available! 10.8.2 -> 11.2.0
+remote:        npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+remote:        npm notice To update run: npm install -g npm@11.2.0
+remote:        npm notice
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - node_modules
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 112 packages in 495ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.9M
+remote: -----> Launching...
+remote:        Released v74
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+ + d68c61e...945fb4a main -> main (forced update)
+syedsany@MacBookAir sozayn-deploy % heroku logs --tail --app sozayndigital
+2025-04-02T11:01:36.413433+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:01:36.442915+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:03:35.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T11:03:36.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T11:04:07.046998+00:00 app[api]: Deploy 59c05e66 by user nianyshoppinghub@gmail.com
+2025-04-02T11:04:07.046998+00:00 app[api]: Release v70 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:04:08.240121+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:04:10.000000+00:00 app[api]: Build succeeded
+2025-04-02T11:04:10.431530+00:00 app[api]: Release v71 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:04:10.431530+00:00 app[api]: Deploy 59c05e66 by user nianyshoppinghub@gmail.com
+2025-04-02T11:04:11.842456+00:00 heroku[web.1]: Restarting
+2025-04-02T11:04:13.000000+00:00 app[api]: Build succeeded
+2025-04-02T11:04:13.193690+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:04:13.710503+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:04:13.711028+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:04:13.711029+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:04:13.711029+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:04:13.711030+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:04:13.711030+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:04:13.754745+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:04:15.913594+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=9f8f032d-fe10-73d3-46b9-61d9634f7d91 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:04:16.818106+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:04:17.345655+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:04:17.345955+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:04:17.345987+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:04:17.346005+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:04:17.346026+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:04:17.346127+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:04:17.403045+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:04:17.431198+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:05:14.239760+00:00 heroku[run.8289]: Process exited with status 129
+2025-04-02T11:05:14.261649+00:00 heroku[run.8289]: State changed from up to complete
+2025-04-02T11:05:48.191202+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=d44c47da-92aa-64de-2150-32c4b99acadf fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:06:41.095593+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=471cf1c1-b7aa-02e4-a879-32ab6c41d88b fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:12:43.041839+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:12:47.849723+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:12:48.333302+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:12:48.333555+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:12:48.333574+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:12:48.333595+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:12:48.333615+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:12:48.333694+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:12:48.370206+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:12:48.395970+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:14:21.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T11:14:29.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T11:14:30.369018+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=9aa24319-bf48-4331-b646-257b39bc0741 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:14:55.244232+00:00 app[api]: Deploy e2162b04 by user nianyshoppinghub@gmail.com
+2025-04-02T11:14:55.244232+00:00 app[api]: Release v72 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:14:56.393799+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:14:59.000000+00:00 app[api]: Build succeeded
+2025-04-02T11:15:01.320564+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:15:01.890380+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:15:01.891618+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:15:01.891619+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:15:01.891620+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:15:01.891620+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:15:01.891621+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:15:01.941805+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:15:01.969316+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:15:06.540299+00:00 app[api]: Deploy e2162b04 by user nianyshoppinghub@gmail.com
+2025-04-02T11:15:06.540299+00:00 app[api]: Release v73 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:15:07.721449+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:15:10.000000+00:00 app[api]: Build succeeded
+2025-04-02T11:15:12.730377+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:15:13.256945+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:15:13.257162+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:15:13.257178+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:15:13.257217+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:15:13.257228+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:15:13.257307+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:15:13.301661+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:15:13.324402+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:15:45.857413+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=827ed10b-7e6a-c56a-1417-b13ee152e7ec fwd="" dyno= connect=0ms service=0ms status=503 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:16:03.971344+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b70274cd-9391-1694-ed71-1c5692b1b262 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:16:09.561948+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=3ecdfc71-3e8e-863e-3b82-5011bb16ef6c fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:17:33.210672+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=c7fd6760-a7cb-f0d1-ff88-52a8e62ec0c2 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:23:35.054461+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:23:40.444639+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T11:23:40.954945+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T11:23:40.955228+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T11:23:40.955261+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T11:23:40.955288+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T11:23:40.955307+00:00 app[web.1]: Exiting due to Node.js version mismatch in production environment
+2025-04-02T11:23:40.955389+00:00 app[web.1]: Set FORCE_NODE_VERSION=true to override this check (not recommended)
+2025-04-02T11:23:40.997554+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T11:23:41.021126+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T11:24:14.897952+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=55a4a0bc-24e7-a887-618a-d8532a96c419 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:26:27.464901+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=3a4e4c2e-52db-667a-9bd1-7bee1df8b9c5 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:32:53.271634+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=6bc60ecb-66ff-5ea4-ae3d-f6b2e93236c9 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:34:12.252856+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=0d1e8831-2e15-793d-6b64-29c9433a5e01 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:38:32.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T11:38:53.114284+00:00 app[api]: Deploy 945fb4a8 by user nianyshoppinghub@gmail.com
+2025-04-02T11:38:53.114284+00:00 app[api]: Release v74 created by user nianyshoppinghub@gmail.com
+2025-04-02T11:38:54.000000+00:00 app[api]: Build succeeded
+2025-04-02T11:38:54.893433+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T11:38:56.846254+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.cjs`
+2025-04-02T11:38:57.423795+00:00 app[web.1]: Server running on port 42669
+2025-04-02T11:38:57.423972+00:00 app[web.1]: Environment: production
+2025-04-02T11:38:57.959396+00:00 heroku[web.1]: State changed from starting to up
+2025-04-02T11:40:13.239665+00:00 heroku[router]: at=info method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=b106de04-5384-7eb4-955a-415165a2237a fwd="162.84.176.78" dyno=web.1 connect=0ms service=5ms status=200 bytes=933 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T11:40:13.402121+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=47f49b97-b3fb-2338-bb45-9ca2776027a1 fwd="162.84.176.78" dyno=web.1 connect=0ms service=1ms status=404 bytes=150 protocol=http1.1 tls=true tls_version=unknown
+

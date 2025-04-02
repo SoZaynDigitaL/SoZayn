@@ -1,0 +1,192 @@
+syedsany@MacBookAir sozayn-deploy % heroku config --app sozayndigital
+=== sozayndigital Config Vars
+
+APP_URL:            https://sozayndigital-e2112b66b875.herokuapp.com/
+DATABASE_URL:       postgres://uiuetisjnh408:p8b36feb4d1b17af8719f6da2d7bf86d7d990eff401993c991f400e1a3ff4d009@c7u1tn6bvvsodf.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d2m76p6u04kakq
+FORCE_NODE_VERSION: true
+JWT_SECRET:         CWMEOQlznYqD56WmJD12HP/BT+UJ7AJoNK29EXOu1Hs=
+NODE_ENV:           production
+NODE_VERSION:       18.19.1
+PROCFILE:           web: node standalone-server-fix.js
+SESSION_SECRET:     DSfkrUlZJW/kgJT0HUR5a0QPMPHQurafnwZ2EZBm5Cg=
+syedsany@MacBookAir sozayn-deploy % cd ~/sozayn-deploy
+syedsany@MacBookAir sozayn-deploy % nano standalone-server-fix.cjs
+syedsany@MacBookAir sozayn-deploy % heroku config --app sozayndigital
+=== sozayndigital Config Vars
+
+APP_URL:            https://sozayndigital-e2112b66b875.herokuapp.com/
+DATABASE_URL:       postgres://uiuetisjnh408:p8b36feb4d1b17af8719f6da2d7bf86d7d990eff401993c991f400e1a3ff4d009@c7u1tn6bvvsodf.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d2m76p6u04kakq
+FORCE_NODE_VERSION: true
+JWT_SECRET:         CWMEOQlznYqD56WmJD12HP/BT+UJ7AJoNK29EXOu1Hs=
+NODE_ENV:           production
+NODE_VERSION:       18.19.1
+PROCFILE:           web: node standalone-server-fix.js
+SESSION_SECRET:     DSfkrUlZJW/kgJT0HUR5a0QPMPHQurafnwZ2EZBm5Cg=
+syedsany@MacBookAir sozayn-deploy % cd ~/sozayn-deploy
+syedsany@MacBookAir sozayn-deploy % nano standalone-server-fix.cjs
+syedsany@MacBookAir sozayn-deploy % clear
+
+syedsany@MacBookAir sozayn-deploy % heroku config --app sozayndigital
+=== sozayndigital Config Vars
+
+APP_URL:            https://sozayndigital-e2112b66b875.herokuapp.com/
+DATABASE_URL:       postgres://uiuetisjnh408:p8b36feb4d1b17af8719f6da2d7bf86d7d990eff401993c991f400e1a3ff4d009@c7u1tn6bvvsodf.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d2m76p6u04kakq
+FORCE_NODE_VERSION: true
+JWT_SECRET:         CWMEOQlznYqD56WmJD12HP/BT+UJ7AJoNK29EXOu1Hs=
+NODE_ENV:           production
+NODE_VERSION:       18.19.1
+PROCFILE:           web: node standalone-server-fix.js
+SESSION_SECRET:     DSfkrUlZJW/kgJT0HUR5a0QPMPHQurafnwZ2EZBm5Cg=
+syedsany@MacBookAir sozayn-deploy % >....                                
+} else {
+  // Fallback root route if no dist directory
+  app.get('/', (req, res) => {
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>SoZayn Digital Era</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7f9; color: #333; }
+          .container { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+          h1 { color: #0066ff; }
+          p { line-height: 1.6; }
+          .status { padding: 10px; background: #e6f7ff; border-left: 4px solid #0066ff; margin: 20px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>SoZayn Digital Era</h1>
+          <p>The server is running correctly.</p>
+          <div class="status">
+            <p><strong>Server Status:</strong> Online</p>
+            <p><strong>Node Version:</strong> ${process.version}</p>
+            <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'development'}</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `);
+  });
+}
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'production' ? null : err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack
+  });
+});
+
+// Start the HTTP server
+const server = createServer(app);
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log('Testing database connection...');
+
+  testDatabaseConnection()
+    .then(connected => {
+      if (connected) {
+        console.log('Database connection successful');
+      } else {
+        console.warn('Database connection failed, but server will continue running');
+      }
+    })
+    .catch(err => {
+      console.error('Error testing database connection:', err);
+    });
+});
+
+module.exports = app;
+EOF
+syedsany@MacBookAir sozayn-deploy % git add standalone-server-fix.cjs
+git commit -m "Add database connection and authentication"
+git push heroku main
+[main 7187879] Add database connection and authentication
+ 1 file changed, 316 insertions(+), 30 deletions(-)
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 3.55 KiB | 3.55 MiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Updated 3 paths from 52ab483
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-24 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.x
+remote:        engines.npm (package.json):    unspecified (use default)
+remote:        
+remote:        Resolving node version 18.x...
+remote:        Downloading and installing node 18.20.8...
+remote:        Using default npm version: 10.8.2
+remote:        
+remote: -----> Restoring cache
+remote:        - node_modules
+remote:        
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        
+remote:        up to date, audited 112 packages in 579ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice
+remote:        npm notice New major version of npm available! 10.8.2 -> 11.2.0
+remote:        npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+remote:        npm notice To update run: npm install -g npm@11.2.0
+remote:        npm notice
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - node_modules
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 112 packages in 515ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.9M
+remote: -----> Launching...
+remote:        Released v76
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   945fb4a..7187879  main -> main
+syedsany@MacBookAir sozayn-deploy % heroku config:set JWT_SECRET=your_jwt_secret_here --app sozayndigital
+heroku config:set SESSION_SECRET=your_session_secret_here --app sozayndigital
+Setting JWT_SECRET and restarting ⬢ sozayndigital... done, v77
+JWT_SECRET: your_jwt_secret_here
+Setting SESSION_SECRET and restarting ⬢ sozayndigital... done, v78
+SESSION_SECRET: your_session_secret_here
+syedsany@MacBookAir sozayn-deploy % 
