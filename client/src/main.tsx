@@ -1,4 +1,5 @@
 import * as ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
@@ -8,12 +9,9 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   return false;
 };
 
+// Find the root element
 const rootElement = document.getElementById('root');
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(<App />);
-}
-const rootElement = document.getElementById("root");
+
 if (!rootElement) {
   console.error('Cannot find element with id "root". Please check your HTML structure.');
   

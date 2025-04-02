@@ -1,0 +1,89 @@
+-----> Building on the Heroku-24 stack
+-----> Using buildpack: heroku/nodejs
+-----> Node.js app detected
+       
+-----> Creating runtime environment
+       
+       NPM_CONFIG_LOGLEVEL=error
+       NODE_VERBOSE=false
+       NODE_ENV=production
+       NODE_MODULES_CACHE=true
+       
+-----> Installing binaries
+       engines.node (package.json):   unspecified
+       engines.npm (package.json):    unspecified (use default)
+       
+       Resolving node version 22.x...
+       Downloading and installing node 22.14.0...
+       Using default npm version: 10.9.2
+       
+-----> Restoring cache
+       - npm cache
+       
+-----> Installing dependencies
+       Installing node modules
+       
+       added 531 packages, and audited 532 packages in 5s
+       
+       66 packages are looking for funding
+         run `npm fund` for details
+       
+       8 moderate severity vulnerabilities
+       
+       To address issues that do not require attention, run:
+         npm audit fix
+       
+       To address all issues (including breaking changes), run:
+         npm audit fix --force
+       
+       Run `npm audit` for details.
+       
+-----> Build
+       Running build
+       
+       > rest-express@1.0.0 build
+       > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+       
+       vite v5.4.14 building for production...
+       transforming...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+       ✓ 3 modules transformed.
+x Build failed in 474ms
+error during build:
+[vite:esbuild] Transform failed with 1 error:
+/tmp/build_257963bf/client/src/main.tsx:16:6: ERROR: The symbol "rootElement" has already been declared
+file: /tmp/build_257963bf/client/src/main.tsx:16:6
+The symbol "rootElement" has already been declared
+14 |    root.render(<App />);
+15 |  }
+16 |  const rootElement = document.getElementById("root");
+   |        ^
+17 |  if (!rootElement) {
+18 |    console.error('Cannot find element with id "root". Please check your HTML structure.');
+    at failureErrorWithLog (/tmp/build_257963bf/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+    at /tmp/build_257963bf/node_modules/vite/node_modules/esbuild/lib/main.js:755:50
+    at responseCallbacks.<computed> (/tmp/build_257963bf/node_modules/vite/node_modules/esbuild/lib/main.js:622:9)
+    at handleIncomingPacket (/tmp/build_257963bf/node_modules/vite/node_modules/esbuild/lib/main.js:677:12)
+    at Socket.readFromStdout (/tmp/build_257963bf/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+-----> Build failed
+       
+       We're sorry this build is failing! You can troubleshoot common issues here:
+       https://devcenter.heroku.com/articles/troubleshooting-node-deploys
+       
+       Some possible problems:
+       
+       - Node version not specified in package.json
+         https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version
+       
+       Love,
+       Heroku
+       
+ !     Push rejected, failed to compile Node.js app.
+ !     Push failed

@@ -81,7 +81,7 @@ try {
     version: packageJson.version,
     description: packageJson.description,
     engines: {
-      node: "18.x" // Specify an older, more stable Node.js version
+      node: "18.19.1" // Specify the exact Node.js version from .node-version
     },
     main: "standalone-server.js",
     scripts: {
