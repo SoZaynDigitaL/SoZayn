@@ -36,6 +36,17 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
+  // Check URL for tab parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'register') {
+      setIsLogin(false);
+    } else if (tabParam === 'login') {
+      setIsLogin(true);
+    }
+  }, []);
+
   // Debug logs for auth state
   useEffect(() => {
     console.log("Auth page mounted, user state:", user ? "logged in" : "not logged in");

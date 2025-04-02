@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoZayn</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="/assets/css/main.css">
   <style>
     :root {
       --bg-dark: #0a0e17;
@@ -1116,6 +1115,20 @@
   </footer>
   
   <script>
+    // Function to redirect to auth with specific form showing (login or register)
+    function redirectToAuth(formType, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      
+      // Navigate to /auth with the form type as a parameter
+      if (formType === 'login') {
+        window.location.href = '/auth?tab=login';
+      } else {
+        window.location.href = '/auth?tab=register';
+      }
+    }
+    
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
@@ -1217,20 +1230,6 @@
         createPlatformVisualization();
       }
     });
-    
-    // Function to redirect to auth page with correct tab parameter
-    function redirectToAuth(formType, event) {
-      if (event) {
-        event.preventDefault();
-      }
-      
-      // Navigate to /auth with the form type as a parameter
-      if (formType === 'login') {
-        window.location.href = '/auth?tab=login';
-      } else {
-        window.location.href = '/auth?tab=register';
-      }
-    }
   </script>
 </body>
 </html>
