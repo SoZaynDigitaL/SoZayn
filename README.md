@@ -46,9 +46,11 @@ This application is optimized for deployment on Heroku. Follow these steps to de
    heroku create your-app-name
    ```
 
-2. Add PostgreSQL addon
+2. Add required addons
    ```
-   heroku addons:create heroku-postgresql:mini
+   heroku addons:create heroku-postgresql:standard-0
+   heroku addons:create papertrail:choklad
+   heroku addons:create newrelic:wayne
    ```
 
 3. Set environment variables
@@ -63,9 +65,24 @@ This application is optimized for deployment on Heroku. Follow these steps to de
    git push heroku main
    ```
 
-5. Run database migrations
+5. Scale to at least 2 dynos for redundancy
+   ```
+   heroku ps:scale web=2:standard-1x
+   ```
+
+6. Run database migrations
    ```
    heroku run npm run db:push
+   ```
+
+7. Enable Heroku SSL
+   ```
+   heroku certs:auto:enable
+   ```
+
+8. Configure custom maintenance pages
+   ```
+   heroku config:set MAINTENANCE_PAGE_URL=https://your-static-site.com/maintenance.html
    ```
 
 ## Troubleshooting Heroku Deployment
@@ -79,6 +96,22 @@ If you encounter the `ERR_MODULE_NOT_FOUND` error, try the following:
    ```
    heroku dyno:restart
    ```
+
+5. Check that the PostgreSQL database is properly provisioned and connected:
+   ```
+   heroku pg:info
+   ```
+
+6. Check the application logs for specific errors:
+   ```
+   heroku logs --tail
+   ```
+
+7. For database connection issues:
+   ```
+   heroku pg:credentials:url
+   ```
+   Then use these credentials to test the connection using a PostgreSQL client.
 
 ## License
 

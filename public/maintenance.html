@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoZayn Digital Era - Maintenance</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .logo {
+      font-weight: 800;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    
+    .icon {
+      margin: 2rem 0;
+      font-size: 4rem;
+      color: #6b7280;
+    }
+    
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #1f2937;
+    }
+    
+    .message {
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .estimated-time {
+      background-color: #f3f4f6;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">SoZayn</div>
+    
+    <div class="icon">⚙️</div>
+    
+    <h1 class="title">We're Currently Under Maintenance</h1>
+    
+    <p class="message">
+      We're performing scheduled maintenance to improve our service. 
+      SoZayn Digital Era will be back online shortly. We apologize for any inconvenience.
+    </p>
+    
+    <div class="estimated-time">
+      Estimated completion time: <span id="completion-time">15 minutes</span>
+    </div>
+    
+    <p>
+      If you have any urgent inquiries, please contact our support team at 
+      <a href="mailto:admin@sozayn.com">admin@sozayn.com</a>
+    </p>
+  </div>
+
+  <script>
+    // You can dynamically update the completion time if needed
+    const completionTimeSpan = document.getElementById('completion-time');
+    
+    // Example: Calculate time remaining based on a server-provided value
+    function updateTimeRemaining() {
+      // This would normally come from your server
+      const endTimeMs = new Date().getTime() + (15 * 60 * 1000); // 15 minutes from now
+      
+      const interval = setInterval(() => {
+        const currentTime = new Date().getTime();
+        const difference = endTimeMs - currentTime;
+        
+        if (difference <= 0) {
+          clearInterval(interval);
+          completionTimeSpan.textContent = 'Complete, refreshing soon...';
+          setTimeout(() => window.location.reload(), 5000);
+          return;
+        }
+        
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        
+        completionTimeSpan.textContent = `${minutes} minutes, ${seconds} seconds`;
+      }, 1000);
+    }
+    
+    updateTimeRemaining();
+  </script>
+</body>
+</html>
