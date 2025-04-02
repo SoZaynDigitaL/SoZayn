@@ -1,8 +1,18 @@
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
+import * as ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
 
-// Add error handling to help debug issues
+// Add global error handler for catching errors
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+  console.error("Global Error:", { msg, url, lineNo, columnNo, error });
+  return false;
+};
+
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(<App />);
+}
 const rootElement = document.getElementById("root");
 if (!rootElement) {
   console.error('Cannot find element with id "root". Please check your HTML structure.');
