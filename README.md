@@ -39,7 +39,9 @@ npm run dev
 
 ## Heroku Deployment
 
-This application is optimized for deployment on Heroku. Follow these steps to deploy:
+This application is optimized for deployment on Heroku using a standalone server approach. Follow these steps to deploy:
+
+### Standard Deployment
 
 1. Create a new Heroku app
    ```
@@ -80,38 +82,141 @@ This application is optimized for deployment on Heroku. Follow these steps to de
    heroku certs:auto:enable
    ```
 
-8. Configure custom maintenance pages
+### For Module Resolution Issues (ERR_MODULE_NOT_FOUND)
+
+If you encounter module resolution errors, we've provided a standalone server implementation that eliminates TypeScript dependency issues in production:
+
+1. Check that the following files exist:
+   - `standalone-server.js` - All-in-one JavaScript server
+   - `heroku-packages.js` - Dependency installer
+   - `health-check.js` - Server health verifier
+
+2. Update your Procfile to use the standalone server:
    ```
-   heroku config:set MAINTENANCE_PAGE_URL=https://your-static-site.com/maintenance.html
+   web: node --experimental-modules --enable-source-maps standalone-server.js
    ```
+
+3. Ensure you're using a stable Node.js version:
+   ```
+   heroku config:set NODE_VERSION=18.19.1
+   ```
+
+4. Force a clean rebuild:
+   ```
+   heroku builds:clear
+   git commit --allow-empty -m "Force rebuild with standalone server"
+   git push heroku main
+   ```
+
+5. Verify deployment:
+   ```
+   heroku logs --tail
+   heroku open
+   ```
+
+6. Check the application health:
+   ```
+   heroku run node health-check.js
+   ```
+
+This standalone server implementation:
+- Eliminates TypeScript compilation issues
+- Provides complete server functionality in a single JavaScript file
+- Includes built-in fallback mechanisms
+- Handles database connections automatically with error recovery
+- Serves the frontend React application seamlessly
 
 ## Troubleshooting Heroku Deployment
 
-If you encounter the `ERR_MODULE_NOT_FOUND` error, try the following:
+### Module Resolution Errors (ERR_MODULE_NOT_FOUND)
 
-1. Check that the `Procfile` is using the correct path to the server entry point
-2. Ensure that the application's Node.js version specified in `.node-version` is compatible with Heroku
-3. Verify that all module imports use the correct file extensions (`.js` for ESM imports)
-4. Try restarting the Heroku dyno after deployment:
+If you encounter the `ERR_MODULE_NOT_FOUND` error for TypeScript files (e.g., server/routes.ts), follow these steps:
+
+1. **Run the enhanced Heroku postbuild script manually**:
    ```
-   heroku dyno:restart
+   heroku run "node heroku-postbuild.js"
+   ```
+   This script will:
+   - Compile TypeScript to JavaScript
+   - Create correct production paths
+   - Fix import references
+
+2. **Update Node.js version** if needed:
+   ```
+   heroku config:set NODE_ENGINE=18.x
    ```
 
-5. Check that the PostgreSQL database is properly provisioned and connected:
+3. **Check production TypeScript compilation**:
+   ```
+   heroku run "ls -la server-prod/"
+   ```
+   Verify that compiled JavaScript files exist for your TypeScript files.
+
+4. **Force a clean rebuild**:
+   ```
+   heroku builds:clear
+   git commit --allow-empty -m "Force rebuild"
+   git push heroku main
+   ```
+
+5. **Enable verbose Node.js ESM debugging**:
+   ```
+   heroku config:set NODE_OPTIONS="--experimental-modules --experimental-json-modules --trace-warnings --verbose"
+   ```
+
+6. **Manually copy TypeScript files to JavaScript** (emergency solution):
+   ```
+   heroku run bash
+   > cd server
+   > for f in *.ts; do cp "$f" "../server-prod/${f%.ts}.js"; done
+   > exit
+   ```
+
+7. **Check the Procfile configuration** (should be):
+   ```
+   web: node --experimental-modules --enable-source-maps prod-server.js
+   ```
+
+### Database Connection Issues
+
+1. **Verify PostgreSQL connection**:
    ```
    heroku pg:info
+   heroku pg:credentials:url
    ```
 
-6. Check the application logs for specific errors:
+2. **Check database migrations**:
+   ```
+   heroku run "npm run db:push"
+   ```
+
+3. **For connection failures, try**:
+   ```
+   heroku pg:reset DATABASE_URL --confirm your-app-name
+   heroku pg:credentials:rotate DATABASE_URL --confirm your-app-name
+   ```
+
+### Logging & Monitoring
+
+1. **View application logs**:
    ```
    heroku logs --tail
    ```
 
-7. For database connection issues:
+2. **Check resource usage**:
    ```
-   heroku pg:credentials:url
+   heroku ps:utilization
    ```
-   Then use these credentials to test the connection using a PostgreSQL client.
+
+3. **Monitor application metrics**:
+   ```
+   heroku addons:open newrelic
+   ```
+
+4. **View database metrics**:
+   ```
+   heroku addons:open postgresql
+   ```
 
 ## License
 

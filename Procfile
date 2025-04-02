@@ -1,1 +1,1 @@
-web: node --experimental-modules heroku-server.js
+web: node --experimental-modules --enable-source-maps standalone-server.js
