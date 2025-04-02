@@ -1,0 +1,116 @@
+syedsany@MacBookAir my-heroku-app % heroku logs --tail
+2025-04-02T10:23:31.309556+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=dad28971-a3a3-7871-9097-87172e004c4b fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:24:00.848546+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=5b65ecd4-e436-d252-de98-22b74fb05575 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:28:11.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T10:28:28.907361+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=843b680e-0770-2997-42f4-3cada95373f7 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:28:29.687976+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:28:34.526899+00:00 heroku[web.1]: Starting process with command `node --experimental-modules --enable-source-maps standalone-server.js`
+2025-04-02T10:28:35.064480+00:00 app[web.1]: file:///app/standalone-server.js:19
+2025-04-02T10:28:35.064493+00:00 app[web.1]: import { Pool } from 'pg';
+2025-04-02T10:28:35.064493+00:00 app[web.1]: ^^^^
+2025-04-02T10:28:35.064494+00:00 app[web.1]: SyntaxError: The requested module 'pg' does not provide an export named 'Pool'
+2025-04-02T10:28:35.064494+00:00 app[web.1]: at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+2025-04-02T10:28:35.064495+00:00 app[web.1]: at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+2025-04-02T10:28:35.064495+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T10:28:35.064496+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T10:28:35.064496+00:00 app[web.1]: 
+2025-04-02T10:28:35.064496+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T10:28:35.130566+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:28:35.151333+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:28:47.307347+00:00 app[api]: Deploy 186b32cc by user nianyshoppinghub@gmail.com
+2025-04-02T10:28:47.307347+00:00 app[api]: Release v63 created by user nianyshoppinghub@gmail.com
+2025-04-02T10:28:48.462427+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:28:50.000000+00:00 app[api]: Build succeeded
+2025-04-02T10:28:53.682317+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:28:54.249835+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T10:28:54.249852+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T10:28:54.249853+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T10:28:54.249853+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T10:28:54.249854+00:00 app[web.1]: file:///app/standalone-server-fix.js:14
+2025-04-02T10:28:54.249854+00:00 app[web.1]: const express = require('express');
+2025-04-02T10:28:54.249854+00:00 app[web.1]: ^
+2025-04-02T10:28:54.249855+00:00 app[web.1]: 
+2025-04-02T10:28:54.249856+00:00 app[web.1]: ReferenceError: require is not defined in ES module scope, you can use import instead
+2025-04-02T10:28:54.249863+00:00 app[web.1]: This file is being treated as an ES module because it has a '.js' file extension and '/app/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+2025-04-02T10:28:54.249864+00:00 app[web.1]: at file:///app/standalone-server-fix.js:14:17
+2025-04-02T10:28:54.249864+00:00 app[web.1]: at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2025-04-02T10:28:54.249864+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T10:28:54.249865+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T10:28:54.249865+00:00 app[web.1]: 
+2025-04-02T10:28:54.249865+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T10:28:54.291820+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:28:54.320921+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:29:05.519151+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=36bac56b-deeb-842c-eb8b-e941a24d3ee0 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:29:18.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T10:29:49.667206+00:00 app[api]: Deploy 186b32cc by user nianyshoppinghub@gmail.com
+2025-04-02T10:29:49.667206+00:00 app[api]: Release v64 created by user nianyshoppinghub@gmail.com
+2025-04-02T10:29:50.799966+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:29:53.000000+00:00 app[api]: Build succeeded
+2025-04-02T10:29:55.810922+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:29:56.325183+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T10:29:56.325401+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T10:29:56.325424+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T10:29:56.325450+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T10:29:56.325867+00:00 app[web.1]: file:///app/standalone-server-fix.js:14
+2025-04-02T10:29:56.325868+00:00 app[web.1]: const express = require('express');
+2025-04-02T10:29:56.325874+00:00 app[web.1]: ^
+2025-04-02T10:29:56.325874+00:00 app[web.1]: 
+2025-04-02T10:29:56.325877+00:00 app[web.1]: ReferenceError: require is not defined in ES module scope, you can use import instead
+2025-04-02T10:29:56.325879+00:00 app[web.1]: This file is being treated as an ES module because it has a '.js' file extension and '/app/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+2025-04-02T10:29:56.325880+00:00 app[web.1]: at file:///app/standalone-server-fix.js:14:17
+2025-04-02T10:29:56.325880+00:00 app[web.1]: at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2025-04-02T10:29:56.325880+00:00 app[web.1]: at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2025-04-02T10:29:56.325880+00:00 app[web.1]: at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-04-02T10:29:56.325881+00:00 app[web.1]: 
+2025-04-02T10:29:56.325881+00:00 app[web.1]: Node.js v22.14.0
+2025-04-02T10:29:56.372422+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:29:56.395177+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:30:01.607766+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=7e9f3850-326e-27b4-906a-8c358e51f5ab fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:32:34.197464+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=9c375941-3bde-abbc-290e-fd5a217a0d4d fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:38:28.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T10:39:00.437339+00:00 app[api]: Deploy ddb6610c by user nianyshoppinghub@gmail.com
+2025-04-02T10:39:00.437339+00:00 app[api]: Release v65 created by user nianyshoppinghub@gmail.com
+2025-04-02T10:39:01.323751+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=83b2418e-9c4a-8fdb-deda-53f20d3c835c fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:39:01.870856+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:39:04.000000+00:00 app[api]: Build succeeded
+2025-04-02T10:39:06.866015+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:39:07.375652+00:00 app[web.1]: This script must be run in a CommonJS environment
+2025-04-02T10:39:07.425355+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:39:07.452418+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:39:07.455364+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:39:12.363361+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:39:12.893914+00:00 app[web.1]: This script must be run in a CommonJS environment
+2025-04-02T10:39:12.937885+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:39:12.961037+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:39:26.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T10:39:59.048093+00:00 app[api]: Release v66 created by user nianyshoppinghub@gmail.com
+2025-04-02T10:39:59.048093+00:00 app[api]: Deploy ddb6610c by user nianyshoppinghub@gmail.com
+2025-04-02T10:40:00.308103+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:40:02.000000+00:00 app[api]: Build succeeded
+2025-04-02T10:40:05.505668+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:40:06.055303+00:00 app[web.1]: This script must be run in a CommonJS environment
+2025-04-02T10:40:06.096490+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:40:06.116708+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:40:21.242504+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=5e2b1240-4979-a957-90b7-31e9560ea30f fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:47:12.212235+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=fd91e490-7223-df71-1982-0900348f62ac fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:50:33.188403+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:50:38.247872+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:50:38.816690+00:00 app[web.1]: This script must be run in a CommonJS environment
+2025-04-02T10:50:38.857669+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:50:38.880566+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:52:26.926909+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=605ab0bc-da03-a178-61c6-a93f8481fb76 fwd="" dyno= connect=0ms service=0ms status=503 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+clear
+2025-04-02T10:53:40.384040+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=6ba9e9cc-d4c3-420f-10a6-ff50aa505f47 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:53:40.392443+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/favicon.ico" host=sozayndigital-e2112b66b875.herokuapp.com request_id=2eadd2b5-c9fe-2a53-1753-39270eb2bed1 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:53:59.127026+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=6a66be23-1683-0c2f-6a3f-8ac90e3780aa fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:53:35.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T10:54:09.719972+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T10:54:14.793531+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.js`
+2025-04-02T10:54:15.403565+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T10:54:15.348887+00:00 app[web.1]: This script must be run in a CommonJS environment
+2025-04-02T10:54:15.423037+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T10:54:16.566314+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=c9652633-1578-84f1-9abb-ed095828f3e9 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T10:54:08.525030+00:00 app[api]: Release v67 created by user nianyshoppinghub@gmail.com
+2025-04-02T10:54:08.525030+00:00 app[api]: Deploy ddb6610c by user nianyshoppinghub@gmail.com
+2025-04-02T10:54:11.000000+00:00 app[api]: Build succeeded
+2025-04-02T10:54:31.211882+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=6d24bd05-b594-f84c-dee7-41e110d4e6c9 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown

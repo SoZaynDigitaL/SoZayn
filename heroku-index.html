@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoZayn Digital Era</title>
+  <style>
+    :root {
+      --primary: #0066ff;
+      --primary-light: #e6f0ff;
+      --primary-dark: #0052cc;
+      --error: #e53e3e;
+      --warning: #f6ad55;
+      --gray-100: #f7fafc;
+      --gray-200: #edf2f7;
+      --gray-800: #2d3748;
+      --radius: 8px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-800);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 5px solid var(--primary);
+    }
+    
+    main {
+      flex: 1;
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .status-card {
+      background-color: var(--primary-light);
+      border-left: 5px solid var(--primary);
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    
+    .error-card {
+      background-color: #fff5f5;
+      border-left: 5px solid var(--error);
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    
+    h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    
+    footer {
+      background-color: white;
+      padding: 1rem;
+      text-align: center;
+      margin-top: auto;
+      font-size: 0.875rem;
+      color: #718096;
+    }
+    
+    .steps {
+      margin-top: 1.5rem;
+    }
+    
+    .step {
+      margin-bottom: 1.5rem;
+      border-left: 2px solid var(--gray-200);
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .step:before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      left: -7px;
+      top: 6px;
+    }
+    
+    .button {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    
+    .button:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .refresh {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .code {
+      font-family: monospace;
+      background-color: var(--gray-200);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 640px) {
+      main {
+        padding: 1rem;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">SoZayn Digital Era</div>
+  </header>
+  
+  <main>
+    <div class="card">
+      <h1>Application Status</h1>
+      <p>The application is currently running in fallback mode. This usually happens when there's an issue with the main application server.</p>
+      
+      <div class="status-card">
+        <p><strong>Status:</strong> Fallback Mode</p>
+        <p><strong>Node.js Version:</strong> <span id="node-version">Checking...</span></p>
+        <p><strong>Environment:</strong> <span id="environment">Checking...</span></p>
+        <p><strong>Time:</strong> <span id="current-time">Checking...</span></p>
+      </div>
+      
+      <div class="error-card">
+        <p><strong>Potential Issue:</strong> The application requires Node.js v18.19.1, but may be running on an incompatible version.</p>
+      </div>
+      
+      <h2>Common Causes</h2>
+      <ul>
+        <li>Node.js version mismatch (required: v18.19.1)</li>
+        <li>Database connection issues</li>
+        <li>Environment variable misconfiguration</li>
+        <li>Memory or resource limitations</li>
+      </ul>
+      
+      <h2>Troubleshooting Steps</h2>
+      <div class="steps">
+        <div class="step">
+          <p><strong>Check Application Logs</strong></p>
+          <p>Use <span class="code">heroku logs --tail</span> to view detailed error information.</p>
+        </div>
+        
+        <div class="step">
+          <p><strong>Verify Node.js Version</strong></p>
+          <p>Ensure Heroku is using Node.js v18.19.1 by setting <span class="code">NODE_VERSION=18.19.1</span> in the config vars.</p>
+        </div>
+        
+        <div class="step">
+          <p><strong>Check Environment Variables</strong></p>
+          <p>Verify all required environment variables are correctly set (DATABASE_URL, JWT_SECRET, etc.).</p>
+        </div>
+        
+        <div class="step">
+          <p><strong>Restart the Application</strong></p>
+          <p>Try restarting the application using <span class="code">heroku restart</span>.</p>
+        </div>
+      </div>
+      
+      <div class="refresh">
+        <a href="/" class="button">Refresh Page</a>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 SoZayn Digital. All rights reserved.</p>
+  </footer>
+  
+  <script>
+    // Add dynamic content
+    document.getElementById('node-version').textContent = 'Detecting...';
+    document.getElementById('environment').textContent = 'Production';
+    
+    // Set current time
+    const now = new Date();
+    document.getElementById('current-time').textContent = now.toLocaleString();
+    
+    // Try to detect Node.js version from the server
+    fetch('/api/health')
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.nodeVersion) {
+          document.getElementById('node-version').textContent = data.nodeVersion;
+        }
+      })
+      .catch(() => {
+        document.getElementById('node-version').textContent = 'Unknown (API unavailable)';
+      });
+  </script>
+</body>
+</html>

@@ -1,223 +1,269 @@
 # SoZayn Digital Era
 
-A middleware service connecting Shopify stores with third-party delivery services (UberDirect and JetGo).
+A middleware service connecting Shopify stores with third-party delivery services (UberDirect and JetGo), enabling seamless order fulfillment and delivery tracking.
+
+![SoZayn Logo](public/logo.png)
 
 ## Features
 
-- Shopify integration via webhooks
-- Multi-delivery service integration (UberDirect, JetGo)
-- Order tracking and management
-- Admin dashboard
-- Client portal for merchants
+- **Shopify Integration**: Receives orders via webhooks directly from Shopify stores
+- **Multi-Service Delivery**: Integrates with UberDirect and JetGo APIs
+- **Order Management**: Tracks order status from creation to delivery
+- **Admin Dashboard**: Complete order monitoring and management interface
+- **Client Portal**: Merchant-specific view for store owners
+- **Automatic Status Updates**: Synchronizes delivery status back to Shopify
 
 ## Tech Stack
 
 - **Frontend**: React, Vite, TailwindCSS, Shadcn UI
-- **Backend**: Express.js, Node.js
+- **Backend**: Express.js, Node.js v18.19.1 (required)
 - **Database**: PostgreSQL with Drizzle ORM
 - **Authentication**: JWT tokens and session-based auth
+- **Logging**: Winston for structured logging
+- **Error Handling**: Comprehensive error capturing and reporting
 
-## Environment Setup
+## 🚨 Important: Node.js Version Requirements
+
+**This application requires Node.js v18.19.1 specifically.**
+
+Multiple compatibility mechanisms are in place to ensure this requirement:
+- `.node-version` file for explicit version declaration
+- `.nvmrc` for nvm users
+- `engines` field in package.json
+- Runtime version checks in server entry points
+- Heroku-specific version constraints
+
+Using an incompatible Node.js version will cause the application to fail.
+
+## Environment Variables
 
 The application requires the following environment variables:
 
 ```
+# Core Application
 DATABASE_URL=postgresql://username:password@host:port/database
 JWT_SECRET=your_jwt_secret
 SESSION_SECRET=your_session_secret
-PORT=5000 (default)
+NODE_ENV=production
+APP_URL=https://your-app-url.herokuapp.com
+
+# Delivery Service APIs
+UBER_DIRECT_API_KEY=your_uber_direct_api_key
+UBER_DIRECT_API_URL=https://api.uber.com/v1/direct
+JETGO_API_KEY=your_jetgo_api_key
+JETGO_API_URL=https://api.jetgo.com/v1
 ```
 
 ## Development
 
 To run the application locally:
 
-```bash
-npm install
-npm run dev
-```
-
-## Heroku Deployment
-
-This application is optimized for deployment on Heroku using a standalone server approach. Follow these steps to deploy:
-
-### Standard Deployment
-
-1. Create a new Heroku app
-   ```
-   heroku create your-app-name
+1. Install the correct Node.js version (18.19.1):
+   ```bash
+   nvm install 18.19.1
+   nvm use 18.19.1
    ```
 
-2. Add required addons
-   ```
-   heroku addons:create heroku-postgresql:standard-0
-   heroku addons:create papertrail:choklad
-   heroku addons:create newrelic:wayne
+2. Install dependencies:
+   ```bash
+   npm install
    ```
 
-3. Set environment variables
-   ```
-   heroku config:set JWT_SECRET=your_jwt_secret
-   heroku config:set SESSION_SECRET=your_session_secret
-   heroku config:set NODE_ENV=production
+3. Create and populate `.env` file with necessary environment variables
+
+4. Run the development server:
+   ```bash
+   npm run dev
    ```
 
-4. Deploy to Heroku
-   ```
-   git push heroku main
+## Heroku Deployment (2025 Modern Approach)
+
+SoZayn Digital Era has been specifically optimized for Heroku deployment with Node.js v18.19.1. The app implements multiple safeguards to ensure compatibility with Heroku's platform.
+
+### Prerequisites
+
+- Heroku CLI installed and authenticated
+- Git repository initialized
+- PostgreSQL addon for database storage
+
+### Deployment Steps
+
+1. **Create a new Heroku app**:
+   ```bash
+   heroku create sozayn-digital
    ```
 
-5. Scale to at least 2 dynos for redundancy
-   ```
-   heroku ps:scale web=2:standard-1x
-   ```
-
-6. Run database migrations
-   ```
-   heroku run npm run db:push
-   ```
-
-7. Enable Heroku SSL
-   ```
-   heroku certs:auto:enable
-   ```
-
-### For Module Resolution Issues (ERR_MODULE_NOT_FOUND)
-
-If you encounter module resolution errors, we've provided a standalone server implementation that eliminates TypeScript dependency issues in production:
-
-1. Check that the following files exist:
-   - `standalone-server.js` - All-in-one JavaScript server
-   - `heroku-packages.js` - Dependency installer
-   - `health-check.js` - Server health verifier
-
-2. Update your Procfile to use the standalone server:
-   ```
-   web: node --experimental-modules --enable-source-maps standalone-server.js
-   ```
-
-3. Ensure you're using a stable Node.js version:
-   ```
+2. **Set the correct Node.js version**:
+   ```bash
    heroku config:set NODE_VERSION=18.19.1
    ```
 
-4. Force a clean rebuild:
+3. **Add the PostgreSQL addon**:
+   ```bash
+   heroku addons:create heroku-postgresql:standard-0
    ```
-   heroku builds:clear
-   git commit --allow-empty -m "Force rebuild with standalone server"
+
+4. **Set required environment variables**:
+   ```bash
+   heroku config:set JWT_SECRET=your_jwt_secret
+   heroku config:set SESSION_SECRET=your_session_secret
+   heroku config:set NODE_ENV=production
+   heroku config:set UBER_DIRECT_API_KEY=your_uber_direct_api_key
+   heroku config:set UBER_DIRECT_API_URL=https://api.uber.com/v1/direct
+   heroku config:set JETGO_API_KEY=your_jetgo_api_key
+   heroku config:set JETGO_API_URL=https://api.jetgo.com/v1
+   heroku config:set APP_URL=$(heroku info -s | grep web_url | cut -d= -f2)
+   ```
+
+5. **Configure the buildpack to use Node.js v18**:
+   ```bash
+   heroku buildpacks:clear
+   heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs#v200
+   ```
+
+6. **Set the correct stack**:
+   ```bash
+   heroku stack:set heroku-22
+   ```
+
+7. **Deploy to Heroku**:
+   ```bash
    git push heroku main
    ```
 
-5. Verify deployment:
-   ```
+8. **Verify the deployment and Node.js version**:
+   ```bash
    heroku logs --tail
-   heroku open
+   ```
+   Look for the line: "Running on Node.js v18.19.1"
+
+9. **Scale to production dyno(s)**:
+   ```bash
+   heroku ps:scale web=1:standard-1x
    ```
 
-6. Check the application health:
+10. **Run database migrations**:
+    ```bash
+    heroku run npm run db:push
+    ```
+
+### Alternative Deployment Options
+
+If you encounter Node.js compatibility issues, use the standalone server approach:
+
+1. **Modify the Procfile to use standalone-server-fix.js**:
    ```
-   heroku run node health-check.js
+   web: node standalone-server-fix.js
    ```
 
-This standalone server implementation:
-- Eliminates TypeScript compilation issues
-- Provides complete server functionality in a single JavaScript file
-- Includes built-in fallback mechanisms
-- Handles database connections automatically with error recovery
-- Serves the frontend React application seamlessly
-
-## Troubleshooting Heroku Deployment
-
-### Module Resolution Errors (ERR_MODULE_NOT_FOUND)
-
-If you encounter the `ERR_MODULE_NOT_FOUND` error for TypeScript files (e.g., server/routes.ts), follow these steps:
-
-1. **Run the enhanced Heroku postbuild script manually**:
-   ```
-   heroku run "node heroku-postbuild.js"
-   ```
-   This script will:
-   - Compile TypeScript to JavaScript
-   - Create correct production paths
-   - Fix import references
-
-2. **Update Node.js version** if needed:
-   ```
-   heroku config:set NODE_ENGINE=18.x
-   ```
-
-3. **Check production TypeScript compilation**:
-   ```
-   heroku run "ls -la server-prod/"
-   ```
-   Verify that compiled JavaScript files exist for your TypeScript files.
-
-4. **Force a clean rebuild**:
-   ```
-   heroku builds:clear
-   git commit --allow-empty -m "Force rebuild"
+2. **Commit and push changes**:
+   ```bash
+   git add Procfile
+   git commit -m "Switch to standalone server"
    git push heroku main
    ```
 
-5. **Enable verbose Node.js ESM debugging**:
-   ```
-   heroku config:set NODE_OPTIONS="--experimental-modules --experimental-json-modules --trace-warnings --verbose"
-   ```
-
-6. **Manually copy TypeScript files to JavaScript** (emergency solution):
-   ```
-   heroku run bash
-   > cd server
-   > for f in *.ts; do cp "$f" "../server-prod/${f%.ts}.js"; done
-   > exit
-   ```
-
-7. **Check the Procfile configuration** (should be):
-   ```
-   web: node --experimental-modules --enable-source-maps prod-server.js
-   ```
-
-### Database Connection Issues
-
-1. **Verify PostgreSQL connection**:
-   ```
-   heroku pg:info
-   heroku pg:credentials:url
-   ```
-
-2. **Check database migrations**:
-   ```
-   heroku run "npm run db:push"
-   ```
-
-3. **For connection failures, try**:
-   ```
-   heroku pg:reset DATABASE_URL --confirm your-app-name
-   heroku pg:credentials:rotate DATABASE_URL --confirm your-app-name
-   ```
-
-### Logging & Monitoring
-
-1. **View application logs**:
-   ```
+3. **Monitor logs for proper startup**:
+   ```bash
    heroku logs --tail
    ```
 
-2. **Check resource usage**:
-   ```
-   heroku ps:utilization
+## Node.js Version Troubleshooting
+
+If you're experiencing Node.js version issues on Heroku, try these additional steps:
+
+1. **Create/update the .heroku/node-version file**:
+   ```bash
+   mkdir -p .heroku
+   echo "18.19.1" > .heroku/node-version
+   git add .heroku/node-version
+   git commit -m "Explicitly set Node.js version"
    ```
 
-3. **Monitor application metrics**:
-   ```
-   heroku addons:open newrelic
+2. **Use heroku-build.sh to enforce version**:
+   ```bash
+   chmod +x heroku-build.sh
+   git add heroku-build.sh
+   git commit -m "Add build script with version enforcement"
    ```
 
-4. **View database metrics**:
+3. **Use a custom bin directory for Node.js version management**:
+   ```bash
+   mkdir -p bin
+   chmod +x bin/detect-engine
+   git add bin
+   git commit -m "Add custom Node.js version detection"
    ```
-   heroku addons:open postgresql
+
+4. **Clear build cache and retry**:
+   ```bash
+   heroku builds:clear
+   git commit --allow-empty -m "Force rebuild with correct Node.js version"
+   git push heroku main
    ```
+
+## Database Management
+
+### Running Migrations
+
+```bash
+# Locally
+npm run db:push
+
+# On Heroku
+heroku run npm run db:push
+```
+
+### Database Reset (If Needed)
+
+```bash
+heroku pg:reset DATABASE_URL --confirm your-app-name
+heroku run npm run db:push
+```
+
+## API Documentation
+
+### Shopify Webhook Endpoints
+
+- `POST /api/webhooks/orders/create` - Receives new orders from Shopify
+- `POST /api/webhooks/orders/update` - Handles order updates from Shopify
+- `POST /api/webhooks/orders/cancelled` - Processes order cancellations
+
+### Delivery Service Endpoints
+
+- `POST /api/delivery/submit` - Submits order to delivery service
+- `GET /api/delivery/status/:orderId` - Checks delivery status
+- `POST /api/delivery/cancel/:orderId` - Cancels a delivery
+
+### Authentication Endpoints
+
+- `POST /api/login` - Authenticates users
+- `POST /api/register` - Creates new user accounts
+- `POST /api/logout` - Logs out current user
+
+## Monitoring & Debugging
+
+### Logs
+
+View application logs:
+```bash
+heroku logs --tail
+```
+
+### Performance Monitoring
+
+```bash
+heroku addons:create newrelic:wayne
+heroku addons:open newrelic
+```
+
+### Database Monitoring
+
+```bash
+heroku pg:info
+heroku pg:diagnose
+```
 
 ## License
 
-MIT
+Copyright © 2025 SoZayn Digital. All rights reserved.

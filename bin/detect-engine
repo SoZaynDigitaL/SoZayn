@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Node.js Version Detection and Enforcement Script
+# This script helps enforce Node.js v18.19.1 for SoZayn Digital Era
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Print header
+echo -e "${BLUE}================================================${NC}"
+echo -e "${BLUE}SoZayn Digital Era - Node.js Version Detector${NC}"
+echo -e "${BLUE}================================================${NC}"
+
+# Get current Node.js version
+current_version=$(node -v)
+required_version="v18.19.1"
+
+# Extract major version
+current_major=$(echo $current_version | sed -E 's/v([0-9]+)\..*/\1/')
+required_major="18"
+
+echo -e "${BLUE}Current Node.js version:${NC} ${current_version}"
+echo -e "${BLUE}Required Node.js version:${NC} ${required_version}"
+
+# Version comparison
+if [ "$current_version" = "$required_version" ]; then
+  echo -e "${GREEN}✅ PERFECT MATCH:${NC} You are using the exact required Node.js version."
+  exit 0
+elif [ "$current_major" = "$required_major" ]; then
+  echo -e "${YELLOW}⚠️ ACCEPTABLE:${NC} You are using Node.js v${current_major}.x which should be compatible."
+  echo -e "${YELLOW}For optimal results, consider using exactly v${required_version}.${NC}"
+  exit 0
+else
+  echo -e "${RED}❌ INCOMPATIBLE:${NC} You are using Node.js ${current_version} but this application requires v${required_major}.x"
+  echo -e "${RED}This may cause unexpected errors and behavior!${NC}"
+  
+  # Suggest installation methods
+  echo -e "\n${BLUE}To install the correct version:${NC}"
+  echo -e "Using nvm: ${GREEN}nvm install ${required_version}${NC}"
+  echo -e "Using n: ${GREEN}n ${required_version}${NC}"
+  echo -e "Direct download: Visit ${GREEN}https://nodejs.org/download/release/${required_version}/${NC}"
+  
+  # Environment variables suggestion for Heroku
+  echo -e "\n${BLUE}For Heroku deployment:${NC}"
+  echo -e "Set these environment variables:"
+  echo -e "${GREEN}heroku config:set NODE_VERSION=${required_version}${NC}"
+  
+  exit 1
+fi

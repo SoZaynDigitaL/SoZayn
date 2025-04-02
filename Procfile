@@ -1,1 +1,1 @@
-web: node standalone-server-fix.js
+web: NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.js

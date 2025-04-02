@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+/**
+ * SoZayn Digital Era - Node.js Engine Override
+ * 
+ * This script dynamically modifies package.json during Heroku builds
+ * to enforce Node.js v18.19.1 regardless of what the actual package.json contains.
+ * 
+ * Usage: Add this script to your Heroku build process via .buildpacks
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Colors for console output
+const colors = {
+  reset: '\x1b[0m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+};
+
+const REQUIRED_NODE_VERSION = '18.19.1';
+const PACKAGE_JSON_PATH = path.join(process.cwd(), 'package.json');
+const PACKAGE_STANDALONE_PATH = path.join(process.cwd(), 'package-standalone.json');
+
+console.log(`${colors.blue}========================================================${colors.reset}`);
+console.log(`${colors.blue}SoZayn Digital Era - Node.js Engine Override${colors.reset}`);
+console.log(`${colors.blue}========================================================${colors.reset}`);
+console.log(`${colors.cyan}Current directory:${colors.reset} ${process.cwd()}`);
+console.log(`${colors.cyan}Current Node.js version:${colors.reset} ${process.version}`);
+console.log(`${colors.cyan}Required Node.js version:${colors.reset} v${REQUIRED_NODE_VERSION}`);
+
+// Function to update package.json
+function updatePackageJson(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) {
+      console.log(`${colors.red}File not found:${colors.reset} ${filePath}`);
+      return false;
+    }
+
+    console.log(`${colors.green}Modifying:${colors.reset} ${filePath}`);
+    
+    // Read package.json
+    const packageJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    
+    // Store original engine setting for logging
+    const originalEngines = JSON.stringify(packageJson.engines || {});
+    
+    // Update engines
+    packageJson.engines = packageJson.engines || {};
+    packageJson.engines.node = REQUIRED_NODE_VERSION;
+    
+    // Add version checking script if it doesn't exist
+    if (!packageJson.scripts?.postinstall?.includes('node bin/detect-engine')) {
+      packageJson.scripts = packageJson.scripts || {};
+      const originalPostinstall = packageJson.scripts.postinstall || '';
+      packageJson.scripts.postinstall = 
+        originalPostinstall ? 
+        `${originalPostinstall} && node bin/detect-engine` : 
+        'node bin/detect-engine';
+    }
+    
+    // Write back to file
+    fs.writeFileSync(filePath, JSON.stringify(packageJson, null, 2));
+    
+    console.log(`${colors.green}Successfully updated:${colors.reset} ${filePath}`);
+    console.log(`${colors.yellow}Original engines:${colors.reset} ${originalEngines}`);
+    console.log(`${colors.yellow}New engines:${colors.reset} ${JSON.stringify(packageJson.engines)}`);
+    
+    return true;
+  } catch (error) {
+    console.error(`${colors.red}Error updating ${filePath}:${colors.reset}`, error);
+    return false;
+  }
+}
+
+// Update both package.json and package-standalone.json if present
+let success = updatePackageJson(PACKAGE_JSON_PATH);
+
+if (fs.existsSync(PACKAGE_STANDALONE_PATH)) {
+  success = updatePackageJson(PACKAGE_STANDALONE_PATH) && success;
+}
+
+// Create or update .heroku/node-version
+try {
+  const herokuDir = path.join(process.cwd(), '.heroku');
+  const nodeVersionPath = path.join(herokuDir, 'node-version');
+  
+  if (!fs.existsSync(herokuDir)) {
+    fs.mkdirSync(herokuDir);
+    console.log(`${colors.green}Created directory:${colors.reset} ${herokuDir}`);
+  }
+  
+  fs.writeFileSync(nodeVersionPath, REQUIRED_NODE_VERSION);
+  console.log(`${colors.green}Set .heroku/node-version to:${colors.reset} ${REQUIRED_NODE_VERSION}`);
+} catch (error) {
+  console.error(`${colors.red}Error updating .heroku/node-version:${colors.reset}`, error);
+  success = false;
+}
+
+// Set executable permissions on scripts
+try {
+  const detectEnginePath = path.join(process.cwd(), 'bin', 'detect-engine');
+  if (fs.existsSync(detectEnginePath)) {
+    fs.chmodSync(detectEnginePath, '755');
+    console.log(`${colors.green}Set executable permissions:${colors.reset} ${detectEnginePath}`);
+  }
+} catch (error) {
+  console.error(`${colors.red}Error setting permissions:${colors.reset}`, error);
+}
+
+console.log(`${colors.blue}========================================================${colors.reset}`);
+if (success) {
+  console.log(`${colors.green}Node.js version override completed successfully!${colors.reset}`);
+  process.exit(0);
+} else {
+  console.log(`${colors.red}Node.js version override completed with errors!${colors.reset}`);
+  process.exit(1);
+}

@@ -1,6 +1,6 @@
 // Standalone Express server for Heroku deployment (CommonJS version)
 // This file contains everything needed to run the application in production
-// using CommonJS modules for better compatibility with older Node.js versions
+// using CommonJS modules for better compatibility with Node.js v18.x
 
 // Check if this is a CommonJS environment
 if (typeof require === 'undefined') {
@@ -8,14 +8,24 @@ if (typeof require === 'undefined') {
   process.exit(1);
 }
 
-// Check Node.js version for compatibility warnings
+// STRICT VERSION CHECK: Only allow Node.js v18.x to run this application
 const nodeVersion = process.version;
 console.log(`Running on Node.js ${nodeVersion}`);
-if (nodeVersion.startsWith('v22')) {
-  console.warn('⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues');
-  console.warn('This application was designed for Node.js v18.x');
-  console.warn('Some functionality may not work correctly on Node.js v22');
+
+// Extract the major version number
+const majorVersion = parseInt(nodeVersion.match(/^v(\d+)/)[1], 10);
+
+if (majorVersion !== 18) {
+  console.error('❌ ERROR: This application requires Node.js v18.x');
+  console.error(`Your current Node.js version is ${nodeVersion}`);
+  console.error('Please ensure you have Node.js v18.x installed');
+  console.error('If you are using Heroku, make sure your .nvmrc, .node-version, and runtime.txt files specify Node.js v18.x');
+  
+  // Exit with error code to prevent startup on wrong Node.js version
+  process.exit(1);
 }
+
+console.log('✅ Compatible Node.js version detected. Continuing startup...');
 
 // Show environment information
 console.log('Current Working Directory:', process.cwd());
