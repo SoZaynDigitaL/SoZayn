@@ -22,6 +22,28 @@
     "JWT_SECRET": {
       "description": "A secret key for JWT token generation and validation",
       "generator": "secret"
+    },
+    "APP_URL": {
+      "description": "The public URL of your application, used for webhook callbacks",
+      "value": "https://sozayndigital-e2112b66b875.herokuapp.com"
+    },
+    "UBER_DIRECT_API_KEY": {
+      "description": "API key for UberDirect delivery service",
+      "required": false
+    },
+    "UBER_DIRECT_API_URL": {
+      "description": "API URL for UberDirect delivery service",
+      "required": false,
+      "value": "https://api.example.com/uberdirect"
+    },
+    "JETGO_API_KEY": {
+      "description": "API key for JetGo delivery service",
+      "required": false
+    },
+    "JETGO_API_URL": {
+      "description": "API URL for JetGo delivery service",
+      "required": false,
+      "value": "https://api.example.com/jetgo"
     }
   },
   "formation": {
