@@ -12,7 +12,23 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// Configure SSL for production environments (like Heroku)
+const isProduction = process.env.NODE_ENV === 'production';
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProduction ? {
+    rejectUnauthorized: false  // Required for Heroku PostgreSQL
+  } : undefined
+};
+
+export const pool = new Pool(poolConfig);
+
+// Log SSL configuration
+if (isProduction) {
+  logger.info('PostgreSQL using SSL connection (rejectUnauthorized: false)');
+} else {
+  logger.info('PostgreSQL using standard connection without SSL');
+}
 
 // Log connection status
 pool.on('connect', () => {

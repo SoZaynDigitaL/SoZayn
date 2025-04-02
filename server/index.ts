@@ -6,6 +6,12 @@ import { checkConnection } from "./db";
 import { logger } from "./logger";
 
 const app = express();
+
+// Apply trust proxy settings - critical for Heroku 
+// Uses environment variable with fallback to 1 for production
+const trustProxy = process.env.TRUST_PROXY || (process.env.NODE_ENV === 'production' ? 1 : false);
+app.set('trust proxy', trustProxy);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -81,11 +87,20 @@ app.use((req, res, next) => {
     try {
       import('os').then(os => {
         const nets = os.networkInterfaces();
-        for (const name of Object.keys(nets)) {
-          for (const net of nets[name]) {
-            console.log(`Interface: ${name}, Address: ${net.address}, Family: ${net.family}`);
-          }
+        if (!nets) {
+          console.log('No network interfaces found');
+          return;
         }
+        
+        Object.entries(nets).forEach(([name, interfaces]) => {
+          if (interfaces) {
+            interfaces.forEach(net => {
+              if (net) {
+                console.log(`Interface: ${name}, Address: ${net.address}, Family: ${net.family}`);
+              }
+            });
+          }
+        });
       }).catch(err => {
         console.error('Error importing os:', err);
       });
