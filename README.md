@@ -168,7 +168,42 @@ If you encounter Node.js compatibility issues, use the standalone server approac
    heroku logs --tail
    ```
 
-## Node.js Version Troubleshooting
+## Troubleshooting Deployment Issues
+
+### Module System Conflicts
+
+This application has a module system configuration that can cause conflicts on Heroku. The main package.json has `"type": "module"` for the frontend, but the server requires CommonJS style `require()` statements.
+
+If you see errors like `"require is not defined in ES module scope"`, follow these steps:
+
+1. **Use the .cjs extension for server files**:
+   ```bash
+   # Rename the server file to use .cjs extension
+   cp standalone-server-fix.js standalone-server-fix.cjs
+   
+   # Update Procfile to use the .cjs file
+   echo "web: NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs" > Procfile
+   
+   git add standalone-server-fix.cjs Procfile
+   git commit -m "Use .cjs extension for CommonJS compatibility"
+   git push heroku main
+   ```
+
+2. **Copy the standalone package.json**:
+   ```bash
+   # This removes the "type": "module" setting
+   cp package-standalone.json package.json
+   git add package.json
+   git commit -m "Use CommonJS-compatible package.json"
+   git push heroku main
+   ```
+
+3. **Set NODE_OPTIONS to allow CommonJS**:
+   ```bash
+   heroku config:set NODE_OPTIONS="--no-warnings --experimental-modules"
+   ```
+
+### Node.js Version Issues
 
 If you're experiencing Node.js version issues on Heroku, try these additional steps:
 
@@ -201,6 +236,30 @@ If you're experiencing Node.js version issues on Heroku, try these additional st
    git commit --allow-empty -m "Force rebuild with correct Node.js version"
    git push heroku main
    ```
+
+### Combined Quick Fix
+
+For a complete fix addressing both Node.js version and module system issues:
+
+```bash
+# Set the correct Node.js version
+heroku config:set NODE_VERSION=18.19.1
+
+# Copy the standalone files
+cp standalone-server-fix.js standalone-server-fix.cjs
+cp package-standalone.json package.json
+
+# Update the Procfile
+echo "web: NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs" > Procfile
+
+# Commit and push changes
+git add standalone-server-fix.cjs package.json Procfile
+git commit -m "Fix module system conflict and Node.js version"
+git push heroku main
+
+# Monitor logs for successful startup
+heroku logs --tail
+```
 
 ## Database Management
 

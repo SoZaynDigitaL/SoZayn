@@ -203,8 +203,15 @@ fi
 
 # Copy standalone package.json
 if [ -f "package-standalone.json" ]; then
+  echo -e "${BLUE}Copying package-standalone.json to package.json...${NC}"
   cp package-standalone.json package.json
+  cat package.json | grep -v "type"
   echo -e "${GREEN}✅ Standalone package.json copied to package.json${NC}"
+  
+  # Ensure the "type": "module" is NOT present in package.json
+  echo -e "${BLUE}Ensuring 'type: module' is not present in package.json...${NC}"
+  grep -v '"type": "module"' package.json > package.json.tmp && mv package.json.tmp package.json
+  echo -e "${GREEN}✅ Verified package.json has no 'type: module'${NC}"
 else
   echo -e "${RED}❌ package-standalone.json not found! This is required for deployment.${NC}"
   exit 1
@@ -243,7 +250,23 @@ check_file() {
   fi
 }
 
-CRITICAL_FILES=("standalone-server-fix.js" "server.js" "heroku-server.js")
+# Copy standalone-server-fix.js to .cjs version
+if [ -f "standalone-server-fix.js" ]; then
+  echo -e "${BLUE}Creating CJS version of standalone server...${NC}"
+  cp standalone-server-fix.js standalone-server-fix.cjs
+  echo -e "${GREEN}✅ Created standalone-server-fix.cjs for CommonJS compatibility${NC}"
+fi
+
+# Update Procfile to use .cjs extension if needed
+if [ -f "Procfile" ]; then
+  if grep -q "standalone-server-fix.js" Procfile; then
+    echo -e "${YELLOW}⚠️ Procfile uses .js extension. Updating to .cjs...${NC}"
+    sed -i 's/standalone-server-fix.js/standalone-server-fix.cjs/g' Procfile
+    echo -e "${GREEN}✅ Updated Procfile to use .cjs extension${NC}"
+  fi
+fi
+
+CRITICAL_FILES=("standalone-server-fix.js" "standalone-server-fix.cjs" "server.js" "heroku-server.js")
 MISSING_FILES=0
 
 for file in "${CRITICAL_FILES[@]}"; do
@@ -272,9 +295,9 @@ else
   echo -e "${GREEN}✅ Created Procfile with standalone server entry point${NC}"
 fi
 
-# Create a health-check.js file for monitoring
+# Create a health-check.cjs file for monitoring
 echo -e "${BLUE}Creating health check utility...${NC}"
-cat > health-check.js << 'EOF'
+cat > health-check.cjs << 'EOF'
 #!/usr/bin/env node
 
 const http = require('http');
@@ -360,8 +383,8 @@ async function checkHealth() {
 checkHealth();
 EOF
 
-chmod +x health-check.js
-echo -e "${GREEN}✅ Created health-check.js utility${NC}"
+chmod +x health-check.cjs
+echo -e "${GREEN}✅ Created health-check.cjs utility${NC}"
 
 # Log completion
 echo -e "${BLUE}==================================================================="
