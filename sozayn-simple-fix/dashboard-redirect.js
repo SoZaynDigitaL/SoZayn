@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (publicPages.includes(currentPath)) {
         console.log('Authenticated user detected, redirecting to dashboard');
-        window.location.href = '/dashboard';
+        window.location.href = '/dashboard.html';
         return true;
       }
     } else {

@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Redirect to dashboard after delay
       setTimeout(function() {
         reloadOpenerIfNeeded();
-        window.location.href = '/dashboard';
+        window.location.href = '/dashboard.html';
       }, 1500);
       
     } catch (error) {
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Redirect to dashboard after delay
       setTimeout(function() {
         reloadOpenerIfNeeded();
-        window.location.href = '/dashboard';
+        window.location.href = '/dashboard.html';
       }, 1500);
       
     } catch (error) {
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redirect to dashboard
         setTimeout(function() {
           reloadOpenerIfNeeded();
-          window.location.href = '/dashboard';
+          window.location.href = '/dashboard.html';
         }, 1500);
       }
     }
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (userData && token) {
       // They're already logged in, redirect to dashboard
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard.html';
     }
   }
   
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Redirect to dashboard with a delay to show success message
     setTimeout(function() {
       reloadOpenerIfNeeded();
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard.html';
     }, 1500);
     
     return true;
