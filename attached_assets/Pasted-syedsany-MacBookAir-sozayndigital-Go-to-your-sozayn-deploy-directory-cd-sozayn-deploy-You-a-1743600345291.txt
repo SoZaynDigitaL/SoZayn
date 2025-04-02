@@ -1,0 +1,58 @@
+syedsany@MacBookAir sozayndigital % # Go to your sozayn-deploy directory
+cd ~/sozayn-deploy
+
+# You already have the Heroku repository cloned at ~/sozayn-deploy/sozayndigital
+cd sozayndigital
+zsh: bad pattern: #
+syedsany@MacBookAir sozayndigital % # If you've extracted the sozayn-heroku-deployment.tar.gz package elsewhere,
+# copy the files to the sozayndigital directory:
+cp -r ~/path/to/extracted/dist ~/sozayn-deploy/sozayndigital/
+cp ~/path/to/extracted/server.js ~/sozayn-deploy/sozayndigital/
+cp ~/path/to/extracted/package.json ~/sozayn-deploy/sozayndigital/
+cp ~/path/to/extracted/Procfile ~/sozayn-deploy/sozayndigital/
+quote> 
+syedsany@MacBookAir sozayndigital % # Make sure you're in the sozayndigital directory
+cd ~/sozayn-deploy/sozayndigital
+
+# Add all the new files
+git add .
+
+# Commit the changes
+git commit -m "Fix frontend serving with Express server"
+
+# Push to Heroku - note that the branch is 'main' not 'master'
+git push heroku main
+quote> mkdir ~/sozayn-deploy/new-deployment
+cd ~/sozayn-deploy/new-deployment
+quote> 
+syedsany@MacBookAir sozayndigital % mkdir ~/sozayn-deploy/new-deployment
+cd ~/sozayn-deploy/new-deployment
+syedsany@MacBookAir new-deployment % cp -r ../dist .
+cp ../server.js .
+cp ../package.json .
+cp ../Procfile .
+cp: ../server.js: No such file or directory
+syedsany@MacBookAir new-deployment % git init
+heroku git:remote -a sozayndigital
+git add .
+git commit -m "Fix frontend serving"
+git push heroku main:main -f
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+Initialized empty Git repository in /Users/syedsany/sozayn-deploy/new-deployment/.git/
+set git remote heroku to https://git.heroku.com/sozayndigital.git
+[master (root-commit) 9544a48] Fix frontend serving
+ 3 files changed, 1220 insertions(+)
+ create mode 100644 Procfile
+ create mode 100644 dist/index.html
+ create mode 100644 package.json
+error: src refspec main does not match any
+error: failed to push some refs to 'https://git.heroku.com/sozayndigital.git'

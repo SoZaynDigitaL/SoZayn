@@ -1,0 +1,93 @@
+syedsany@MacBookAir new-deployment % # Run this command to update the Procfile
+echo "web: node server.js" > Procfile
+git add Procfile
+git commit -m "Update Procfile to use server.js"
+git push heroku main --force
+zsh: bad pattern: #
+syedsany@MacBookAir new-deployment % # Run this command to update the Procfile
+echo "web: node server.js" > Procfile
+git add Procfile
+git commit -m "Update Procfile to use server.js"
+git push heroku main --force
+zsh: bad pattern: #
+syedsany@MacBookAir new-deployment % echo "web: node server.js" > Procfile
+syedsany@MacBookAir new-deployment % git add Procfile
+syedsany@MacBookAir new-deployment % git commit -m "Update Procfile to use server.js"
+[main 3c211b2] Update Procfile to use server.js
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+syedsany@MacBookAir new-deployment % git push heroku main --force
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 402 bytes | 402.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Updated 4 paths from 23a029a
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-24 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.x
+remote:        engines.npm (package.json):    unspecified (use default)
+remote:        
+remote:        Resolving node version 18.x...
+remote:        Downloading and installing node 18.20.8...
+remote:        Using default npm version: 10.8.2
+remote:        
+remote: -----> Restoring cache
+remote:        - node_modules
+remote:        
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        
+remote:        up to date, audited 112 packages in 538ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice
+remote:        npm notice New major version of npm available! 10.8.2 -> 11.2.0
+remote:        npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+remote:        npm notice To update run: npm install -g npm@11.2.0
+remote:        npm notice
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - node_modules
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 112 packages in 510ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.9M
+remote: -----> Launching...
+remote:        Released v96
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+   71b7846..3c211b2  main -> main

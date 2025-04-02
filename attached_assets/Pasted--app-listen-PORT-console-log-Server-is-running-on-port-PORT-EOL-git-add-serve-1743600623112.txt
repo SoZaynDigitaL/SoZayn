@@ -1,0 +1,106 @@
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+EOL
+
+git add server.js
+git commit -m "Add server.js file"
+
+git branch -m master main
+git push heroku main
+[master 71b7846] Add server.js file
+ 1 file changed, 16 insertions(+)
+ create mode 100644 server.js
+To https://git.heroku.com/sozayndigital.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://git.heroku.com/sozayndigital.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+syedsany@MacBookAir new-deployment % git push heroku main --force
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (9/9), 7.50 KiB | 7.50 MiB/s, done.
+Total 9 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Updated 4 paths from 0f0918c
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-24 stack
+remote: -----> Using buildpack: heroku/nodejs
+remote: -----> Node.js app detected
+remote:        
+remote: -----> Creating runtime environment
+remote:        
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_VERSION=18.19.1
+remote:        NODE_MODULES_CACHE=true
+remote:        
+remote: -----> Installing binaries
+remote:        engines.node (package.json):   18.x
+remote:        engines.npm (package.json):    unspecified (use default)
+remote:        
+remote:        Resolving node version 18.x...
+remote:        Downloading and installing node 18.20.8...
+remote:        Using default npm version: 10.8.2
+remote:        
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:        
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        
+remote:        added 111 packages, and audited 112 packages in 3s
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        npm notice
+remote:        npm notice New major version of npm available! 10.8.2 -> 11.2.0
+remote:        npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+remote:        npm notice To update run: npm install -g npm@11.2.0
+remote:        npm notice
+remote:        
+remote: -----> Build
+remote:        
+remote: -----> Caching build
+remote:        - node_modules
+remote:        
+remote: -----> Pruning devDependencies
+remote:        
+remote:        up to date, audited 112 packages in 581ms
+remote:        
+remote:        15 packages are looking for funding
+remote:          run `npm fund` for details
+remote:        
+remote:        found 0 vulnerabilities
+remote:        
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 43.9M
+remote: -----> Launching...
+remote:        Released v95
+remote:        https://sozayndigital-e2112b66b875.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/sozayndigital.git
+ + 95abe12...71b7846 main -> main (forced update)
+syedsany@MacBookAir new-deployment % git pull heroku main --rebase
+git push heroku main
+From https://git.heroku.com/sozayndigital
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+Everything up-to-date
+syedsany@MacBookAir new-deployment % 

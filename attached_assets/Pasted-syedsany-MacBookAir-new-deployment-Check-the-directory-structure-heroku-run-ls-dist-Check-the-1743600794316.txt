@@ -1,0 +1,110 @@
+syedsany@MacBookAir new-deployment % # Check the directory structure
+heroku run ls dist
+
+# Check the server logs
+heroku logs --tail
+zsh: bad pattern: #
+syedsany@MacBookAir new-deployment % heroku run ls dist
+Running ls dist on ⬢ sozayndigital... up, run.4164
+index.html
+syedsany@MacBookAir new-deployment % heroku logs --tail
+2025-04-02T13:25:28.522185+00:00 heroku[web.1]: Starting process with command `NODE_OPTIONS=--max_old_space_size=256 node standalone-server-fix.cjs`
+2025-04-02T13:25:29.031402+00:00 app[web.1]: Running on Node.js v22.14.0
+2025-04-02T13:25:29.031653+00:00 app[web.1]: ⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues
+2025-04-02T13:25:29.031674+00:00 app[web.1]: This application was designed for Node.js v18.x
+2025-04-02T13:25:29.031696+00:00 app[web.1]: Some functionality may not work correctly on Node.js v22
+2025-04-02T13:25:29.031717+00:00 app[web.1]: ✅ Node.js version check completed. Continuing startup...
+2025-04-02T13:25:29.031829+00:00 app[web.1]: Current Working Directory: /app
+2025-04-02T13:25:29.031895+00:00 app[web.1]: Environment Variables:
+2025-04-02T13:25:29.031979+00:00 app[web.1]: NODE_OPTIONS=--max_old_space_size=256
+2025-04-02T13:25:29.032051+00:00 app[web.1]: COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+2025-04-02T13:25:29.032223+00:00 app[web.1]: DATABASE_URL=postgres://uiuetisjnh408:p8b36feb4d1b17af8719f6da2d7bf86d7d990eff401993c991f400e1a3ff4d009@c7u1tn6bvvsodf.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d2m76p6u04kakq
+2025-04-02T13:25:29.032259+00:00 app[web.1]: MEMORY_AVAILABLE=512
+2025-04-02T13:25:29.032278+00:00 app[web.1]: PWD=/app
+2025-04-02T13:25:29.032294+00:00 app[web.1]: PORT=23168
+2025-04-02T13:25:29.032350+00:00 app[web.1]: NODE_ENV=production
+2025-04-02T13:25:29.032364+00:00 app[web.1]: NODE_HOME=/app/.heroku/node
+2025-04-02T13:25:29.032375+00:00 app[web.1]: COREPACK_HOME=/app/.heroku/corepack
+2025-04-02T13:25:29.032390+00:00 app[web.1]: HOME=/app
+2025-04-02T13:25:29.032402+00:00 app[web.1]: PAPERTRAIL_API_TOKEN=j3fxTjezEsFEtO6fU3Zm
+2025-04-02T13:25:29.032414+00:00 app[web.1]: FORCE_NODE_VERSION=true
+2025-04-02T13:25:29.032423+00:00 app[web.1]: APP_URL=https://sozayndigital-e2112b66b875.herokuapp.com/
+2025-04-02T13:25:29.032432+00:00 app[web.1]: SESSION_SECRET=[REDACTED]
+2025-04-02T13:25:29.032442+00:00 app[web.1]: SHLVL=0
+2025-04-02T13:25:29.032451+00:00 app[web.1]: PROCFILE=web: node standalone-server-fix.cjs
+2025-04-02T13:25:29.032460+00:00 app[web.1]: WEB_MEMORY=512
+2025-04-02T13:25:29.032468+00:00 app[web.1]: WEB_CONCURRENCY=1
+2025-04-02T13:25:29.032479+00:00 app[web.1]: PS1=\[\033[01;34m\]\w\[\033[00m\] \[\033[01;32m\]$ \[\033[00m\]
+2025-04-02T13:25:29.032490+00:00 app[web.1]: PATH=/app/.heroku/node/bin:/app/.heroku/yarn/bin:/usr/local/bin:/usr/bin:/bin:/app/bin:/app/node_modules/.bin
+2025-04-02T13:25:29.032491+00:00 app[web.1]: JWT_SECRET=[REDACTED]
+2025-04-02T13:25:29.032504+00:00 app[web.1]: DYNO=web.1
+2025-04-02T13:25:29.032513+00:00 app[web.1]: NODE_VERSION=18.19.1
+2025-04-02T13:25:29.032523+00:00 app[web.1]: _=/app/.heroku/node/bin/node
+2025-04-02T13:25:29.133974+00:00 app[web.1]: Successfully loaded all modules
+2025-04-02T13:25:29.134973+00:00 app[web.1]: Trust proxy setting: true
+2025-04-02T13:25:29.137018+00:00 app[web.1]: Configuring session for environment: production
+2025-04-02T13:25:29.137203+00:00 app[web.1]: Cookie settings: {
+2025-04-02T13:25:29.137204+00:00 app[web.1]: secure: true,
+2025-04-02T13:25:29.137204+00:00 app[web.1]: httpOnly: true,
+2025-04-02T13:25:29.137204+00:00 app[web.1]: maxAge: 2592000000,
+2025-04-02T13:25:29.137205+00:00 app[web.1]: path: '/',
+2025-04-02T13:25:29.137205+00:00 app[web.1]: sameSite: 'none'
+2025-04-02T13:25:29.137205+00:00 app[web.1]: }
+2025-04-02T13:25:29.143358+00:00 app[web.1]: Server running on port 23168
+2025-04-02T13:25:29.143396+00:00 app[web.1]: Environment: production
+2025-04-02T13:25:29.143408+00:00 app[web.1]: Testing database connection...
+2025-04-02T13:25:29.199056+00:00 app[web.1]: Database connection successful: { now: 2025-04-02T13:25:29.197Z }
+2025-04-02T13:25:29.199310+00:00 app[web.1]: Database connection successful
+2025-04-02T13:25:29.634371+00:00 heroku[web.1]: State changed from starting to up
+2025-04-02T13:29:00.000000+00:00 app[api]: Build started by user nianyshoppinghub@gmail.com
+2025-04-02T13:29:26.107080+00:00 app[api]: Release v95 created by user nianyshoppinghub@gmail.com
+2025-04-02T13:29:26.107080+00:00 app[api]: Deploy 71b78460 by user nianyshoppinghub@gmail.com
+2025-04-02T13:29:27.219933+00:00 heroku[web.1]: Restarting
+2025-04-02T13:29:27.267226+00:00 heroku[web.1]: State changed from up to starting
+2025-04-02T13:29:27.911724+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2025-04-02T13:29:27.977026+00:00 heroku[web.1]: Process exited with status 143
+2025-04-02T13:29:28.000000+00:00 app[api]: Build succeeded
+2025-04-02T13:29:29.258240+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.cjs`
+2025-04-02T13:29:29.766273+00:00 app[web.1]: node:internal/modules/cjs/loader:1143
+2025-04-02T13:29:29.766310+00:00 app[web.1]: throw err;
+2025-04-02T13:29:29.766311+00:00 app[web.1]: ^
+2025-04-02T13:29:29.766311+00:00 app[web.1]: 
+2025-04-02T13:29:29.766312+00:00 app[web.1]: Error: Cannot find module '/app/standalone-server-fix.cjs'
+2025-04-02T13:29:29.766322+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1140:15)
+2025-04-02T13:29:29.766323+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:981:27)
+2025-04-02T13:29:29.766326+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T13:29:29.766326+00:00 app[web.1]: at node:internal/main/run_main_module:28:49 {
+2025-04-02T13:29:29.766326+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2025-04-02T13:29:29.766329+00:00 app[web.1]: requireStack: []
+2025-04-02T13:29:29.766329+00:00 app[web.1]: }
+2025-04-02T13:29:29.766329+00:00 app[web.1]: 
+2025-04-02T13:29:29.766329+00:00 app[web.1]: Node.js v18.20.8
+2025-04-02T13:29:29.816767+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T13:29:29.844316+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T13:29:29.847722+00:00 heroku[web.1]: State changed from crashed to starting
+2025-04-02T13:29:31.839504+00:00 heroku[web.1]: Starting process with command `node standalone-server-fix.cjs`
+2025-04-02T13:29:32.311264+00:00 app[web.1]: node:internal/modules/cjs/loader:1143
+2025-04-02T13:29:32.311295+00:00 app[web.1]: throw err;
+2025-04-02T13:29:32.311295+00:00 app[web.1]: ^
+2025-04-02T13:29:32.311296+00:00 app[web.1]: 
+2025-04-02T13:29:32.311297+00:00 app[web.1]: Error: Cannot find module '/app/standalone-server-fix.cjs'
+2025-04-02T13:29:32.311304+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1140:15)
+2025-04-02T13:29:32.311304+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:981:27)
+2025-04-02T13:29:32.311306+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)
+2025-04-02T13:29:32.311307+00:00 app[web.1]: at node:internal/main/run_main_module:28:49 {
+2025-04-02T13:29:32.311307+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2025-04-02T13:29:32.311309+00:00 app[web.1]: requireStack: []
+2025-04-02T13:29:32.311309+00:00 app[web.1]: }
+2025-04-02T13:29:32.311310+00:00 app[web.1]: 
+2025-04-02T13:29:32.311310+00:00 app[web.1]: Node.js v18.20.8
+2025-04-02T13:29:32.344862+00:00 heroku[web.1]: Process exited with status 1
+2025-04-02T13:29:32.367839+00:00 heroku[web.1]: State changed from starting to crashed
+2025-04-02T13:29:37.929872+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=4e9a9ca3-2a3d-2c56-567c-3ff3aee14cf5 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:29:43.111778+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=df5015e1-d8c4-b441-653e-00fc7d031731 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:30:01.764167+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=58285782-476d-df16-db64-e71403ca06d9 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:30:31.153371+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=4f8dd27e-b040-e852-c0fb-69a20d1b9bf0 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:31:06.917777+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=aed0964f-c6d6-48c1-5cc6-c540844ca444 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:31:36.431945+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/" host=sozayndigital-e2112b66b875.herokuapp.com request_id=3699faba-ce6f-0578-6086-253e6fd379f0 fwd="" dyno= connect=0ms service=0ms status=499 bytes=567 protocol=http1.1 tls=true tls_version=unknown
+2025-04-02T13:32:48.520049+00:00 heroku[run.4164]: State changed from starting to up
+2025-04-02T13:32:51.519994+00:00 heroku[run.4164]: Process exited with status 0
+2025-04-02T13:32:51.540327+00:00 heroku[run.4164]: State changed from up to complete
