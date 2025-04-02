@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoZayn - Digital Era</title>
+    <style>
+        :root {
+            --primary: #4263eb;
+            --primary-hover: #3b5bdb;
+            --background: #0f1117;
+            --foreground: #f8f9fa;
+            --card: #171923;
+            --card-foreground: #e9ecef;
+            --border: #2d3748;
+            --input: #2d3748;
+            --ring: #4263eb;
+            --radius: 0.5rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header {
+            padding: 2rem 0;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+        
+        .logo-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--foreground);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--foreground);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .hero {
+            padding: 4rem 0;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-description {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .partners {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .partner {
+            opacity: 0.6;
+            font-weight: 500;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .highlight::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -0.25rem;
+            width: 100%;
+            height: 0.25rem;
+            background-color: var(--primary);
+            border-radius: 999px;
+            opacity: 0.2;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div>
+                    <div class="logo">SoZayn</div>
+                    <div class="logo-subtitle">Welcome To Digital Era</div>
+                </div>
+                
+                <div class="nav-menu">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#pricing" class="nav-link">Pricing</a>
+                    <a href="#support" class="nav-link">Support</a>
+                    <a href="#about" class="nav-link">About</a>
+                </div>
+                
+                <div class="auth-buttons">
+                    <a href="/auth.html" class="btn btn-outline">Sign in</a>
+                    <a href="/auth.html?tab=register" class="btn btn-primary">Get Started</a>
+                </div>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Integrate <span class="highlight">Shopify</span> with <span class="highlight">delivery</span> services
+                    </h1>
+                    <p class="hero-description">
+                        Connect your Shopify store with leading delivery providers to streamline order fulfillment and optimize deliveries.
+                    </p>
+                    <a href="/auth.html?tab=register" class="btn btn-primary">Start connecting now →</a>
+                    
+                    <div class="partners">
+                        <div class="partner">Trusted by merchants delivering with</div>
+                        <div class="partner">UberDirect</div>
+                        <div class="partner">JetGo</div>
+                        <div class="partner">Shopify</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="/fix-buttons.js"></script>
+    <script src="/dashboard-redirect.js"></script>
+</body>
+</html>
