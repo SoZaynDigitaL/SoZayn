@@ -1,28 +1,25 @@
-/**
- * SoZayn Digital Era - Auth Module
- * 
- * Authentication functionality for the SoZayn Digital Era platform,
- * styled to match the modern dark theme from the landing page.
- */
-
-// DOM Elements
 document.addEventListener('DOMContentLoaded', function() {
-  // Tabs
+  // Constants
+  const API_BASE = '';
+  const LOGIN_ENDPOINT = API_BASE + '/api/login';
+  const REGISTER_ENDPOINT = API_BASE + '/api/register';
+  
+  // DOM Elements
   const loginTab = document.getElementById('login-tab');
   const registerTab = document.getElementById('register-tab');
-  
-  // Forms
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
+  const loginContent = document.getElementById('login-content');
+  const registerContent = document.getElementById('register-content');
   
-  // Login Elements
+  // Login Form Elements
   const loginEmail = document.getElementById('login-email');
   const loginPassword = document.getElementById('login-password');
   const loginButton = document.getElementById('login-button');
   const loginError = document.getElementById('login-error');
   const loginSuccess = document.getElementById('login-success');
   
-  // Register Elements
+  // Register Form Elements
   const registerName = document.getElementById('register-name');
   const registerEmail = document.getElementById('register-email');
   const registerPassword = document.getElementById('register-password');
@@ -31,38 +28,39 @@ document.addEventListener('DOMContentLoaded', function() {
   const registerError = document.getElementById('register-error');
   const registerSuccess = document.getElementById('register-success');
   
-  // API Config
-  const API_URL = window.location.origin;
-  const LOGIN_ENDPOINT = `${API_URL}/api/login`;
-  const REGISTER_ENDPOINT = `${API_URL}/api/register`;
-  
-  // Tab Switching Functions
+  // Show Login Tab
   function showLoginTab() {
     loginTab.classList.add('active');
     registerTab.classList.remove('active');
-    loginForm.style.display = 'block';
-    registerForm.style.display = 'none';
+    loginContent.style.display = 'block';
+    registerContent.style.display = 'none';
+    
+    // Update URL parameter
     updateUrlParam('login');
   }
   
+  // Show Register Tab
   function showRegisterTab() {
-    registerTab.classList.add('active');
     loginTab.classList.remove('active');
-    registerForm.style.display = 'block';
-    loginForm.style.display = 'none';
+    registerTab.classList.add('active');
+    loginContent.style.display = 'none';
+    registerContent.style.display = 'block';
+    
+    // Update URL parameter
     updateUrlParam('register');
   }
   
+  // Update URL Parameter
   function updateUrlParam(tab) {
-    const url = new URL(window.location);
+    const url = new URL(window.location.href);
     url.searchParams.set('tab', tab);
-    history.replaceState({}, '', url);
+    window.history.replaceState({}, '', url);
   }
   
-  // Check URL param for initial tab
+  // Show Initial Tab based on URL Parameter
   function showInitialTab() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get('tab');
+    const url = new URL(window.location.href);
+    const tab = url.searchParams.get('tab');
     
     if (tab === 'register') {
       showRegisterTab();
@@ -71,16 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // API Helper Function
+  // API Request Helper
   async function apiRequest(url, method, data) {
     try {
       const response = await fetch(url, {
         method: method,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data),
-        credentials: 'include'
+        body: JSON.stringify(data)
       });
       
       if (!response.ok) {
@@ -90,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       return await response.json();
     } catch (error) {
-      console.error('API request failed:', error);
+      console.error('API Request Error:', error);
       throw error;
     }
   }
@@ -124,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         email === 'admin@deliverconnect.com') {
       
       // Show success message
-      loginSuccess.textContent = 'Login successful! Redirecting to dashboard...';
+      loginSuccess.textContent = 'Login successful!';
       loginSuccess.style.display = 'block';
       
       // Handle test account login (creates fake token and redirects)
@@ -155,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
       storeUserData(user);
       
       // Show success message
-      loginSuccess.textContent = 'Login successful! Redirecting to dashboard...';
+      loginSuccess.textContent = 'Login successful!';
       loginSuccess.style.display = 'block';
       
       // Redirect to dashboard after delay
@@ -262,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
       storeUserData(user);
       
       // Show success message
-      registerSuccess.textContent = 'Account created successfully! Redirecting to dashboard...';
+      registerSuccess.textContent = 'Account created!';
       registerSuccess.style.display = 'block';
       
       // Redirect to dashboard after delay
@@ -282,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
         registerError.style.display = 'block';
       } else {
         // Simulate successful registration for demo
-        registerSuccess.textContent = 'Account created successfully! Redirecting to dashboard...';
+        registerSuccess.textContent = 'Account created!';
         registerSuccess.style.display = 'block';
         
         // Create demo user
