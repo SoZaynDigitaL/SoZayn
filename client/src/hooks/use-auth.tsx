@@ -1,95 +1,264 @@
-import { createContext, ReactNode, useContext } from "react";
-import {
-  useQuery,
-  useMutation,
-  UseMutationResult,
-} from "@tanstack/react-query";
-import { InsertUser, User, LoginUser } from "@shared/schema";
-import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+
+// Interface for User object
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  shopifyDomain?: string;
+  shopifyApiKey?: string;
+  shopifyApiSecret?: string;
+  isAdmin: boolean;
+  isActive: boolean;
+  createdAt: string;
+}
+
+// Login credentials interface
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+// Registration data interface
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  shopifyDomain?: string;
+  shopifyApiKey?: string;
+  shopifyApiSecret?: string;
+}
 
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   error: Error | null;
   isAdmin: boolean;
-  loginMutation: UseMutationResult<{ user: User, token: string }, Error, LoginUser>;
+  loginMutation: UseMutationResult<any, Error, LoginCredentials>;
   logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<{ user: User, token: string }, Error, InsertUser>;
+  registerMutation: UseMutationResult<any, Error, RegisterData>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useQuery<User | undefined, Error>({
-    queryKey: ["/api/user"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
-  });
+
+  // State for user, loading state, and error
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  
+  // Function to fetch the current user
+  const fetchUser = async (): Promise<User | null> => {
+    try {
+      setIsLoading(true);
+      
+      // Get the auth token from localStorage
+      const token = localStorage.getItem('auth_token');
+      
+      // If we don't have a token, don't even attempt the request
+      if (!token) {
+        console.log('No auth token available, skipping user fetch');
+        setIsLoading(false);
+        return null;
+      }
+      
+      const headers: Record<string, string> = {
+        'Authorization': `Bearer ${token}`
+      };
+      
+      console.log('Attempting to fetch user with token');
+      const res = await fetch('/api/user', {
+        credentials: "include",
+        headers
+      });
+      
+      if (res.status === 401) {
+        console.warn('Auth token invalid or expired');
+        localStorage.removeItem('auth_token');
+        setIsLoading(false);
+        return null;
+      }
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error(`Error fetching user: ${errorText || res.statusText}`);
+        setError(new Error(errorText || res.statusText));
+        setIsLoading(false);
+        return null;
+      }
+      
+      const userData = await res.json();
+      console.log('User data retrieved successfully');
+      setIsLoading(false);
+      return userData;
+    } catch (err) {
+      console.error('Error in fetchUser:', err);
+      setError(err instanceof Error ? err : new Error('Unknown error'));
+      setIsLoading(false);
+      return null;
+    }
+  };
+  
+  // Function to refetch the user data
+  const refetchUser = async () => {
+    const userData = await fetchUser();
+    setUser(userData);
+    return userData;
+  };
+
+  // Initialize user on mount
+  useEffect(() => {
+    // Immediately check for user on mount
+    const initializeUser = async () => {
+      console.log("Initializing auth state");
+      const token = localStorage.getItem('auth_token');
+      
+      if (token) {
+        console.log("Found token, fetching user");
+        const userData = await fetchUser();
+        setUser(userData);
+      } else {
+        console.log("No token found, skipping user fetch");
+        setIsLoading(false);
+      }
+    };
+    
+    initializeUser();
+  }, []);
 
   const loginMutation = useMutation({
-    mutationFn: async (credentials: LoginUser) => {
-      const res = await apiRequest("POST", "/api/login", credentials);
+    mutationFn: async (credentials: LoginCredentials) => {
+      console.log("Attempting login with:", credentials.email);
+      
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+        credentials: 'include',
+      });
+      
+      if (!res.ok) {
+        let errorMessage = 'Login failed';
+        try {
+          const contentType = res.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const errorJson = await res.json();
+            if (errorJson.message) {
+              errorMessage = errorJson.message;
+            }
+          } else {
+            errorMessage = await res.text() || res.statusText || `Error ${res.status}`;
+          }
+        } catch (e) {
+          console.error('Error parsing error response:', e);
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
       return await res.json();
     },
-    onSuccess: (data: { user: User, token: string }) => {
-      // Store token in localStorage for API requests
-      localStorage.setItem("auth_token", data.token);
-      queryClient.setQueryData(["/api/user"], data.user);
+    onSuccess: (data) => {
+      console.log("Login successful!");
+      
+      // Store token in localStorage
+      if (data.token) {
+        localStorage.setItem("auth_token", data.token);
+        console.log("Auth token saved to localStorage");
+      } else {
+        console.warn("No token received in login response");
+      }
+      
+      // Update the user data in the query cache
+      if (data.user) {
+        setUser(data.user);
+        console.log("User data updated in state");
+      }
+      
+      toast({
+        title: "Login successful",
+        description: `Welcome back, ${data.user?.name || data.user?.email || 'User'}!`,
+      });
     },
     onError: (error: Error) => {
+      console.error("Login error:", error);
+      
       toast({
         title: "Login failed",
-        description: error.message,
+        description: error.message || "Please check your credentials and try again",
         variant: "destructive",
       });
     },
   });
 
   const registerMutation = useMutation({
-    mutationFn: async (userData: InsertUser) => {
-      console.log('Registering user with data:', {
-        ...userData,
-        password: '***REDACTED***',
-        shopifyApiKey: userData.shopifyApiKey ? '***PRESENT***' : '***EMPTY***',
-        shopifyApiSecret: userData.shopifyApiSecret ? '***PRESENT***' : '***EMPTY***'
+    mutationFn: async (userData: RegisterData) => {
+      console.log("Registering new user:", userData.email);
+      
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+        credentials: 'include',
       });
       
-      try {
-        const res = await apiRequest("POST", "/api/register", userData);
-        const data = await res.json();
-        console.log('Registration successful, received data:', {
-          userId: data.user?.id,
-          userEmail: data.user?.email,
-          hasToken: !!data.token
-        });
-        return data;
-      } catch (err) {
-        console.error('Registration request failed:', err);
-        throw err;
+      if (!res.ok) {
+        let errorMessage = 'Registration failed';
+        try {
+          const contentType = res.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const errorJson = await res.json();
+            if (errorJson.message) {
+              errorMessage = errorJson.message;
+            }
+          } else {
+            errorMessage = await res.text() || res.statusText || `Error ${res.status}`;
+          }
+        } catch (e) {
+          console.error('Error parsing error response:', e);
+        }
+        
+        throw new Error(errorMessage);
       }
+      
+      return await res.json();
     },
-    onSuccess: (data: { user: User, token: string }) => {
-      console.log('Registration mutation success, storing token and user data');
-      // Store token in localStorage for API requests
-      localStorage.setItem("auth_token", data.token);
-      queryClient.setQueryData(["/api/user"], data.user);
+    onSuccess: (data) => {
+      console.log("Registration successful!");
+      
+      // Store token in localStorage
+      if (data.token) {
+        localStorage.setItem("auth_token", data.token);
+        console.log("Auth token saved to localStorage");
+      }
+      
+      // Update the user data
+      if (data.user) {
+        setUser(data.user);
+        console.log("User data updated in state");
+      }
       
       toast({
         title: "Registration successful",
-        description: "Your account has been created",
-        variant: "default",
+        description: "Your account has been created successfully.",
       });
     },
     onError: (error: Error) => {
-      console.error('Registration mutation error:', error);
+      console.error("Registration error:", error);
+      
       toast({
         title: "Registration failed",
-        description: error.message,
+        description: error.message || "Please check your information and try again",
         variant: "destructive",
       });
     },
@@ -98,27 +267,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logoutMutation = useMutation({
     mutationFn: async () => {
       await apiRequest("POST", "/api/logout");
-      // Remove token from localStorage
       localStorage.removeItem("auth_token");
+      console.log("Logged out and cleared auth token");
     },
     onSuccess: () => {
-      queryClient.setQueryData(["/api/user"], null);
+      setUser(null);
+      console.log("User data cleared from state");
+      
+      toast({
+        title: "Logged out successfully",
+      });
     },
     onError: (error: Error) => {
+      console.error("Logout error:", error);
+      
+      // Even if the server logout fails, clear the local auth state
+      localStorage.removeItem("auth_token");
+      setUser(null);
+      
       toast({
-        title: "Logout failed",
-        description: error.message,
+        title: "Logout had issues",
+        description: "You've been logged out locally, but there was an issue with the server: " + error.message,
         variant: "destructive",
       });
     },
   });
 
+  // Derive admin status from user object
   const isAdmin = user?.isAdmin || false;
 
   return (
     <AuthContext.Provider
       value={{
-        user: user ?? null,
+        user,
         isLoading,
         error,
         isAdmin,
