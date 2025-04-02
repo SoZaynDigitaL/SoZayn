@@ -2,6 +2,15 @@
 // This file contains everything needed to run the application in production
 // without relying on TypeScript or module resolution
 
+// Check Node.js version for compatibility warnings
+const nodeVersion = process.version;
+console.log(`Running on Node.js ${nodeVersion}`);
+if (nodeVersion.startsWith('v22')) {
+  console.warn('⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues');
+  console.warn('This application was designed for Node.js v18.x');
+  console.warn('Some functionality may not work correctly on Node.js v22');
+}
+
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

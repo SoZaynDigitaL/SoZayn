@@ -124,6 +124,14 @@ function checkNodeVersion() {
   console.log(`✅ Node.js version: ${process.version}`);
   console.log(`✅ Architecture: ${process.arch}`);
   console.log(`✅ Platform: ${process.platform}`);
+  
+  // Check for Node.js v22 compatibility issues
+  if (process.version.startsWith('v22')) {
+    console.warn('\n⚠️ WARNING: You are running on Node.js v22, which may cause compatibility issues');
+    console.warn('⚠️ This application was designed for Node.js v18.x');
+    console.warn('⚠️ If you experience issues, please downgrade to Node.js v18.x');
+    console.warn('⚠️ You can set the Node.js version in runtime.txt to nodejs-18.19.1');
+  }
 }
 
 // Run all checks

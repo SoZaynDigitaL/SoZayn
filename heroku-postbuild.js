@@ -2,6 +2,18 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+// Check Node.js version
+const nodeVersion = process.version;
+console.log(`Current Node.js version: ${nodeVersion}`);
+
+// Verify compatibility
+if (nodeVersion.startsWith('v22')) {
+  console.error('⚠️ WARNING: Node.js v22 detected, which may cause compatibility issues');
+  console.error('This application works best with Node.js v18.x');
+  console.error('Please set the Node.js version in your Heroku app settings');
+  console.error('or update runtime.txt to specify nodejs-18.x');
+}
+
 // Helper function to list files recursively
 function listFilesRecursively(dir, prefix = '') {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
