@@ -6,27 +6,25 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Get all buttons and links that might navigate to auth
-  const authLinks = document.querySelectorAll('a[href*="/auth"]');
-  const buttons = document.querySelectorAll('button');
+  // Get all navigation buttons and links
+  const buttons = document.querySelectorAll('a, button');
   
-  // Function to check if we should redirect
+  // Function to determine if element should trigger auth redirection
   function shouldRedirect(el) {
-    // Check if it's a link to /auth
-    if (el.tagName === 'A' && el.getAttribute('href') && el.getAttribute('href').includes('/auth')) {
+    // Check for links to /auth
+    if (el.tagName === 'A' && (el.href.endsWith('/auth') || el.href.includes('/auth?'))) {
       return true;
     }
     
-    // Check if it's a button with text that matches login/register keywords
-    if (el.tagName === 'BUTTON' || el.classList.contains('btn')) {
-      const text = el.textContent.toLowerCase();
+    // Check for buttons that might navigate to auth
+    if (el.tagName === 'BUTTON') {
+      const text = el.textContent.trim().toLowerCase();
       if (text.includes('sign in') || 
           text.includes('login') || 
-          text.includes('log in') ||
-          text.includes('sign up') ||
-          text.includes('register') ||
-          text.includes('create account') ||
-          text.includes('get started')) {
+          text.includes('log in') || 
+          text.includes('get started') || 
+          text.includes('register') || 
+          text.includes('sign up')) {
         return true;
       }
     }
@@ -34,21 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
   }
   
-  // Function to determine the auth tab from element
+  // Function to get the appropriate auth tab
   function getAuthTab(el) {
-    const text = el.textContent.toLowerCase();
-    const href = el.getAttribute('href') || '';
+    const text = el.textContent.trim().toLowerCase();
     
-    // Check URL first
-    if (href.includes('register') || href.includes('signup')) {
-      return 'register';
+    if (text.includes('sign in') || text.includes('login') || text.includes('log in')) {
+      return 'login';
     }
     
-    // Then check text content
-    if (text.includes('register') || 
-        text.includes('sign up') || 
-        text.includes('create account') ||
-        text.includes('get started')) {
+    if (text.includes('register') || text.includes('sign up') || text.includes('get started')) {
       return 'register';
     }
     
@@ -56,27 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
     return 'login';
   }
   
-  // Process all auth links
-  authLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (shouldRedirect(link)) {
+  // Add click handlers
+  buttons.forEach(function(el) {
+    if (shouldRedirect(el)) {
+      el.addEventListener('click', function(e) {
         e.preventDefault();
-        const tab = getAuthTab(link);
+        
+        const tab = getAuthTab(el);
         window.location.href = `/auth.html?tab=${tab}`;
-      }
-    });
+      });
+    }
   });
-  
-  // Process all buttons
-  buttons.forEach(function(button) {
-    button.addEventListener('click', function(e) {
-      if (shouldRedirect(button)) {
-        e.preventDefault();
-        const tab = getAuthTab(button);
-        window.location.href = `/auth.html?tab=${tab}`;
-      }
-    });
-  });
-  
-  console.log('SoZayn Digital Era - Button fix initialized');
 });
